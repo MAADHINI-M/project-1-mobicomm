@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Mobicomm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Unified Root Variables (Light Theme) */
+        :root {
+            --primary: #d06ab2;
+            --secondary: #6b2d6b;
+            --bg: #f5f6ff;
+            --text: #1a1a1a;
+            --text-light: #4a4a4a;
+            --accent-success: #3871c2;
+            --accent-urgent: #d95f0e;
+            --highlight: #4a1a4a;
+            --web: #4a1a4a;
+            --web-dark: #2d0a2d;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --primary: #f2db8e;
+            --secondary: #ab47bc;
+            --bg: #12122e;
+            --text: #e8eaf6;
+            --text-light: #b0bec5;
+            --card-bg: #1e1e3f;
+            --highlight: #0d1a3a;
+            --web-dark: #2d0a2d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(0, 245, 212, 0.1) 0%, transparent 25%);
+            z-index: -1;
+            animation: pulseBackground 15s infinite alternate;
+        }
+
+        @keyframes pulseBackground {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        .navbar {
+            background: var(--web-dark);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .nav-link {
+            color: rgb(58, 126, 123) !important;
+            padding: 8px 16px !important;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            background: rgba(155, 93, 229, 0.3);
+            color: var(--primary) !important;
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 80px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .nav-tabs {
+            border-bottom: 2px solid var(--secondary);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .nav-link:hover {
+            background: rgba(155, 93, 229, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .tab-content:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-urgent);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .form-control {
+            border: 2px solid rgba(155, 93, 229, 0.3);
+            border-radius: 8px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(155, 93, 229, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            color: var(--secondary);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        h5 {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .accordion-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(155, 93, 229, 0.2);
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+        }
+
+        .accordion-button {
+            background: var(--card-bg);
+            color: var(--text);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .accordion-button:not(.collapsed) {
+            background: var(--highlight);
+            color: rgb(189, 36, 133);
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: var(--primary);
+        }
+
+        .accordion-body {
+            color: var(--text-light);
+        }
+
+        .table {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid rgba(155, 93, 229, 0.2);
+        }
+
+        .table thead {
+            background: var(--highlight);
+            color: rgb(33, 120, 152);
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid rgba(155, 93, 229, 0.1);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(155, 93, 229, 0.1);
+        }
+
+        .status-open {
+            color: var(--accent-urgent);
+            font-weight: bold;
+        }
+
+        .status-resolved {
+            color: var(--accent-success);
+            font-weight: bold;
+        }
+
+        footer {
+            background: var(--highlight);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--accent-success);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .main-content {
+                padding: 60px 20px;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            .nav-tabs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-link {
+                padding: 8px 15px;
+                border-radius: var(--border-radius);
+                margin-bottom: 5px;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.6rem;
+            }
+            .table {
+                font-size: 0.9rem;
+            }
+            .table thead th {
+                padding: 8px;
+            }
+            .table tbody td {
+                padding: 8px;
+                display: block;
+                width: 100%;
+                text-align: left;
+            }
+            .table tbody td::before {
+                content: attr(data-label) ": ";
+                font-weight: bold;
+                color: var(--secondary);
+            }
+            .table tbody tr {
+                margin-bottom: 15px;
+                display: block;
+                border: 1px solid rgba(155, 93, 229, 0.2);
+                border-radius: var(--border-radius);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 40px 15px;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .form-control {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="user-dashboard.html">
+                <img src="/images/Logo.png" alt="Mobi-Comm Logo"> Mobicomm
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="loginpage.html">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2>Support Center</h2>
+        <ul class="nav nav-tabs" id="supportTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tickets-tab" data-bs-toggle="tab" data-bs-target="#tickets" type="button" role="tab" aria-controls="tickets" aria-selected="true">Support Tickets</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="faq-tab" data-bs-toggle="tab" data-bs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="false">FAQs</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact Us</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="supportTabContent">
+            <!-- Support Tickets Tab -->
+            <div class="tab-pane fade show active" id="tickets" role="tabpanel" aria-labelledby="tickets-tab">
+                <h5>Your Support Tickets</h5>
+                <button class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create New Ticket</button>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Issue</th>
+                                <th>Date Submitted</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ticketTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FAQs Tab -->
+            <div class="tab-pane fade" id="faq" role="tabpanel" aria-labelledby="faq-tab">
+                <h5>Frequently Asked Questions</h5>
+                <div class="accordion" id="faqAccordion"></div>
+            </div>
+
+            <!-- Contact Us Tab -->
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <h5>Contact Us</h5>
+                <form id="contactForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="4" placeholder="Describe your issue..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Ticket Modal -->
+    <div class="modal fade" id="newTicketModal" tabindex="-1" aria-labelledby="newTicketModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--card-bg); color: var(--text);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(155, 93, 229, 0.2);">
+                    <h5 class="modal-title" id="newTicketModalLabel">Create New Support Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newTicketForm">
+                        <div class="mb-3">
+                            <label for="ticketIssue" class="form-label">Issue</label>
+                            <input type="text" class="form-control" id="ticketIssue" placeholder="e.g., Payment Failed" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ticketDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="ticketDescription" rows="3" placeholder="Describe your issue..." required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid rgba(155, 93, 229, 0.2);">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitTicket()">Submit Ticket</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Details Modal -->
+    <div class="modal fade" id="ticketDetailsModal" tabindex="-1" aria-labelledby="ticketDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--card-bg); color: var(--text);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(155, 93, 229, 0.2);">
+                    <h5 class="modal-title" id="ticketDetailsModalLabel">Ticket Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Ticket ID:</strong> <span id="detailTicketId"></span></p>
+                    <p><strong>Issue:</strong> <span id="detailIssue"></span></p>
+                    <p><strong>Date Submitted:</strong> <span id="detailDate"></span></p>
+                    <p><strong>Status:</strong> <span id="detailStatus"></span></p>
+                    <p><strong>Description:</strong> <span id="detailDescription"></span></p>
+                    <p><strong>Resolution (if any):</strong> <span id="detailResolution"></span></p>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid rgba(155, 93, 229, 0.2);">
+                    <button type="button" class="btn btn-secondary" id="resolveTicketBtn" onclick="resolveTicket()">Resolve Ticket</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="mb-0">© <span id="year"></span> Mobi-Comm. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+
+        // Dynamic FAQs
+        const faqs = [
+            { question: "How do I recharge my number?", answer: "Go to the 'Recharge Plans' section, select a plan, enter your number starting with 987, and complete the payment." },
+            { question: "What if my payment fails?", answer: "Check your payment method and try again. Create a support ticket if the issue persists." },
+            { question: "How can I track my ticket status?", answer: "Visit the 'Support Tickets' tab to view the status of your submitted tickets." }
+        ];
+
+        function loadFAQs() {
+            const accordion = document.getElementById('faqAccordion');
+            faqs.forEach((faq, index) => {
+                const item = document.createElement('div');
+                item.className = 'accordion-item';
+                item.innerHTML = `
+                    <h2 class="accordion-header" id="faq${index}">
+                        <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="${index === 0}" aria-controls="collapse${index}">
+                            ${faq.question}
+                        </button>
+                    </h2>
+                    <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="faq${index}" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">${faq.answer}</div>
+                    </div>
+                `;
+                accordion.appendChild(item);
+            });
+        }
+
+        // Ticket Management
+        let tickets = JSON.parse(localStorage.getItem('supportTickets')) || [
+            { id: "#00123", issue: "Payment Failed", date: "2025-04-08", status: "Open", description: "Payment failed during recharge attempt.", resolution: "" },
+            { id: "#00122", issue: "Recharge Not Applied", date: "2025-04-05", status: "Resolved", description: "Recharge successful but not reflected.", resolution: "Issue fixed on 2025-04-06." }
+        ];
+
+        function loadTickets() {
+            const tbody = document.getElementById('ticketTableBody');
+            tbody.innerHTML = '';
+            tickets.forEach(ticket => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td data-label="Ticket ID">${ticket.id}</td>
+                    <td data-label="Issue">${ticket.issue}</td>
+                    <td data-label="Date Submitted">${ticket.date}</td>
+                    <td data-label="Status" class="${ticket.status === 'Open' ? 'status-open' : 'status-resolved'}">${ticket.status}</td>
+                    <td data-label="Action"><button class="btn btn-primary btn-sm" onclick="viewTicket('${ticket.id}')">View</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function submitTicket() {
+            const issue = document.getElementById('ticketIssue').value;
+            const description = document.getElementById('ticketDescription').value;
+            if (issue && description) {
+                const ticketId = `#${Math.floor(10000 + Math.random() * 90000)}`;
+                const date = new Date().toISOString().split('T')[0];
+                const newTicket = { id: ticketId, issue, date, status: "Open", description, resolution: "" };
+                tickets.unshift(newTicket);
+                localStorage.setItem('supportTickets', JSON.stringify(tickets));
+                loadTickets();
+                bootstrap.Modal.getInstance(document.getElementById('newTicketModal')).hide();
+                document.getElementById('newTicketForm').reset();
+                alert(`Ticket ${ticketId} created successfully!`);
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function viewTicket(ticketId) {
+            const ticket = tickets.find(t => t.id === ticketId);
+            if (ticket) {
+                document.getElementById('detailTicketId').textContent = ticket.id;
+                document.getElementById('detailIssue').textContent = ticket.issue;
+                document.getElementById('detailDate').textContent = ticket.date;
+                document.getElementById('detailStatus').textContent = ticket.status;
+                document.getElementById('detailDescription').textContent = ticket.description;
+                document.getElementById('detailResolution').textContent = ticket.resolution || "Pending";
+                document.getElementById('resolveTicketBtn').style.display = ticket.status === 'Open' ? 'inline-block' : 'none';
+                document.getElementById('resolveTicketBtn').dataset.ticketId = ticketId;
+                new bootstrap.Modal(document.getElementById('ticketDetailsModal')).show();
+            }
+        }
+
+        function resolveTicket() {
+            const ticketId = document.getElementById('resolveTicketBtn').dataset.ticketId;
+            const ticket = tickets.find(t => t.id === ticketId);
+            if (ticket) {
+                ticket.status = "Resolved";
+                ticket.resolution = `Resolved on ${new Date().toISOString().split('T')[0]}`;
+                localStorage.setItem('supportTickets', JSON.stringify(tickets));
+                loadTickets();
+                bootstrap.Modal.getInstance(document.getElementById('ticketDetailsModal')).hide();
+                alert(`Ticket ${ticketId} marked as resolved!`);
+            }
+        }
+
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            if (name && email && message) {
+                const submissions = JSON.parse(localStorage.getItem('contactSubmissions')) || [];
+                submissions.push({ name, email, message, date: new Date().toISOString() });
+                localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+                alert('Thank you for your message! Our team will respond soon.');
+                this.reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            loadFAQs();
+            loadTickets();
+        });
+    </script>
+</body>
+
+</html>

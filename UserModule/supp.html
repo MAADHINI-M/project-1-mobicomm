@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Mobicomm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Unified Root Variables (Light Theme) */
+        :root {
+            --primary: #d06ab2; /* Soft pink/purple - Buttons, Accents */
+            --secondary: #6b2d6b; /* Deep purple - Titles, Icons */
+            --bg: #f5f6ff; /* Very light purple/blue - Body Background */
+            --text: #1a1a1a; /* Dark text - Primary Text */
+            --text-light: #4a4a4a; /* Gray text - Secondary Text */
+            --accent-success: #3871c2; /* Blue - Success Indicators */
+            --accent-urgent: #d95f0e; /* Orange - Urgent Highlights */
+            --highlight: #4a1a4a; /* Dark purple - Footer, Highlights */
+            --web: #4a1a4a; /* Brand purple - Gradients */
+            --web-dark: #2d0a2d; /* Darker purple - Navbar, Gradients */
+            --card-bg: #ffffff; /* White - Card Background */
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --primary: #f2db8e; /* Light yellow */
+            --secondary: #ab47bc; /* Brighter purple */
+            --bg: #12122e; /* Dark navy */
+            --text: #e8eaf6; /* Light text */
+            --text-light: #b0bec5; /* Light gray */
+            --card-bg: #1e1e3f; /* Dark card */
+            --highlight: #0d1a3a; /* Darker navy */
+            --web-dark: #2d0a2d; /* Retain navbar consistency */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Enhanced Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(0, 245, 212, 0.1) 0%, transparent 25%);
+            z-index: -1;
+            animation: pulseBackground 15s infinite alternate;
+        }
+
+        @keyframes pulseBackground {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--web-dark);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: white !important;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+            font-weight: bold;
+            background: rgba(155, 93, 229, 0.3);
+            padding: 5px 10px;
+            border-radius: 20px;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(155, 93, 229, 0.2);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid var(--secondary);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            background: var(--card-bg);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 0 20px rgba(155, 93, 229, 0.3);
+        }
+
+        /* Message Styles */
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .admin-message {
+            align-self: flex-start;
+            background-color: rgba(107, 45, 107, 0.1);
+            color: var(--text);
+            border-bottom-left-radius: 5px;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background-color: rgba(56, 113, 194, 0.1);
+            color: var(--text);
+            border-bottom-left-radius: 5px;
+            border-left: 3px solid var(--accent-success);
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            display: block;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        /* List Group */
+        .list-group-item {
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid rgba(155, 93, 229, 0.2);
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-group-item:hover {
+            background: var(--highlight);
+            color: white;
+        }
+
+        .list-group-item-action.active {
+            background: var(--highlight);
+            border-color: var(--secondary);
+            color: white;
+        }
+
+        .ticket-status {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .status-open {
+            background-color: var(--accent-urgent);
+            color: white;
+        }
+
+        .status-resolved {
+            background-color: var(--accent-success);
+            color: white;
+        }
+
+        .status-pending {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Form Controls */
+        .form-control {
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--secondary);
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(155, 93, 229, 0.3);
+        }
+
+        /* Headings */
+        h2,
+        h5 {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--highlight);
+            color: white;
+            padding: 3rem 0 1rem;
+            border-top: 3px solid var(--secondary);
+            margin-top: auto;
+            width: 100%;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--accent-success);
+        }
+
+        /* Input Group */
+        .input-group {
+            box-shadow: var(--box-shadow);
+        }
+
+        /* Strong Text */
+        strong {
+            color: var(--accent-success);
+            font-weight: bold;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-self: flex-start;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            background-color: rgba(107, 45, 107, 0.1);
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-light);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        /* AI Suggestions */
+        .ai-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .ai-suggestion {
+            background: rgba(56, 113, 194, 0.1);
+            border: 1px solid rgba(56, 113, 194, 0.3);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .ai-suggestion:hover {
+            background: rgba(56, 113, 194, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quick-action-btn {
+            background: rgba(208, 106, 178, 0.1);
+            border: 1px solid rgba(208, 106, 178, 0.3);
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(208, 106, 178, 0.2);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .chat-container {
+                height: 300px;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+            .message {
+                max-width: 85%;
+            }
+            .quick-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="user-dashboard.html">Mobicomm</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="login.html">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <h2 class="mb-4">Customer Support Center</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Support Tickets</h5>
+                <div class="list-group" id="ticketList">
+                    <!-- Tickets will be dynamically added here -->
+                </div>
+                <button class="btn btn-primary mt-3 w-100" id="newTicketBtn">
+                    <i class="fas fa-plus me-2"></i>New Ticket
+                </button>
+                
+                <!-- AI Assistant Section -->
+                <div class="card mt-4" style="background: var(--card-bg); border-color: var(--secondary);">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-robot me-2"></i>AI Assistant</h5>
+                        <p class="card-text">Get instant help with common issues using our AI assistant.</p>
+                        <div class="ai-suggestions">
+                            <div class="ai-suggestion" data-prompt="I can't make calls">Call Issues</div>
+                            <div class="ai-suggestion" data-prompt="My internet is slow">Slow Internet</div>
+                            <div class="ai-suggestion" data-prompt="Payment failed">Payment Problem</div>
+                            <div class="ai-suggestion" data-prompt="Account settings">Account Help</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="chat-container mb-3" id="chatWindow">
+                    <!-- Messages will be dynamically added here -->
+                    <div class="text-center text-muted my-auto" id="emptyChatMessage">
+                        <i class="fas fa-comments fa-3x mb-3"></i>
+                        <p>Select a ticket or create a new one to start chatting</p>
+                        <div class="quick-actions mt-3">
+                            <button class="quick-action-btn" id="quickBill"><i class="fas fa-file-invoice-dollar me-1"></i> Billing Question</button>
+                            <button class="quick-action-btn" id="quickTech"><i class="fas fa-wrench me-1"></i> Technical Issue</button>
+                            <button class="quick-action-btn" id="quickAccount"><i class="fas fa-user-cog me-1"></i> Account Help</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3" id="messageInputGroup" style="display: none;">
+                    <input type="text" class="form-control" id="messageInput" placeholder="Type your message">
+                    <button class="btn btn-primary" id="sendMessageBtn">Send</button>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2" id="chatControls" style="display: none;">
+                    <button class="btn btn-sm btn-outline-secondary" id="resolveTicketBtn">
+                        <i class="fas fa-check-circle me-1"></i>Mark as Resolved
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" id="transferToHumanBtn">
+                        <i class="fas fa-user-headset me-1"></i>Talk to Human
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Ticket Modal -->
+    <div class="modal fade" id="newTicketModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Support Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="ticketForm">
+                        <div class="mb-3">
+                            <label for="ticketSubject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="ticketSubject" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ticketCategory" class="form-label">Category</label>
+                            <select class="form-select" id="ticketCategory" required>
+                                <option value="">Select a category</option>
+                                <option value="Billing">Billing/Payment</option>
+                                <option value="Technical">Technical Issue</option>
+                                <option value="Account">Account Management</option>
+                                <option value="Service">Service Inquiry</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ticketDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="ticketDescription" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="createTicketBtn">Create Ticket</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer to Human Modal -->
+    <div class="modal fade" id="transferModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transfer to Human Agent</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Please describe your issue briefly to help us connect you with the right support agent:</p>
+                    <textarea class="form-control" id="transferReason" rows="3"></textarea>
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-info-circle me-2"></i>Current wait time: <strong>2-3 minutes</strong>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmTransferBtn">Request Transfer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-5">
+        <p class="text-center">© <span id="year"></span> Mobi-Comm. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+
+        // Chat Application Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const ticketList = document.getElementById('ticketList');
+            const chatWindow = document.getElementById('chatWindow');
+            const messageInput = document.getElementById('messageInput');
+            const sendMessageBtn = document.getElementById('sendMessageBtn');
+            const messageInputGroup = document.getElementById('messageInputGroup');
+            const emptyChatMessage = document.getElementById('emptyChatMessage');
+            const newTicketBtn = document.getElementById('newTicketBtn');
+            const newTicketModal = new bootstrap.Modal(document.getElementById('newTicketModal'));
+            const createTicketBtn = document.getElementById('createTicketBtn');
+            const resolveTicketBtn = document.getElementById('resolveTicketBtn');
+            const transferToHumanBtn = document.getElementById('transferToHumanBtn');
+            const transferModal = new bootstrap.Modal(document.getElementById('transferModal'));
+            const confirmTransferBtn = document.getElementById('confirmTransferBtn');
+            const quickBill = document.getElementById('quickBill');
+            const quickTech = document.getElementById('quickTech');
+            const quickAccount = document.getElementById('quickAccount');
+            const aiSuggestions = document.querySelectorAll('.ai-suggestion');
+
+            // Sample data for tickets and messages
+            let tickets = [
+                {
+                    id: 1,
+                    subject: "Payment Issue",
+                    category: "Billing",
+                    status: "open",
+                    messages: [
+                        { sender: "user", text: "Hi, my payment failed", time: "2023-06-15T10:30:00" },
+                        { sender: "ai", text: "I can help with payment issues. Could you please tell me which payment method you used?", time: "2023-06-15T10:31:00" }
+                    ],
+                    lastUpdated: "2023-06-15T10:31:00"
+                },
+                {
+                    id: 2,
+                    subject: "Recharge Fail",
+                    category: "Technical",
+                    status: "resolved",
+                    messages: [
+                        { sender: "user", text: "I can't recharge my account", time: "2023-06-14T15:45:00" },
+                        { sender: "ai", text: "I'll check the recharge system. Have you received any error message?", time: "2023-06-14T15:46:00" },
+                        { sender: "user", text: "It says 'transaction failed'", time: "2023-06-14T15:47:00" },
+                        { sender: "ai", text: "This is usually temporary. Please try again in 5 minutes. I've also refreshed your account.", time: "2023-06-14T15:48:00" },
+                        { sender: "user", text: "It worked now, thanks!", time: "2023-06-14T15:55:00" },
+                        { sender: "ai", text: "Great! I'll mark this as resolved. Let us know if you need anything else.", time: "2023-06-14T15:56:00" }
+                    ],
+                    lastUpdated: "2023-06-14T15:56:00"
+                },
+                {
+                    id: 3,
+                    subject: "Network Coverage",
+                    category: "Service",
+                    status: "pending",
+                    messages: [
+                        { sender: "user", text: "Is there coverage in my area?", time: "2023-06-16T09:15:00" },
+                        { sender: "ai", text: "I can check coverage for you. Please share your location or postal code.", time: "2023-06-16T09:16:00" },
+                        { sender: "user", text: "I'm at 123 Main St, Springfield", time: "2023-06-16T09:17:00" },
+                        { sender: "ai", text: "Checking our coverage map...", time: "2023-06-16T09:18:00" },
+                        { sender: "ai", text: "Our system shows good coverage in your area. Would you like me to transfer you to a human agent for more details?", time: "2023-06-16T09:20:00" }
+                    ],
+                    lastUpdated: "2023-06-16T09:20:00"
+                }
+            ];
+
+            // AI responses database
+            const aiResponses = {
+                "greeting": [
+                    "Hello! How can I assist you today?",
+                    "Hi there! What can I help you with?",
+                    "Welcome to Mobicomm support. How may I help you?"
+                ],
+                "billing": [
+                    "I can help with billing questions. Could you tell me more about your issue?",
+                    "For billing inquiries, please provide your account number or the transaction ID.",
+                    "I'll check your billing information. One moment please."
+                ],
+                "technical": [
+                    "Let me help with the technical issue. What exactly is happening?",
+                    "For technical problems, please describe the issue in detail.",
+                    "I'll run some diagnostics. Could you tell me when the problem started?"
+                ],
+                "account": [
+                    "I can assist with account management. What do you need help with?",
+                    "For account issues, please verify your identity first.",
+                    "Let me access your account details. One moment please."
+                ],
+                "fallback": [
+                    "I'm not sure I understand. Could you rephrase that?",
+                    "Let me connect you with a human agent who can help better.",
+                    "I might need more information to help with this."
+                ],
+                "resolution": [
+                    "Does this resolve your issue?",
+                    "Is there anything else I can help with?",
+                    "Would you like me to mark this as resolved?"
+                ]
+            };
+
+            let activeTicketId = null;
+            let isAIThinking = false;
+            let waitingForHuman = false;
+
+            // Initialize the app
+            function init() {
+                renderTicketList();
+                setupEventListeners();
+                
+                // Show welcome message if no tickets exist
+                if (tickets.length === 0) {
+                    showWelcomeMessage();
+                }
+            }
+
+            // Set up event listeners
+            function setupEventListeners() {
+                // Send message on button click or Enter key
+                sendMessageBtn.addEventListener('click', sendMessage);
+                messageInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+
+                // New ticket button
+                newTicketBtn.addEventListener('click', function() {
+                    newTicketModal.show();
+                });
+
+                // Create ticket button
+                createTicketBtn.addEventListener('click', createNewTicket);
+
+                // Ticket resolution
+                resolveTicketBtn.addEventListener('click', resolveActiveTicket);
+
+                // Transfer to human
+                transferToHumanBtn.addEventListener('click', function() {
+                    transferModal.show();
+                });
+
+                confirmTransferBtn.addEventListener('click', transferToHuman);
+
+                // Quick action buttons
+                quickBill.addEventListener('click', () => startQuickTicket('Billing', 'Billing Question'));
+                quickTech.addEventListener('click', () => startQuickTicket('Technical', 'Technical Support'));
+                quickAccount.addEventListener('click', () => startQuickTicket('Account', 'Account Help'));
+
+                // AI suggestion buttons
+                aiSuggestions.forEach(suggestion => {
+                    suggestion.addEventListener('click', function() {
+                        const prompt = this.getAttribute('data-prompt');
+                        if (activeTicketId) {
+                            // Add to existing ticket
+                            addUserMessage(prompt);
+                            generateAIResponse(prompt);
+                        } else {
+                            // Create new ticket
+                            startQuickTicket('Other', prompt, prompt);
+                        }
+                    });
+                });
+            }
+
+            // Show welcome message in chat window
+            function showWelcomeMessage() {
+                chatWindow.innerHTML = '';
+                emptyChatMessage.style.display = 'none';
+                
+                const welcomeMessage = document.createElement('div');
+                welcomeMessage.className = 'message ai-message';
+                welcomeMessage.innerHTML = `
+                    <strong>Mobicomm AI Assistant</strong><br>
+                    Hello! I'm your Mobicomm virtual assistant. How can I help you today?<br><br>
+                    You can:
+                    <ul>
+                        <li>Ask me about billing, services, or technical issues</li>
+                        <li>Create a support ticket for complex issues</li>
+                        <li>Get quick answers to common questions</li>
+                    </ul>
+                    <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                `;
+                
+                chatWindow.appendChild(welcomeMessage);
+                messageInputGroup.style.display = 'flex';
+            }
+
+            // Render the list of tickets
+            function renderTicketList() {
+                ticketList.innerHTML = '';
+                
+                // Sort tickets by last updated (newest first)
+                tickets.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+                
+                tickets.forEach(ticket => {
+                    const ticketItem = document.createElement('a');
+                    ticketItem.className = `list-group-item list-group-item-action ${activeTicketId === ticket.id ? 'active' : ''}`;
+                    ticketItem.innerHTML = `
+                        <div>
+                            <strong>${ticket.subject}</strong>
+                            <small class="d-block text-muted">${ticket.category}</small>
+                        </div>
+                        <span class="ticket-status ${getStatusClass(ticket.status)}">
+                            ${ticket.status}
+                        </span>
+                    `;
+                    
+                    ticketItem.addEventListener('click', () => {
+                        activeTicketId = ticket.id;
+                        renderTicketList();
+                        renderChatMessages(ticket.id);
+                        messageInputGroup.style.display = 'flex';
+                        emptyChatMessage.style.display = 'none';
+                        document.getElementById('chatControls').style.display = ticket.status === 'open' ? 'flex' : 'none';
+                    });
+                    
+                    ticketList.appendChild(ticketItem);
+                });
+            }
+
+            // Get CSS class for ticket status
+            function getStatusClass(status) {
+                switch(status) {
+                    case 'open': return 'status-open';
+                    case 'resolved': return 'status-resolved';
+                    case 'pending': return 'status-pending';
+                    default: return '';
+                }
+            }
+
+            // Render chat messages for a specific ticket
+            function renderChatMessages(ticketId) {
+                chatWindow.innerHTML = '';
+                const ticket = tickets.find(t => t.id === ticketId);
+                
+                if (ticket && ticket.messages.length > 0) {
+                    ticket.messages.forEach(msg => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = `message ${getMessageClass(msg.sender)}`;
+                        
+                        const time = new Date(msg.time);
+                        const formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        
+                        messageDiv.innerHTML = `
+                            ${msg.sender === 'ai' ? '<strong>AI Assistant</strong><br>' : ''}
+                            ${msg.text}
+                            <span class="message-time">${formattedTime}</span>
+                        `;
+                        
+                        chatWindow.appendChild(messageDiv);
+                    });
+                    
+                    // Scroll to bottom
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                }
+            }
+
+            // Get CSS class for message based on sender
+            function getMessageClass(sender) {
+                switch(sender) {
+                    case 'user': return 'user-message';
+                    case 'admin': return 'admin-message';
+                    case 'ai': return 'ai-message';
+                    default: return 'admin-message';
+                }
+            }
+
+            // Add a user message to the active ticket
+            function addUserMessage(text) {
+                if (!activeTicketId) return;
+                
+                const ticketIndex = tickets.findIndex(t => t.id === activeTicketId);
+                if (ticketIndex === -1) return;
+                
+                const newMessage = {
+                    sender: "user",
+                    text: text,
+                    time: new Date().toISOString()
+                };
+                
+                tickets[ticketIndex].messages.push(newMessage);
+                tickets[ticketIndex].lastUpdated = new Date().toISOString();
+                
+                renderChatMessages(activeTicketId);
+                renderTicketList();
+            }
+
+            // Send a new message
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (!messageText || !activeTicketId) return;
+                
+                // Add user message
+                addUserMessage(messageText);
+                
+                // Clear input
+                messageInput.value = '';
+                
+                // Generate AI response
+                generateAIResponse(messageText);
+            }
+
+            // Generate an AI response based on user input
+            function generateAIResponse(userInput) {
+                if (isAIThinking || !activeTicketId) return;
+                
+                isAIThinking = true;
+                const ticketIndex = tickets.findIndex(t => t.id === activeTicketId);
+                if (ticketIndex === -1) return;
+                
+                // Show typing indicator
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'typing-indicator';
+                typingIndicator.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                `;
+                chatWindow.appendChild(typingIndicator);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+                
+                // Determine response type based on input
+                let responseType = 'fallback';
+                const input = userInput.toLowerCase();
+                
+                if (input.includes('hello') || input.includes('hi')) {
+                    responseType = 'greeting';
+                } else if (input.includes('bill') || input.includes('payment') || input.includes('invoice')) {
+                    responseType = 'billing';
+                } else if (input.includes('tech') || input.includes('network') || input.includes('signal') || input.includes('connect')) {
+                    responseType = 'technical';
+                } else if (input.includes('account') || input.includes('login') || input.includes('password')) {
+                    responseType = 'account';
+                }
+                
+                // Get random response from the appropriate category
+                const responses = aiResponses[responseType] || aiResponses['fallback'];
+                const responseText = responses[Math.floor(Math.random() * responses.length)];
+                
+                // Simulate thinking delay
+                setTimeout(() => {
+                    // Remove typing indicator
+                    if (typingIndicator.parentNode) {
+                        chatWindow.removeChild(typingIndicator);
+                    }
+                    
+                    // Add AI response
+                    const newMessage = {
+                        sender: "ai",
+                        text: responseText,
+                        time: new Date().toISOString()
+                    };
+                    
+                    tickets[ticketIndex].messages.push(newMessage);
+                    tickets[ticketIndex].lastUpdated = new Date().toISOString();
+                    
+                    renderChatMessages(activeTicketId);
+                    renderTicketList();
+                    
+                    isAIThinking = false;
+                    
+                    // For certain responses, follow up with resolution question
+                    if (responseType !== 'fallback' && Math.random() > 0.5) {
+                        setTimeout(() => {
+                            generateAIResponse("resolution");
+                        }, 1500);
+                    }
+                }, 1500 + Math.random() * 2000); // Random delay between 1.5-3.5 seconds
+            }
+
+            // Create a new ticket
+            function createNewTicket() {
+                const subject = document.getElementById('ticketSubject').value.trim();
+                const category = document.getElementById('ticketCategory').value;
+                const description = document.getElementById('ticketDescription').value.trim();
+                
+                if (!subject || !category || !description) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Create new ticket
+                const newId = tickets.length > 0 ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
+                const newTicket = {
+                    id: newId,
+                    subject: subject,
+                    category: category,
+                    status: "open",
+                    messages: [
+                        { 
+                            sender: "user", 
+                            text: description, 
+                            time: new Date().toISOString() 
+                        }
+                    ],
+                    lastUpdated: new Date().toISOString()
+                };
+                
+                tickets.push(newTicket);
+                newTicketModal.hide();
+                
+                // Reset form
+                document.getElementById('ticketForm').reset();
+                
+                // Set as active and render
+                activeTicketId = newId;
+                renderTicketList();
+                renderChatMessages(activeTicketId);
+                messageInputGroup.style.display = 'flex';
+                emptyChatMessage.style.display = 'none';
+                document.getElementById('chatControls').style.display = 'flex';
+                
+                // Generate AI response
+                setTimeout(() => {
+                    generateAIResponse(description);
+                }, 1000);
+            }
+
+            // Start a quick ticket with predefined category and subject
+            function startQuickTicket(category, subject, initialMessage = null) {
+                // Create new ticket
+                const newId = tickets.length > 0 ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
+                const newTicket = {
+                    id: newId,
+                    subject: subject,
+                    category: category,
+                    status: "open",
+                    messages: [],
+                    lastUpdated: new Date().toISOString()
+                };
+                
+                if (initialMessage) {
+                    newTicket.messages.push({
+                        sender: "user",
+                        text: initialMessage,
+                        time: new Date().toISOString()
+                    });
+                }
+                
+                tickets.push(newTicket);
+                
+                // Set as active and render
+                activeTicketId = newId;
+                renderTicketList();
+                renderChatMessages(activeTicketId);
+                messageInputGroup.style.display = 'flex';
+                emptyChatMessage.style.display = 'none';
+                document.getElementById('chatControls').style.display = 'flex';
+                
+                // Generate AI response if there was an initial message
+                if (initialMessage) {
+                    setTimeout(() => {
+                        generateAIResponse(initialMessage);
+                    }, 1000);
+                } else {
+                    // Show welcome message for this ticket
+                    const welcomeMessage = document.createElement('div');
+                    welcomeMessage.className = 'message ai-message';
+                    welcomeMessage.innerHTML = `
+                        <strong>Mobicomm AI Assistant</strong><br>
+                        I see you need help with ${category.toLowerCase()} issues. Please describe your problem and I'll do my best to help.<br>
+                        <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    `;
+                    chatWindow.appendChild(welcomeMessage);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                }
+            }
+
+            // Mark active ticket as resolved
+            function resolveActiveTicket() {
+                if (!activeTicketId) return;
+                
+                const ticketIndex = tickets.findIndex(t => t.id === activeTicketId);
+                if (ticketIndex === -1) return;
+                
+                tickets[ticketIndex].status = "resolved";
+                tickets[ticketIndex].lastUpdated = new Date().toISOString();
+                
+                // Add resolution message
+                tickets[ticketIndex].messages.push({
+                    sender: "ai",
+                    text: "This ticket has been marked as resolved. Please create a new ticket if you need further assistance.",
+                    time: new Date().toISOString()
+                });
+                
+                renderChatMessages(activeTicketId);
+                renderTicketList();
+                document.getElementById('chatControls').style.display = 'none';
+            }
+
+            // Transfer ticket to human support
+            function transferToHuman() {
+                if (!activeTicketId || waitingForHuman) return;
+                
+                const ticketIndex = tickets.findIndex(t => t.id === activeTicketId);
+                if (ticketIndex === -1) return;
+                
+                const reason = document.getElementById('transferReason').value.trim() || 
+                              "Customer requested human support";
+                
+                // Update ticket status
+                tickets[ticketIndex].status = "pending";
+                tickets[ticketIndex].lastUpdated = new Date().toISOString();
+                
+                // Add transfer messages
+                tickets[ticketIndex].messages.push({
+                    sender: "ai",
+                    text: "I'm transferring you to a human support agent. Please wait...",
+                    time: new Date().toISOString()
+                });
+                
+                tickets[ticketIndex].messages.push({
+                    sender: "admin",
+                    text: `Support agent note: ${reason}`,
+                    time: new Date().toISOString()
+                });
+                
+                // Close modal
+                transferModal.hide();
+                document.getElementById('transferReason').value = '';
+                
+                // Render changes
+                renderChatMessages(activeTicketId);
+                renderTicketList();
+                
+                // Simulate human response after delay
+                waitingForHuman = true;
+                setTimeout(() => {
+                    tickets[ticketIndex].messages.push({
+                        sender: "admin",
+                        text: "Hello, this is Sarah from customer support. How can I help you?",
+                        time: new Date().toISOString()
+                    });
+                    
+                    tickets[ticketIndex].lastUpdated = new Date().toISOString();
+                    renderChatMessages(activeTicketId);
+                    waitingForHuman = false;
+                }, 3000);
+            }
+
+            // Initialize the application
+            init();
+        });
+    </script>
+</body>
+
+</html>
