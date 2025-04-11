@@ -5,10 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mobi-Comm | Recharge Plans</title>
     <meta name="description" content="Explore and recharge with the best mobile plans at Mobi-Comm">
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <!-- External CSS Libraries -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <!-- Preload critical CSS -->
+    <style>
+        /* Critical CSS for initial render */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f6ff;
+            color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: #2d0a2d;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .main-content {
+            flex: 1;
+            padding: 100px 30px 80px;
+        }
+        .plan-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            height: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .plan-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    <!-- Deferred non-critical CSS -->
+    <link rel="stylesheet" href="data:text/css;base64,LnBsYW4tY2FyZDpob3ZlciB7dHJhbnNmb3JtOiB0cmFuc2xhdGVZKC04cHgpO2JveC1zaGFkb3c6IDAgMTVweCAzNXB4IHJnYmEoMCwgMCwgMCwgMC4yKSwgMCAwIDIwcHggcmdiYSgxNTUsIDkzLCAyMjksIDAuMyk7fQ==" media="print" onload="this.media='all'">
+    <!-- Favicon -->
+    <link rel="icon" href="/images/Logo.png" type="image/png">
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.mobi-comm.com/recharge-plans">
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/images/Logo.png">
+    <!-- Theme Color for Mobile Browsers -->
+    <meta name="theme-color" content="#4a1a4a">
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Mobi-Comm | Recharge Plans">
+    <meta property="og:description" content="Explore and recharge with the best mobile plans at Mobi-Comm">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.mobi-comm.com/recharge-plans">
+    <meta property="og:image" content="/images/Logo.png">
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mobi-Comm | Recharge Plans">
+    <meta name="twitter:description" content="Explore and recharge with the best mobile plans at Mobi-Comm">
+    <meta name="twitter:image" content="/images/Logo.png">
     <!-- Custom Styles -->
     <style>
         /* Root Variables - Matching Login/OTP Theme */
@@ -20,7 +82,7 @@
             --text-light: #4a4a4a; /* Gray text */
             --accent-success: #3871c2; /* Blue */
             --accent-urgent: #d95f0e; /* Orange */
-            --highlight: #4a1a4a; /* Dark purple */
+            --highlight: #4a1a4a; /* Brand purple */
             --web: #4a1a4a; /* Brand purple */
             --web-dark: #2d0a2d; /* Darker purple */
             --card-bg: #ffffff; /* White cards */
@@ -90,6 +152,8 @@
         .navbar-brand img {
             height: 40px;
             margin-right: 15px;
+            width: auto;
+            aspect-ratio: 1/1;
         }
 
         .nav-link {
@@ -156,6 +220,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
+            will-change: transform, box-shadow;
         }
 
         .plan-card.visible {
@@ -229,6 +294,7 @@
             width: 100%;
             transition: var(--transition);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
 
         .btn-recharge:hover {
@@ -246,10 +312,12 @@
         .autopay-toggle input[type="checkbox"] {
             margin-right: 10px;
             transform: scale(1.5);
+            cursor: pointer;
         }
         .autopay-toggle label {
             color: var(--text-light);
             font-size: 0.9rem;
+            cursor: pointer;
         }
 
         /* Section Titles */
@@ -383,6 +451,33 @@
             margin-top: 50px;
         }
 
+        /* Loading Animation */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .main-content {
@@ -414,9 +509,37 @@
                 font-size: 0.9rem;
             }
         }
+
+        /* Print Styles */
+        @media print {
+            .navbar, .theme-toggle, footer {
+                display: none;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .plan-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+                opacity: 1;
+                transform: none;
+            }
+            
+            .btn-recharge {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
     <!-- Theme Toggle Button -->
     <button class="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
 
@@ -424,9 +547,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="/images/Logo.png" alt="Mobi-Comm Logo"> Mobi-Comm
+                <img src="/images/Logo.png" alt="Mobi-Comm Logo" loading="lazy"> Mobi-Comm
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -446,16 +569,16 @@
                 </ul>
                 <div class="d-flex align-items-center">
                     <div class="input-group search-box me-3">
-                        <input type="text" class="form-control" placeholder="Search plans...">
-                        <button class="btn btn-outline-light" type="button">
+                        <input type="text" class="form-control" placeholder="Search plans..." aria-label="Search plans">
+                        <button class="btn btn-outline-light" type="button" aria-label="Search">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
                     <div class="dropdown">
-                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user-circle me-1"></i> My Account
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -474,7 +597,7 @@
             <div class="row">
                 <div class="col-md-6 mb-3 mb-md-0">
                     <label for="mobileNumber" class="form-label">Mobile Number</label>
-                    <input type="tel" class="form-control" id="mobileNumber" value="9876543210">
+                    <input type="tel" class="form-control" id="mobileNumber" value="9876543210" aria-describedby="mobileValidation">
                     <div class="validation-message" id="mobileValidation">Only MobiComm numbers (starting with 987) are allowed.</div>
                     <div class="autopay-toggle mt-2">
                         <input type="checkbox" id="autopay" name="autopay">
@@ -483,7 +606,7 @@
                 </div>
                 <div class="col-md-6 mb-3 mb-md-0">
                     <label for="dataRange" class="form-label">Data Range (GB)</label>
-                    <select class="form-select" id="dataRange">
+                    <select class="form-select" id="dataRange" aria-label="Select data range">
                         <option value="">All</option>
                         <option value="0-2">0-2 GB/Day</option>
                         <option value="2-3">2-3 GB/Day</option>
@@ -492,7 +615,7 @@
                 </div>
                 <div class="col-md-6 mb-3 mb-md-0">
                     <label for="validity" class="form-label">Validity (Days)</label>
-                    <select class="form-select" id="validity">
+                    <select class="form-select" id="validity" aria-label="Select validity">
                         <option value="">All</option>
                         <option value="0-30">0-30 Days</option>
                         <option value="30-90">30-90 Days</option>
@@ -501,7 +624,7 @@
                 </div>
                 <div class="col-md-6 mb-3 mb-md-0">
                     <label for="priceRange" class="form-label">Price Range (₹)</label>
-                    <select class="form-select" id="priceRange">
+                    <select class="form-select" id="priceRange" aria-label="Select price range">
                         <option value="">All</option>
                         <option value="0-300">0-300</option>
                         <option value="300-700">300-700</option>
@@ -517,7 +640,7 @@
 
         <!-- Plan Type Tabs -->
         <div class="plan-type-tabs">
-            <button class="plan-type-tab active" data-type="prepaid">Prepaid</button>
+            <button class="plan-type-tab active" data-type="prepaid" aria-current="page">Prepaid</button>
             <button class="plan-type-tab" data-type="postpaid">Postpaid</button>
         </div>
 
@@ -533,13 +656,13 @@
                         <div class="plan-header">Standard Plan</div>
                         <div class="price-tag">₹299/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 2GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-sms"></i> 100 SMS/Day</li>
-                            <li><i class="fas fa-calendar-alt"></i> 56 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 2GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms" aria-hidden="true"></i> 100 SMS/Day</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 56 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Recharge Standard Plan for ₹299">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Recharge Now
                         </button>
                     </div>
                 </div>
@@ -551,13 +674,13 @@
                         <div class="plan-header">Family Plan</div>
                         <div class="price-tag">₹799/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 150GB Shared Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls (4 connections)</li>
-                            <li><i class="fas fa-sms"></i> 100 SMS/Day per connection</li>
-                            <li><i class="fas fa-tv"></i> 2 OTT Subscriptions</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 150GB Shared Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls (4 connections)</li>
+                            <li><i class="fas fa-sms" aria-hidden="true"></i> 100 SMS/Day per connection</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> 2 OTT Subscriptions</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Subscribe Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Subscribe Family Plan for ₹799">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Subscribe Now
                         </button>
                     </div>
                 </div>
@@ -569,13 +692,13 @@
                         <div class="plan-header">Super Plan</div>
                         <div class="price-tag">₹999/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 5GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-tv"></i> 2 OTT Subscriptions</li>
-                            <li><i class="fas fa-calendar-alt"></i> 180 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 5GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> 2 OTT Subscriptions</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 180 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Recharge Super Plan for ₹999">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Recharge Now
                         </button>
                     </div>
                 </div>
@@ -593,13 +716,13 @@
                         <div class="plan-header">Basic Plan</div>
                         <div class="price-tag">₹199/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 1.5GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-sms"></i> 100 SMS/Day</li>
-                            <li><i class="fas fa-calendar-alt"></i> 28 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 1.5GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms" aria-hidden="true"></i> 100 SMS/Day</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 28 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Recharge Basic Plan for ₹199">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Recharge Now
                         </button>
                     </div>
                 </div>
@@ -610,13 +733,13 @@
                         <div class="plan-header">Mid-Tier Plan</div>
                         <div class="price-tag">₹399/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 2.5GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-sms"></i> 150 SMS/Day</li>
-                            <li><i class="fas fa-calendar-alt"></i> 70 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 2.5GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms" aria-hidden="true"></i> 150 SMS/Day</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 70 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Recharge Mid-Tier Plan for ₹399">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Recharge Now
                         </button>
                     </div>
                 </div>
@@ -627,13 +750,13 @@
                         <div class="plan-header">Yearly Pack</div>
                         <div class="price-tag" style="background: var(--accent-urgent);">₹1499</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 1.5GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-tv"></i> Free OTT for 6 Months</li>
-                            <li><i class="fas fa-calendar-alt"></i> 365 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 1.5GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> Free OTT for 6 Months</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 365 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Grab Yearly Pack for ₹1499">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Grab Offer
                         </button>
                     </div>
                 </div>
@@ -651,14 +774,14 @@
                         <div class="plan-header">Premium Plan</div>
                         <div class="price-tag">₹499/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 3GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-sms"></i> 100 SMS/Day</li>
-                            <li><i class="fas fa-tv"></i> Free OTT Subscription</li>
-                            <li><i class="fas fa-calendar-alt"></i> 84 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 3GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms" aria-hidden="true"></i> 100 SMS/Day</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> Free OTT Subscription</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 84 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Recharge Premium Plan for ₹499">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Recharge Now
                         </button>
                     </div>
                 </div>
@@ -669,13 +792,13 @@
                         <div class="plan-header">Advanced Plan</div>
                         <div class="price-tag">₹699/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 4GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-tv"></i> Free OTT Subscription</li>
-                            <li><i class="fas fa-calendar-alt"></i> 120 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 4GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> Free OTT Subscription</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 120 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Recharge Advanced Plan for ₹699">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Recharge Now
                         </button>
                     </div>
                 </div>
@@ -686,13 +809,13 @@
                         <div class="plan-header">Standard Plan</div>
                         <div class="price-tag">₹599/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 100GB Data (Monthly)</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-sms"></i> 150 SMS/Day</li>
-                            <li><i class="fas fa-tv"></i> Free OTT Subscription</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 100GB Data (Monthly)</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms" aria-hidden="true"></i> 150 SMS/Day</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> Free OTT Subscription</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Subscribe Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Subscribe Standard Plan for ₹599">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Subscribe Now
                         </button>
                     </div>
                 </div>
@@ -710,14 +833,14 @@
                         <div class="plan-header">Premium Plan</div>
                         <div class="price-tag">₹1299/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> Unlimited Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-sms"></i> Unlimited SMS</li>
-                            <li><i class="fas fa-tv"></i> 3 OTT Subscriptions</li>
-                            <li><i class="fas fa-globe"></i> International Roaming Benefits</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> Unlimited Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms" aria-hidden="true"></i> Unlimited SMS</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> 3 OTT Subscriptions</li>
+                            <li><i class="fas fa-globe" aria-hidden="true"></i> International Roaming Benefits</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Subscribe Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Subscribe Premium Plan for ₹1299">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Subscribe Now
                         </button>
                     </div>
                 </div>
@@ -729,13 +852,13 @@
                         <div class="plan-header">Elite Plan</div>
                         <div class="price-tag">₹1499/month</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> Unlimited Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-tv"></i> 4 OTT Subscriptions</li>
-                            <li><i class="fas fa-globe"></i> Global Roaming</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> Unlimited Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> 4 OTT Subscriptions</li>
+                            <li><i class="fas fa-globe" aria-hidden="true"></i> Global Roaming</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Subscribe Now
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Subscribe Elite Plan for ₹1499">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Subscribe Now
                         </button>
                     </div>
                 </div>
@@ -753,13 +876,13 @@
                         <div class="plan-header">Festive Offer</div>
                         <div class="price-tag" style="background: var(--accent-urgent);">₹399</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 2.5GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-gift"></i> Extra 10GB Data</li>
-                            <li><i class="fas fa-calendar-alt"></i> 56 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 2.5GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-gift" aria-hidden="true"></i> Extra 10GB Data</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 56 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Grab Festive Offer for ₹399">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Grab Offer
                         </button>
                     </div>
                 </div>
@@ -771,13 +894,13 @@
                         <div class="plan-header">Yearly Pack</div>
                         <div class="price-tag" style="background: var(--accent-urgent);">₹1499</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 1.5GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-tv"></i> Free OTT for 6 Months</li>
-                            <li><i class="fas fa-calendar-alt"></i> 365 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 1.5GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> Free OTT for 6 Months</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 365 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Grab Yearly Pack for ₹1499">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Grab Offer
                         </button>
                     </div>
                 </div>
@@ -789,13 +912,13 @@
                         <div class="plan-header">Family Special</div>
                         <div class="price-tag" style="background: var(--accent-urgent);">₹999</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 200GB Shared Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls (4 connections)</li>
-                            <li><i class="fas fa-gift"></i> Extra 50GB Data</li>
-                            <li><i class="fas fa-tv"></i> 3 OTT Subscriptions</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 200GB Shared Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls (4 connections)</li>
+                            <li><i class="fas fa-gift" aria-hidden="true"></i> Extra 50GB Data</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> 3 OTT Subscriptions</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Grab Family Special for ₹999">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Grab Offer
                         </button>
                     </div>
                 </div>
@@ -806,13 +929,13 @@
                         <div class="plan-header">Summer Deal</div>
                         <div class="price-tag" style="background: var(--accent-urgent);">₹599</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 3GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-gift"></i> Free 5GB Bonus</li>
-                            <li><i class="fas fa-calendar-alt"></i> 90 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 3GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-gift" aria-hidden="true"></i> Free 5GB Bonus</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 90 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Grab Summer Deal for ₹599">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Grab Offer
                         </button>
                     </div>
                 </div>
@@ -823,13 +946,13 @@
                         <div class="plan-header">Monsoon Offer</div>
                         <div class="price-tag" style="background: var(--accent-urgent);">₹799</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 2GB/Day Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
-                            <li><i class="fas fa-tv"></i> Free OTT Subscription</li>
-                            <li><i class="fas fa-calendar-alt"></i> 120 Days Validity</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 2GB/Day Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> Free OTT Subscription</li>
+                            <li><i class="fas fa-calendar-alt" aria-hidden="true"></i> 120 Days Validity</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Grab Monsoon Offer for ₹799">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Grab Offer
                         </button>
                     </div>
                 </div>
@@ -839,13 +962,13 @@
                         <div class="plan-header">Holiday Bundle</div>
                         <div class="price-tag" style="background: var(--accent-urgent);">₹1299</div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-wifi"></i> 250GB Shared Data</li>
-                            <li><i class="fas fa-phone"></i> Unlimited Calls (5 connections)</li>
-                            <li><i class="fas fa-tv"></i> 4 OTT Subscriptions</li>
-                            <li><i class="fas fa-gift"></i> Extra 20GB Data</li>
+                            <li><i class="fas fa-wifi" aria-hidden="true"></i> 250GB Shared Data</li>
+                            <li><i class="fas fa-phone" aria-hidden="true"></i> Unlimited Calls (5 connections)</li>
+                            <li><i class="fas fa-tv" aria-hidden="true"></i> 4 OTT Subscriptions</li>
+                            <li><i class="fas fa-gift" aria-hidden="true"></i> Extra 20GB Data</li>
                         </ul>
-                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal" aria-label="Grab Holiday Bundle for ₹1299">
+                            <i class="fas fa-bolt me-2" aria-hidden="true"></i> Grab Offer
                         </button>
                     </div>
                 </div>
@@ -853,7 +976,7 @@
         </div>
 
         <!-- Payment Modal -->
-        <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="background: var(--card-bg); color: var(--text);">
                     <div class="modal-header" style="border-bottom: 1px solid rgba(155, 93, 229, 0.2);">
@@ -871,24 +994,24 @@
                             <label class="form-label">Select Payment Method</label>
                             <div class="d-grid gap-2">
                                 <button class="btn btn-outline-primary text-start">
-                                    <i class="fas fa-credit-card me-2"></i> Credit/Debit Card
+                                    <i class="fas fa-credit-card me-2" aria-hidden="true"></i> Credit/Debit Card
                                 </button>
                                 <button class="btn btn-outline-primary text-start">
-                                    <i class="fas fa-wallet me-2"></i> UPI Payment
+                                    <i class="fas fa-wallet me-2" aria-hidden="true"></i> UPI Payment
                                 </button>
                                 <button class="btn btn-outline-primary text-start">
-                                    <i class="fas fa-mobile-alt me-2"></i> Wallet
+                                    <i class="fas fa-mobile-alt me-2" aria-hidden="true"></i> Wallet
                                 </button>
                             </div>
                         </div>
                         <div class="payment-notification" id="paymentNotification">
-                            <i class="fas fa-check-circle me-2"></i> Payment confirmation has been sent to your registered email ID: customer@example.com
+                            <i class="fas fa-check-circle me-2" aria-hidden="true"></i> Payment confirmation has been sent to your registered email ID: customer@example.com
                         </div>
                     </div>
                     <div class="modal-footer" style="border-top: 1px solid rgba(155, 93, 229, 0.2);">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-recharge" onclick="processPayment()">
-                            <i class="fas fa-check-circle me-2"></i> Confirm Payment
+                            <i class="fas fa-check-circle me-2" aria-hidden="true"></i> Confirm Payment
                         </button>
                     </div>
                 </div>
@@ -903,8 +1026,8 @@
         </footer>
 
         <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js" crossorigin="anonymous"></script>
         <script>
             // Set current year
             document.getElementById('year').textContent = new Date().getFullYear();
@@ -916,11 +1039,19 @@
                 if (currentTheme === 'dark') {
                     document.body.removeAttribute('data-theme');
                     themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('theme', 'light');
                 } else {
                     document.body.setAttribute('data-theme', 'dark');
                     themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', 'dark');
                 }
             });
+
+            // Check for saved theme preference
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
 
             // Plan type tabs functionality
             const planTabs = document.querySelectorAll('.plan-type-tab');
@@ -948,105 +1079,114 @@
 
             // Payment processing with autopay and recharge validation
             function processPayment() {
-                const mobileNumber = document.getElementById('selectedMobileNumber').textContent;
-                const planName = document.getElementById('selectedPlanName').textContent;
-                const planType = document.getElementById('selectedPlanType').textContent;
-                const autopayEnabled = document.getElementById('autopay').checked;
-                const priceMatch = planName.match(/₹(\d+)/);
-                const price = priceMatch ? parseInt(priceMatch[1]) * 100 : 29900; // Default to ₹299 if parsing fails
-                const validityMatch = planName.match(/(\d+)\s*Days/);
-                const validityDays = validityMatch ? parseInt(validityMatch[1]) : 30; // Default to 30 days if not found
-                const expiryDate = new Date();
-                expiryDate.setDate(expiryDate.getDate() + validityDays);
-                document.getElementById('planExpiry').textContent = expiryDate.toLocaleDateString();
+                const loadingSpinner = document.getElementById('loadingSpinner');
+                loadingSpinner.style.display = 'flex';
+                
+                setTimeout(() => {
+                    const mobileNumber = document.getElementById('selectedMobileNumber').textContent;
+                    const planName = document.getElementById('selectedPlanName').textContent;
+                    const planType = document.getElementById('selectedPlanType').textContent;
+                    const autopayEnabled = document.getElementById('autopay').checked;
+                    const priceMatch = planName.match(/₹(\d+)/);
+                    const price = priceMatch ? parseInt(priceMatch[1]) * 100 : 29900; // Default to ₹299 if parsing fails
+                    const validityMatch = planName.match(/(\d+)\s*Days/);
+                    const validityDays = validityMatch ? parseInt(validityMatch[1]) : 30; // Default to 30 days if not found
+                    const expiryDate = new Date();
+                    expiryDate.setDate(expiryDate.getDate() + validityDays);
+                    document.getElementById('planExpiry').textContent = expiryDate.toLocaleDateString();
 
-                // Validate MobiComm number (starts with 987)
-                if (!mobileNumber.startsWith('987') || mobileNumber.length !== 10) {
-                    alert('Recharge is allowed only for MobiComm numbers (starting with 987).');
-                    return;
-                }
+                    // Validate MobiComm number (starts with 987)
+                    if (!mobileNumber.startsWith('987') || mobileNumber.length !== 10) {
+                        loadingSpinner.style.display = 'none';
+                        alert('Recharge is allowed only for MobiComm numbers (starting with 987).');
+                        return;
+                    }
 
-                // Check for existing recharge
-                const rechargeHistory = JSON.parse(localStorage.getItem(`recharge_${mobileNumber}`)) || [];
-                const currentDate = new Date().toISOString().split('T')[0];
-                const existingRecharge = rechargeHistory.find(r => {
-                    const expiry = new Date(r.expiry);
-                    return expiry > new Date();
-                });
+                    // Check for existing recharge
+                    const rechargeHistory = JSON.parse(localStorage.getItem(`recharge_${mobileNumber}`)) || [];
+                    const currentDate = new Date().toISOString().split('T')[0];
+                    const existingRecharge = rechargeHistory.find(r => {
+                        const expiry = new Date(r.expiry);
+                        return expiry > new Date();
+                    });
 
-                if (existingRecharge) {
-                    if (confirm(`You have an active plan (${existingRecharge.plan}) expiring on ${new Date(existingRecharge.expiry).toLocaleDateString()}. If you recharge now, it will apply after the current plan expires. Proceed?`)) {
-                        // Store new recharge to apply after current expiry
+                    if (existingRecharge) {
+                        if (confirm(`You have an active plan (${existingRecharge.plan}) expiring on ${new Date(existingRecharge.expiry).toLocaleDateString()}. If you recharge now, it will apply after the current plan expires. Proceed?`)) {
+                            // Store new recharge to apply after current expiry
+                            rechargeHistory.push({
+                                plan: planName,
+                                expiry: expiryDate.toISOString(),
+                                date: currentDate,
+                                applied: false
+                            });
+                            localStorage.setItem(`recharge_${mobileNumber}`, JSON.stringify(rechargeHistory));
+                            loadingSpinner.style.display = 'none';
+                            alert(`Recharge queued for ${mobileNumber}. It will apply after your current plan expires on ${new Date(existingRecharge.expiry).toLocaleDateString()}.`);
+                        } else {
+                            loadingSpinner.style.display = 'none';
+                            return;
+                        }
+                    } else {
+                        // No active recharge, proceed with payment
                         rechargeHistory.push({
                             plan: planName,
                             expiry: expiryDate.toISOString(),
                             date: currentDate,
-                            applied: false
+                            applied: true
                         });
                         localStorage.setItem(`recharge_${mobileNumber}`, JSON.stringify(rechargeHistory));
-                        alert(`Recharge queued for ${mobileNumber}. It will apply after your current plan expires on ${new Date(existingRecharge.expiry).toLocaleDateString()}.`);
-                    } else {
-                        return;
-                    }
-                } else {
-                    // No active recharge, proceed with payment
-                    rechargeHistory.push({
-                        plan: planName,
-                        expiry: expiryDate.toISOString(),
-                        date: currentDate,
-                        applied: true
-                    });
-                    localStorage.setItem(`recharge_${mobileNumber}`, JSON.stringify(rechargeHistory));
 
-                    if (autopayEnabled) {
-                        if (confirm('Autopay will automatically recharge this plan before expiry with your last payment method. Do you agree?')) {
-                            localStorage.setItem(`autopay_${mobileNumber}`, JSON.stringify({
-                                enabled: true,
-                                plan: planName,
-                                price: price / 100,
-                                expiry: expiryDate.toISOString()
-                            }));
-                            alert('Autopay enabled. You will be notified before expiry.');
-                        } else {
-                            document.getElementById('autopay').checked = false;
-                            localStorage.removeItem(`autopay_${mobileNumber}`);
-                        }
-                    }
-
-                    const options = {
-                        key: 'rzp_test_DD9GRYAdLgtztF',
-                        amount: price, // Amount in paise
-                        currency: 'INR',
-                        name: 'Mobi-Comm',
-                        description: `${planType} ${planName}`,
-                        image: '/images/Logo.png',
-                        handler: function(response) {
-                            // Show notification in modal
-                            const notification = document.getElementById('paymentNotification');
-                            notification.style.display = 'block';
-                            alert(`Payment successful for ${mobileNumber}!\nPlan: ${planName}\nPayment ID: ${response.razorpay_payment_id}`);
-                            // Simulate autopay check on expiry (for demo)
-                            if (autopayEnabled) {
-                                setTimeout(checkAutopay, (validityDays - 2) * 24 * 60 * 60 * 1000, mobileNumber);
+                        if (autopayEnabled) {
+                            if (confirm('Autopay will automatically recharge this plan before expiry with your last payment method. Do you agree?')) {
+                                localStorage.setItem(`autopay_${mobileNumber}`, JSON.stringify({
+                                    enabled: true,
+                                    plan: planName,
+                                    price: price / 100,
+                                    expiry: expiryDate.toISOString()
+                                }));
+                                alert('Autopay enabled. You will be notified before expiry.');
+                            } else {
+                                document.getElementById('autopay').checked = false;
+                                localStorage.removeItem(`autopay_${mobileNumber}`);
                             }
-                            // Keep modal open for 3 seconds to show notification, then close
-                            setTimeout(() => {
-                                const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-                                paymentModal.hide();
-                            }, 3000);
-                        },
-                        prefill: {
-                            name: 'Customer Name',
-                        email: 'customer@example.com',
-                            contact: mobileNumber
-                        },
-                        theme: {
-                            color: '#4a1a4a'
                         }
-                    };
-                    const rzp = new Razorpay(options);
-                    rzp.open();
-                }
+
+                        const options = {
+                            key: 'rzp_test_DD9GRYAdLgtztF',
+                            amount: price, // Amount in paise
+                            currency: 'INR',
+                            name: 'Mobi-Comm',
+                            description: `${planType} ${planName}`,
+                            image: '/images/Logo.png',
+                            handler: function(response) {
+                                // Show notification in modal
+                                const notification = document.getElementById('paymentNotification');
+                                notification.style.display = 'block';
+                                loadingSpinner.style.display = 'none';
+                                alert(`Payment successful for ${mobileNumber}!\nPlan: ${planName}\nPayment ID: ${response.razorpay_payment_id}`);
+                                // Simulate autopay check on expiry (for demo)
+                                if (autopayEnabled) {
+                                    setTimeout(checkAutopay, (validityDays - 2) * 24 * 60 * 60 * 1000, mobileNumber);
+                                }
+                                // Keep modal open for 3 seconds to show notification, then close
+                                setTimeout(() => {
+                                    const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                                    paymentModal.hide();
+                                }, 3000);
+                            },
+                            prefill: {
+                                name: 'Customer Name',
+                                email: 'customer@example.com',
+                                contact: mobileNumber
+                            },
+                            theme: {
+                                color: '#4a1a4a'
+                            }
+                        };
+                        const rzp = new Razorpay(options);
+                        rzp.open();
+                    }
+                }, 500); // Small delay to show loading spinner
             }
 
             // Autopay check simulation
@@ -1185,7 +1325,7 @@
             }
 
             // Show default cards on page load
-            window.addEventListener('load', () => {
+            document.addEventListener('DOMContentLoaded', () => {
                 const planCategories = document.querySelectorAll('.plan-category');
                 planCategories.forEach(category => {
                     const planCards = category.querySelectorAll('.plan-card');
@@ -1194,6 +1334,12 @@
                             card.style.display = 'none';
                         }
                     });
+                });
+                
+                // Initialize tooltips
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
                 });
             });
 

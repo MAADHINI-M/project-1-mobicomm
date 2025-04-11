@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobi-Comm | Recharge Plans</title>
+    <meta name="description" content="Explore and recharge with the best mobile plans at Mobi-Comm">
+    <!-- External CSS Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Styles -->
+    <style>
+        /* Root Variables - Matching Login/OTP Theme */
+        :root {
+            --primary: #d06ab2; /* Soft pink/purple */
+            --secondary: #6b2d6b; /* Deep purple */
+            --bg: #f5f6ff; /* Very light purple/blue */
+            --text: #1a1a1a; /* Dark text */
+            --text-light: #4a4a4a; /* Gray text */
+            --accent-success: #3871c2; /* Blue */
+            --accent-urgent: #d95f0e; /* Orange */
+            --highlight: #4a1a4a; /* Brand purple */
+            --web: #4a1a4a; /* Brand purple */
+            --web-dark: #2d0a2d; /* Darker purple */
+            --card-bg: #ffffff; /* White cards */
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --primary: #f2db8e; /* Light yellow */
+            --secondary: #ab47bc; /* Brighter purple */
+            --bg: #12122e; /* Dark navy */
+            --text: #e8eaf6; /* Light text */
+            --text-light: #b0bec5; /* Light gray */
+            --card-bg: #1e1e3f; /* Dark card */
+            --highlight: #0d1a3a; /* Darker navy */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Enhanced Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(0, 245, 212, 0.1) 0%, transparent 25%);
+            z-index: -1;
+            animation: pulseBackground 15s infinite alternate;
+        }
+
+        @keyframes pulseBackground {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Header/Navbar */
+        .navbar {
+            background: var(--web-dark);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .nav-link {
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 20px;
+            transition: var(--transition);
+            margin: 0 5px;
+        }
+
+        .nav-link:hover {
+            background: rgba(155, 93, 229, 0.3);
+            color: var(--primary) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 100px 30px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Plan Cards */
+        .plan-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(155, 93, 229, 0.2);
+            margin-bottom: 25px;
+            height: 100%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .plan-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 0 20px rgba(155, 93, 229, 0.3);
+        }
+
+        .plan-header {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .plan-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .price-tag {
+            background: linear-gradient(135deg, var(--web), var(--web-dark));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(155, 93, 229, 0.3);
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .plan-features li {
+            margin-bottom: 8px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .plan-features li i {
+            color: var(--secondary);
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .btn-recharge {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            width: 100%;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-recharge:hover {
+            background: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Active Plan Warning */
+        .active-plan-warning {
+            background-color: rgba(217, 95, 14, 0.1);
+            border-left: 4px solid var(--accent-urgent);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        /* Autopay Card */
+        .autopay-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(155, 93, 229, 0.2);
+            box-shadow: var(--box-shadow);
+        }
+
+        .autopay-toggle {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .autopay-toggle input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.5);
+        }
+        .autopay-toggle label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* Autopay Card Details */
+        .autopay-card-details {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(155, 93, 229, 0.05);
+            border-radius: 8px;
+            border: 1px dashed rgba(155, 93, 229, 0.3);
+        }
+        
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-details p {
+            margin: 0;
+        }
+        
+        .card-details button {
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Section Titles */
+        .section-title {
+            color: var(--secondary);
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 50px 0 30px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 5px;
+        }
+
+        /* Search and Filters */
+        .search-box {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid rgba(155, 93, 229, 0.3);
+            border-radius: 8px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(155, 93, 229, 0.3);
+        }
+
+        .form-control.invalid {
+            border-color: var(--accent-urgent);
+            background-color: rgba(255, 235, 238, 0.5);
+        }
+
+        .validation-message {
+            color: var(--accent-urgent);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Plan Type Tabs */
+        .plan-type-tabs {
+            display: flex;
+            border-radius: 30px;
+            background: rgba(155, 93, 229, 0.1);
+            padding: 5px;
+            margin-bottom: 30px;
+            width: fit-content;
+        }
+
+        .plan-type-tab {
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+        }
+
+        .plan-type-tab.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Plan Category Badges */
+        .plan-category-badge {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: var(--accent-urgent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(217, 95, 14, 0.3);
+        }
+
+        /* Popular Tag */
+        .popular-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-success);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Notification in Modal */
+        .payment-notification {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid var(--accent-success);
+            border-radius: 8px;
+            color: var(--accent-success);
+            text-align: center;
+        }
+        
+        .payment-notification.error {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: var(--accent-urgent);
+            color: var(--accent-urgent);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--highlight);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 80px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+                margin: 30px 0 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand img {
+                height: 30px;
+                margin-right: 10px;
+            }
+            
+            .plan-card {
+                padding: 20px;
+            }
+            
+            .plan-type-tabs {
+                width: 100%;
+            }
+            
+            .plan-type-tab {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .card-details {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .card-details button {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="/images/Logo.png" alt="Mobi-Comm Logo"> Mobi-Comm
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#recharge-plans">Recharge Plans</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#offers">Special Offers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Support</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="input-group search-box me-3">
+                        <input type="text" class="form-control" placeholder="Search plans..." id="searchInput">
+                        <button class="btn btn-outline-light" type="button" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i> My Account
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Search and Filters -->
+        <div class="search-box">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="mobileNumber" class="form-label">Mobile Number</label>
+                    <input type="tel" class="form-control" id="mobileNumber" value="9876543210">
+                    <div class="validation-message" id="mobileValidation">Only MobiComm numbers (starting with 987) are allowed.</div>
+                    <div class="autopay-toggle mt-2">
+                        <input type="checkbox" id="autopay" name="autopay">
+                        <label for="autopay">Enable Autopay on Expiry (with confirmation)</label>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="dataRange" class="form-label">Data Range (GB)</label>
+                    <select class="form-select" id="dataRange">
+                        <option value="">All</option>
+                        <option value="0-2">0-2 GB/Day</option>
+                        <option value="2-3">2-3 GB/Day</option>
+                        <option value="3+">3+ GB/Day</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="validity" class="form-label">Validity (Days)</label>
+                    <select class="form-select" id="validity">
+                        <option value="">All</option>
+                        <option value="0-30">0-30 Days</option>
+                        <option value="30-90">30-90 Days</option>
+                        <option value="90+">90+ Days</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label for="priceRange" class="form-label">Price Range (₹)</label>
+                    <select class="form-select" id="priceRange">
+                        <option value="">All</option>
+                        <option value="0-300">0-300</option>
+                        <option value="300-700">300-700</option>
+                        <option value="700+">700+</option>
+                    </select>
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-recharge w-100" id="applyFilter">Apply Filters</button>
+                    <button class="btn btn-outline-secondary w-100 mt-2" id="clearFilter">Clear Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plan Type Tabs -->
+        <div class="plan-type-tabs">
+            <button class="plan-type-tab active" data-type="prepaid">Prepaid</button>
+            <button class="plan-type-tab" data-type="postpaid">Postpaid</button>
+        </div>
+
+        <!-- Popular Plans Section -->
+        <h2 class="section-title" id="popular-plans">Popular Plans</h2>
+        <div class="plan-category" id="popular-plans-category">
+            <div class="row">
+                <!-- Popular Plan 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="299" data-data="2" data-days="56" data-category="popular">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <span class="popular-tag">POPULAR</span>
+                        <div class="plan-header">Standard Plan</div>
+                        <div class="price-tag">₹299/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 2GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms"></i> 100 SMS/Day</li>
+                            <li><i class="fas fa-calendar-alt"></i> 56 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        </button>
+                    </div>
+                </div>
+                <!-- Popular Plan 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="799" data-data="150" data-days="30" data-category="popular">
+                        <span class="plan-category-badge">Postpaid</span>
+                        <span class="popular-tag">POPULAR</span>
+                        <div class="plan-header">Family Plan</div>
+                        <div class="price-tag">₹799/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 150GB Shared Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls (4 connections)</li>
+                            <li><i class="fas fa-sms"></i> 100 SMS/Day per connection</li>
+                            <li><i class="fas fa-tv"></i> 2 OTT Subscriptions</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Subscribe Now
+                        </button>
+                    </div>
+                </div>
+                <!-- Popular Plan 3 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="999" data-data="5" data-days="180" data-category="popular">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <span class="popular-tag">POPULAR</span>
+                        <div class="plan-header">Super Plan</div>
+                        <div class="price-tag">₹999/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 5GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv"></i> 2 OTT Subscriptions</li>
+                            <li><i class="fas fa-calendar-alt"></i> 180 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Validity Plans Section -->
+        <h2 class="section-title" id="validity-plans">Validity Plans</h2>
+        <div class="plan-category" id="validity-plans-category">
+            <div class="row">
+                <!-- Validity Plan 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="199" data-data="1.5" data-days="28" data-category="validity">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <div class="plan-header">Basic Plan</div>
+                        <div class="price-tag">₹199/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 1.5GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms"></i> 100 SMS/Day</li>
+                            <li><i class="fas fa-calendar-alt"></i> 28 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        </button>
+                    </div>
+                </div>
+                <!-- Validity Plan 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="399" data-data="2.5" data-days="70" data-category="validity">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <div class="plan-header">Mid-Tier Plan</div>
+                        <div class="price-tag">₹399/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 2.5GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms"></i> 150 SMS/Day</li>
+                            <li><i class="fas fa-calendar-alt"></i> 70 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        </button>
+                    </div>
+                </div>
+                <!-- Validity Plan 3 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="1499" data-data="1.5" data-days="365" data-category="validity">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <div class="plan-header">Yearly Pack</div>
+                        <div class="price-tag" style="background: var(--accent-urgent);">₹1499</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 1.5GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv"></i> Free OTT for 6 Months</li>
+                            <li><i class="fas fa-calendar-alt"></i> 365 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Plans Section -->
+        <h2 class="section-title" id="data-plans">Data Plans</h2>
+        <div class="plan-category" id="data-plans-category">
+            <div class="row">
+                <!-- Data Plan 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="499" data-data="3" data-days="84" data-category="data">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <div class="plan-header">Premium Plan</div>
+                        <div class="price-tag">₹499/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 3GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms"></i> 100 SMS/Day</li>
+                            <li><i class="fas fa-tv"></i> Free OTT Subscription</li>
+                            <li><i class="fas fa-calendar-alt"></i> 84 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        </button>
+                    </div>
+                </div>
+                <!-- Data Plan 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="699" data-data="4" data-days="120" data-category="data">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <div class="plan-header">Advanced Plan</div>
+                        <div class="price-tag">₹699/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 4GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv"></i> Free OTT Subscription</li>
+                            <li><i class="fas fa-calendar-alt"></i> 120 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Recharge Now
+                        </button>
+                    </div>
+                </div>
+                <!-- Data Plan 3 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="599" data-data="100" data-days="30" data-category="data">
+                        <span class="plan-category-badge">Postpaid</span>
+                        <div class="plan-header">Standard Plan</div>
+                        <div class="price-tag">₹599/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 100GB Data (Monthly)</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms"></i> 150 SMS/Day</li>
+                            <li><i class="fas fa-tv"></i> Free OTT Subscription</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Subscribe Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unlimited Data Plans Section -->
+        <h2 class="section-title" id="unlimited-data-plans">Unlimited Data Plans</h2>
+        <div class="plan-category" id="unlimited-data-plans-category">
+            <div class="row">
+                <!-- Unlimited Data Plan 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="1299" data-data="0" data-days="30" data-category="unlimited">
+                        <span class="plan-category-badge">Postpaid</span>
+                        <div class="plan-header">Premium Plan</div>
+                        <div class="price-tag">₹1299/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> Unlimited Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-sms"></i> Unlimited SMS</li>
+                            <li><i class="fas fa-tv"></i> 3 OTT Subscriptions</li>
+                            <li><i class="fas fa-globe"></i> International Roaming Benefits</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Subscribe Now
+                        </button>
+                    </div>
+                </div>
+                <!-- Unlimited Data Plan 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" data-price="1499" data-data="0" data-days="30" data-category="unlimited">
+                        <span class="plan-category-badge">Postpaid</span>
+                        <span class="popular-tag">POPULAR</span>
+                        <div class="plan-header">Elite Plan</div>
+                        <div class="price-tag">₹1499/month</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> Unlimited Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv"></i> 4 OTT Subscriptions</li>
+                            <li><i class="fas fa-globe"></i> Global Roaming</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Subscribe Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Offers Section -->
+        <h2 class="section-title" id="offers">Special Offers</h2>
+        <div class="plan-category" id="special-offers-category">
+            <div class="row">
+                <!-- Offer 1 (Default Visible) -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card visible" style="border: 2px solid var(--primary);" data-price="399" data-data="2.5" data-days="56" data-category="special">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <div class="plan-header">Festive Offer</div>
+                        <div class="price-tag" style="background: var(--accent-urgent);">₹399</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 2.5GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-gift"></i> Extra 10GB Data</li>
+                            <li><i class="fas fa-calendar-alt"></i> 56 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Offer 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card" style="border: 2px solid var(--primary);" data-price="1499" data-data="1.5" data-days="365" data-category="special">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <div class="plan-header">Yearly Pack</div>
+                        <div class="price-tag" style="background: var(--accent-urgent);">₹1499</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 1.5GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv"></i> Free OTT for 6 Months</li>
+                            <li><i class="fas fa-calendar-alt"></i> 365 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Offer 3 -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card" style="border: 2px solid var(--primary);" data-price="999" data-data="200" data-days="30" data-category="special">
+                        <span class="plan-category-badge">Postpaid</span>
+                        <div class="plan-header">Family Special</div>
+                        <div class="price-tag" style="background: var(--accent-urgent);">₹999</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 200GB Shared Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls (4 connections)</li>
+                            <li><i class="fas fa-gift"></i> Extra 50GB Data</li>
+                            <li><i class="fas fa-tv"></i> 3 OTT Subscriptions</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        </button>
+                    </div>
+                </div>
+                <!-- Additional Special Offers -->
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card" style="border: 2px solid var(--primary);" data-price="599" data-data="3" data-days="90" data-category="special">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <div class="plan-header">Summer Deal</div>
+                        <div class="price-tag" style="background: var(--accent-urgent);">₹599</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 3GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-gift"></i> Free 5GB Bonus</li>
+                            <li><i class="fas fa-calendar-alt"></i> 90 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card" style="border: 2px solid var(--primary);" data-price="799" data-data="2" data-days="120" data-category="special">
+                        <span class="plan-category-badge">Prepaid</span>
+                        <span class="popular-tag">POPULAR</span>
+                        <div class="plan-header">Monsoon Offer</div>
+                        <div class="price-tag" style="background: var(--accent-urgent);">₹799</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 2GB/Day Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls</li>
+                            <li><i class="fas fa-tv"></i> Free OTT Subscription</li>
+                            <li><i class="fas fa-calendar-alt"></i> 120 Days Validity</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="plan-card" style="border: 2px solid var(--primary);" data-price="1299" data-data="250" data-days="30" data-category="special">
+                        <span class="plan-category-badge">Postpaid</span>
+                        <div class="plan-header">Holiday Bundle</div>
+                        <div class="price-tag" style="background: var(--accent-urgent);">₹1299</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-wifi"></i> 250GB Shared Data</li>
+                            <li><i class="fas fa-phone"></i> Unlimited Calls (5 connections)</li>
+                            <li><i class="fas fa-tv"></i> 4 OTT Subscriptions</li>
+                            <li><i class="fas fa-gift"></i> Extra 20GB Data</li>
+                        </ul>
+                        <button class="btn-recharge" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                            <i class="fas fa-bolt me-2"></i> Grab Offer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div class="modal fade" id="paymentModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background: var(--card-bg); color: var(--text);">
+                    <div class="modal-header" style="border-bottom: 1px solid rgba(155, 93, 229, 0.2);">
+                        <h5 class="modal-title">Complete Your Recharge</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Active Plan Warning -->
+                        <div class="active-plan-warning" id="activePlanWarning" style="display: none;">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Active Plan Detected</h6>
+                            <p id="activePlanMessage">You have an active plan (Family Plan - ₹799/month) expiring on 5/10/2025. If you recharge now, it will apply after the current plan expires.</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6>Selected Plan: <span class="text-primary" id="selectedPlanName">Standard Plan - ₹299</span></h6>
+                            <p class="mb-0">Mobile Number: <span id="selectedMobileNumber">9876543210</span></p>
+                            <p class="mb-0">Plan Type: <span id="selectedPlanType">Prepaid</span></p>
+                            <p class="mb-0">Expiry: <span id="planExpiry"></span></p>
+                        </div>
+                        
+                        <!-- Autopay Card -->
+                        <div class="autopay-card">
+                            <h6><i class="fas fa-redo me-2"></i>Autopay Options</h6>
+                            <div class="autopay-toggle">
+                                <input type="checkbox" id="modalAutopay" name="modalAutopay">
+                                <label for="modalAutopay">Enable Autopay for this plan</label>
+                            </div>
+                            <small class="text-muted">Autopay will automatically recharge this plan before expiry using your default payment method.</small>
+                            
+                            <!-- Autopay Card Details -->
+                            <div class="autopay-card-details" id="autopayCardDetails">
+                                <h6><i class="fas fa-credit-card me-2"></i>Autopay Card Details</h6>
+                                <div class="card-details">
+                                    <p id="storedCardInfo">No card saved for autopay</p>
+                                    <button class="btn btn-sm btn-outline-primary" id="changeAutopayCard">
+                                        <i class="fas fa-edit me-1"></i> Change Card
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-2">
+                            <label class="small">Autopay Date</label>
+                            <select class="form-select form-select-sm" id="autopayDays">
+                                <option value="1">1 day before expiry</option>
+                                <option value="3">3 days before expiry</option>
+                                <option value="7">7 days before expiry</option>
+                            </select>
+                        </div>
+
+                        <!-- Payment Methods -->
+                        <div class="mb-3">
+                            <label class="form-label">Select Payment Method</label>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary text-start payment-method" data-method="card">
+                                    <i class="fas fa-credit-card me-2"></i> Credit/Debit Card
+                                </button>
+                                <button class="btn btn-outline-primary text-start payment-method" data-method="upi">
+                                    <i class="fas fa-wallet me-2"></i> UPI Payment
+                                </button>
+                                <button class="btn btn-outline-primary text-start payment-method" data-method="wallet">
+                                    <i class="fas fa-mobile-alt me-2"></i> Wallet
+                                </button>
+                            </div>
+                        </div>
+                        <div class="payment-notification" id="paymentNotification">
+                            <i class="fas fa-check-circle me-2"></i> Payment confirmation has been sent to your registered email ID: customer@example.com
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(155, 93, 229, 0.2);">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-recharge" id="confirmPaymentBtn">
+                            <i class="fas fa-check-circle me-2"></i> Confirm Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="mb-0">© <span id="year"></span> Mobi-Comm Telecommunications. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+
+        function searchPlans() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            if (searchTerm === '') {
+                clearFilters();
+                return;
+            }
+
+            const planCards = document.querySelectorAll('.plan-card');
+            let visibleCount = 0;
+
+            planCards.forEach(card => {
+                const planName = card.querySelector('.plan-header').textContent.toLowerCase();
+                const planFeatures = card.querySelector('.plan-features').textContent.toLowerCase();
+                
+                if (planName.includes(searchTerm) || planFeatures.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    if (!card.classList.contains('visible')) {
+                        card.classList.add('visible');
+                    }
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                    card.classList.remove('visible');
+                }
+            });
+
+            if (visibleCount === 0) {
+                alert('No plans match your search. Please try different keywords.');
+            }
+        }
+
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') searchPlans();
+        });
+
+        searchButton.addEventListener('click', searchPlans);
+
+        // Filter functionality
+        const applyFilterButton = document.getElementById('applyFilter');
+        const clearFilterButton = document.getElementById('clearFilter');
+        const dataRangeSelect = document.getElementById('dataRange');
+        const validitySelect = document.getElementById('validity');
+        const priceRangeSelect = document.getElementById('priceRange');
+        const mobileInput = document.getElementById('mobileNumber');
+        const mobileValidation = document.getElementById('mobileValidation');
+
+        function applyFilters() {
+            const dataRange = dataRangeSelect.value;
+            const validity = validitySelect.value;
+            const priceRange = priceRangeSelect.value;
+            const mobileNumber = mobileInput.value;
+            
+            // Validate mobile number first
+            if (mobileNumber && (mobileNumber.length !== 10 || !mobileNumber.startsWith('987'))) {
+                mobileInput.classList.add('invalid');
+                mobileValidation.style.display = 'block';
+                return;
+            } else {
+                mobileInput.classList.remove('invalid');
+                mobileValidation.style.display = 'none';
+            }
+
+            const planCards = document.querySelectorAll('.plan-card');
+            let visibleCount = 0;
+
+            planCards.forEach(card => {
+                const price = parseInt(card.getAttribute('data-price'));
+                const data = parseFloat(card.getAttribute('data-data') || '0');
+                const days = parseInt(card.getAttribute('data-days') || '0');
+                const cardType = card.querySelector('.plan-category-badge').textContent.toLowerCase();
+                const currentTab = document.querySelector('.plan-type-tab.active').getAttribute('data-type');
+                
+                // First check if card matches current tab
+                const tabMatch = (currentTab === 'prepaid' && cardType.includes('prepaid')) || 
+                                (currentTab === 'postpaid' && cardType.includes('postpaid'));
+                
+                if (!tabMatch) {
+                    card.style.display = 'none';
+                    return;
+                }
+
+                let dataMatch = true;
+                let validityMatch = true;
+                let priceMatch = true;
+
+                if (dataRange) {
+                    const [min, max] = dataRange.split('-').map(Number);
+                    if (max) dataMatch = data >= min && data <= max;
+                    else dataMatch = data >= min; // For "3+" case
+                }
+
+                if (validity) {
+                    const [min, max] = validity.split('-').map(Number);
+                    if (max) validityMatch = days >= min && days <= max;
+                    else validityMatch = days >= min; // For "90+" case
+                }
+
+                if (priceRange) {
+                    const [min, max] = priceRange.split('-').map(Number);
+                    if (max) priceMatch = price >= min && price <= max;
+                    else priceMatch = price >= min; // For "700+" case
+                }
+
+                if (dataMatch && validityMatch && priceMatch) {
+                    card.style.display = 'block';
+                    if (!card.classList.contains('visible')) {
+                        card.classList.add('visible');
+                    }
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                    card.classList.remove('visible');
+                }
+            });
+
+            if (visibleCount === 0) {
+                alert('No plans match your filters. Please try different criteria.');
+            }
+        }
+
+        function clearFilters() {
+            dataRangeSelect.value = '';
+            validitySelect.value = '';
+            priceRangeSelect.value = '';
+            searchInput.value = '';
+
+            const planCards = document.querySelectorAll('.plan-card');
+            planCards.forEach(card => {
+                // Show only default visible cards initially
+                if (card.classList.contains('visible')) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Show default cards on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const planCards = document.querySelectorAll('.plan-card');
+            planCards.forEach(card => {
+                if (!card.classList.contains('visible')) {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        applyFilterButton.addEventListener('click', applyFilters);
+        clearFilterButton.addEventListener('click', clearFilters);
+
+        // Mobile number validation
+        mobileInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/[^0-9]/g, '').substring(0, 10);
+            this.value = value;
+
+            if (value.length === 10 && !value.startsWith('987')) {
+                this.classList.add('invalid');
+                mobileValidation.style.display = 'block';
+            } else {
+                this.classList.remove('invalid');
+                mobileValidation.style.display = 'none';
+            }
+        });
+
+        // Plan type tabs functionality
+        const planTabs = document.querySelectorAll('.plan-type-tab');
+        const planCategories = document.querySelectorAll('.plan-category');
+
+        planTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                planTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show relevant plans based on plan type
+                const planType = tab.getAttribute('data-type');
+                planCategories.forEach(category => {
+                    const cards = category.querySelectorAll('.plan-card');
+                    cards.forEach(card => {
+                        const cardType = card.querySelector('.plan-category-badge').textContent.toLowerCase();
+                        card.style.display = (planType === 'prepaid' && cardType.includes('prepaid')) || 
+                                            (planType === 'postpaid' && cardType.includes('postpaid')) ? 'block' : 'none';
+                    });
+                });
+                applyFilters(); // Reapply filters when switching tabs
+            });
+        });
+
+        // Payment method selection
+        let selectedPaymentMethod = null;
+        document.querySelectorAll('.payment-method').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.payment-method').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.borderColor = '';
+                });
+                this.classList.add('active');
+                this.style.borderColor = 'var(--primary)';
+                selectedPaymentMethod = this.getAttribute('data-method');
+            });
+        });
+
+        // Autopay card details toggle
+        document.getElementById('modalAutopay').addEventListener('change', function() {
+            const autopayCardDetails = document.getElementById('autopayCardDetails');
+            if (this.checked) {
+                autopayCardDetails.style.display = 'block';
+                // Check if card is already saved
+                const mobileNumber = document.getElementById('selectedMobileNumber').textContent;
+                const savedCard = localStorage.getItem(`autopay_card_${mobileNumber}`);
+                if (savedCard) {
+                    const cardData = JSON.parse(savedCard);
+                    document.getElementById('storedCardInfo').textContent = 
+                        `Card ending with ${cardData.last4} (Expires ${cardData.expiry})`;
+                }
+            } else {
+                autopayCardDetails.style.display = 'none';
+            }
+        });
+
+        // Change autopay card
+        document.getElementById('changeAutopayCard').addEventListener('click', function() {
+            alert('Please make a new payment with the card you want to use for autopay');
+        });
+
+        // Update modal with selected plan details when recharge button is clicked
+        document.querySelectorAll('.btn-recharge').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.plan-card');
+                const planName = card.querySelector('.plan-header').textContent;
+                const price = card.querySelector('.price-tag').textContent;
+                const planType = card.querySelector('.plan-category-badge').textContent;
+                const mobileNumber = document.getElementById('mobileNumber').value;
+                const validityMatch = card.innerHTML.match(/(\d+)\s*Days/);
+                const validityDays = validityMatch ? parseInt(validityMatch[1]) : 30;
+                const expiryDate = new Date();
+                expiryDate.setDate(expiryDate.getDate() + validityDays);
+
+                document.getElementById('selectedPlanName').textContent = `${planName} - ${price}`;
+                document.getElementById('selectedMobileNumber').textContent = mobileNumber;
+                document.getElementById('selectedPlanType').textContent = planType;
+                document.getElementById('planExpiry').textContent = expiryDate.toLocaleDateString();
+                
+                // Check for existing active plan
+                const rechargeHistory = JSON.parse(localStorage.getItem(`recharge_${mobileNumber}`)) || [];
+                const existingRecharge = rechargeHistory.find(r => {
+                    const expiry = new Date(r.expiry);
+                    return expiry > new Date();
+                });
+
+                if (existingRecharge) {
+                    document.getElementById('activePlanWarning').style.display = 'block';
+                    document.getElementById('activePlanMessage').textContent = 
+                        `You have an active plan (${existingRecharge.plan}) expiring on ${new Date(existingRecharge.expiry).toLocaleDateString()}. If you recharge now, it will apply after the current plan expires.`;
+                } else {
+                    document.getElementById('activePlanWarning').style.display = 'none';
+                }
+                
+                // Reset payment method selection
+                document.querySelectorAll('.payment-method').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.borderColor = '';
+                });
+                selectedPaymentMethod = null;
+                
+                // Hide notification when opening modal
+                document.getElementById('paymentNotification').style.display = 'none';
+                
+                // Reset autopay toggle
+                document.getElementById('modalAutopay').checked = false;
+                document.getElementById('autopayCardDetails').style.display = 'none';
+                
+                // Check for saved card
+                const savedCard = localStorage.getItem(`autopay_card_${mobileNumber}`);
+                if (savedCard) {
+                    const cardData = JSON.parse(savedCard);
+                    document.getElementById('storedCardInfo').textContent = 
+                        `Card ending with ${cardData.last4} (Expires ${cardData.expiry})`;
+                } else {
+                    document.getElementById('storedCardInfo').textContent = 'No card saved for autopay';
+                }
+            });
+        });
+
+        // Payment processing with Razorpay
+        document.getElementById('confirmPaymentBtn').addEventListener('click', function() {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.style.display = 'flex';
+            
+            const mobileNumber = document.getElementById('selectedMobileNumber').textContent;
+            const planName = document.getElementById('selectedPlanName').textContent;
+            const planType = document.getElementById('selectedPlanType').textContent;
+            const autopayEnabled = document.getElementById('modalAutopay').checked;
+            const autopayDays = document.getElementById('autopayDays').value;
+            const priceMatch = planName.match(/₹(\d+)/);
+            const price = priceMatch ? parseInt(priceMatch[1]) * 100 : 29900; // Default to ₹299 if parsing fails
+            const validityMatch = planName.match(/(\d+)\s*Days/);
+            const validityDays = validityMatch ? parseInt(validityMatch[1]) : 30; // Default to 30 days if not found
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + validityDays);
+            
+            // Validate payment method selected
+            if (!selectedPaymentMethod) {
+                loadingSpinner.style.display = 'none';
+                alert('Please select a payment method');
+                return;
+            }
+
+            // Validate MobiComm number
+            if (!mobileNumber.startsWith('987') || mobileNumber.length !== 10) {
+                loadingSpinner.style.display = 'none';
+                alert('Recharge is allowed only for MobiComm numbers (starting with 987).');
+                return;
+            }
+
+            // Check for existing recharge
+            const rechargeHistory = JSON.parse(localStorage.getItem(`recharge_${mobileNumber}`)) || [];
+            const currentDate = new Date().toISOString().split('T')[0];
+            const existingRecharge = rechargeHistory.find(r => {
+                const expiry = new Date(r.expiry);
+                return expiry > new Date();
+            });
+
+            // Prepare payment options
+            const options = {
+                key: 'rzp_test_DD9GRYAdLgtztF', // Replace with your actual Razorpay key
+                amount: price,
+                currency: 'INR',
+                name: 'Mobi-Comm',
+                description: `${planType} ${planName}`,
+                image: '/images/Logo.png',
+                handler: function(response) {
+                    // Payment success handler
+                    handlePaymentSuccess(
+                        response, 
+                        mobileNumber, 
+                        planName, 
+                        expiryDate, 
+                        autopayEnabled, 
+                        autopayDays, 
+                        price,
+                        validityDays
+                    );
+                },
+                modal: {
+                    ondismiss: function() {
+                        loadingSpinner.style.display = 'none';
+                    }
+                },
+                prefill: {
+                    name: 'Customer Name',
+                    email: 'customer@example.com',
+                    contact: mobileNumber
+                },
+                theme: {
+                    color: '#4a1a4a'
+                }
+            };
+
+            // For autopay, we need to collect additional card details
+            if (autopayEnabled && selectedPaymentMethod === 'card') {
+                options.handler = function(response) {
+                    // Store card details for autopay (in production, use tokenization)
+                    localStorage.setItem(`autopay_card_${mobileNumber}`, JSON.stringify({
+                        last4: '4242', // Example - in real app get from Razorpay response
+                        expiry: '12/25', // Example
+                        network: 'visa' // Example
+                    }));
+                    
+                    handlePaymentSuccess(
+                        response, 
+                        mobileNumber, 
+                        planName, 
+                        expiryDate, 
+                        autopayEnabled, 
+                        autopayDays, 
+                        price,
+                        validityDays
+                    );
+                };
+            }
+
+            // Regular payment flow
+            const rzp = new Razorpay(options);
+            rzp.open();
+            
+            rzp.on('payment.failed', function(response) {
+                const notification = document.getElementById('paymentNotification');
+                notification.style.display = 'block';
+                notification.innerHTML = `
+                    <i class="fas fa-times-circle me-2"></i> 
+                    Payment failed: ${response.error.description || 'Unknown error'}
+                `;
+                notification.classList.add('error');
+                loadingSpinner.style.display = 'none';
+            });
+        });
+
+        function handlePaymentSuccess(
+            response, 
+            mobileNumber, 
+            planName, 
+            expiryDate, 
+            autopayEnabled, 
+            autopayDays, 
+            price,
+            validityDays
+        ) {
+            // Store recharge information
+            const rechargeHistory = JSON.parse(localStorage.getItem(`recharge_${mobileNumber}`)) || [];
+            const currentDate = new Date().toISOString().split('T')[0];
+            
+            rechargeHistory.push({
+                plan: planName,
+                expiry: expiryDate.toISOString(),
+                date: currentDate,
+                applied: true,
+                paymentId: response.razorpay_payment_id
+            });
+            localStorage.setItem(`recharge_${mobileNumber}`, JSON.stringify(rechargeHistory));
+
+            // Store autopay information if enabled
+            if (autopayEnabled) {
+                localStorage.setItem(`autopay_${mobileNumber}`, JSON.stringify({
+                    enabled: true,
+                    plan: planName,
+                    price: price / 100,
+                    expiry: expiryDate.toISOString(),
+                    daysBefore: autopayDays,
+                    paymentMethod: selectedPaymentMethod
+                }));
+            }
+
+            // Show notification in modal
+            const notification = document.getElementById('paymentNotification');
+            notification.style.display = 'block';
+            notification.classList.remove('error');
+            
+            if (autopayEnabled) {
+                notification.innerHTML = `
+                    <i class="fas fa-check-circle me-2"></i> 
+                    Payment successful! Autopay has been enabled for this plan.
+                    ${selectedPaymentMethod === 'card' ? 'Your card will be charged automatically before expiry.' : ''}
+                `;
+            } else {
+                notification.innerHTML = `
+                    <i class="fas fa-check-circle me-2"></i> 
+                    Payment successful! Your recharge has been processed.
+                `;
+            }
+            
+            // Simulate autopay check on expiry (for demo)
+            if (autopayEnabled) {
+                setTimeout(
+                    checkAutopay, 
+                    (validityDays - parseInt(autopayDays)) * 24 * 60 * 60 * 1000, 
+                    mobileNumber
+                );
+            }
+            
+            // Keep modal open for 3 seconds to show notification, then close
+            setTimeout(() => {
+                const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                paymentModal.hide();
+            }, 3000);
+        }
+
+        // Autopay check simulation
+        function checkAutopay(mobileNumber) {
+            const autopayData = JSON.parse(localStorage.getItem(`autopay_${mobileNumber}`));
+            if (autopayData && autopayData.enabled) {
+                const now = new Date();
+                const expiry = new Date(autopayData.expiry);
+                if (now >= expiry) {
+                    if (confirm(`Your plan (${autopayData.plan}) has expired. Autopay will recharge ₹${autopayData.price}. Proceed?`)) {
+                        // Simulate recharge (in real app, integrate with payment gateway)
+                        alert(`Autopay recharge successful for ${mobileNumber} with ${autopayData.plan}`);
+                        expiry.setDate(expiry.getDate() + (autopayData.expiry.match(/(\d+)\s*Days/) ? parseInt(autopayData.expiry.match(/(\d+)\s*Days/)[1]) : 30));
+                        autopayData.expiry = expiry.toISOString();
+                        localStorage.setItem(`autopay_${mobileNumber}`, JSON.stringify(autopayData));
+                        setTimeout(checkAutopay, (parseInt(autopayData.expiry.match(/(\d+)\s*Days/) ? parseInt(autopayData.expiry.match(/(\d+)\s*Days/)[1]) : 30) - parseInt(autopayData.daysBefore)) * 24 * 60 * 60 * 1000, mobileNumber);
+                    } else {
+                        localStorage.removeItem(`autopay_${mobileNumber}`);
+                        alert('Autopay disabled.');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
