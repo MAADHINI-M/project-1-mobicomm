@@ -7,15 +7,42 @@
     <title>Admin Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
-        /* General Body Styling */
+        :root {
+            --primary: #d06ab2;
+            --secondary: #6b2d6b;
+            --bg: #f5f6ff;
+            --text: #1a1a1a;
+            --text-light: #4a4a4a;
+            --accent-success: #3871c2;
+            --accent-urgent: #d95f0e;
+            --highlight: #4a1a4a;
+            --web-dark: #2d0a2d;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #f2db8e;
+            --secondary: #ab47bc;
+            --bg: #12122e;
+            --text: #e8eaf6;
+            --text-light: #b0bec5;
+            --card-bg: #1e1e3f;
+            --highlight: #0d1a3a;
+            --web-dark: #2d0a2d;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             margin: 0;
             padding: 0;
@@ -23,14 +50,58 @@
             overflow-x: hidden;
         }
 
-        /* Sidebar Styling */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(0, 245, 212, 0.1) 0%, transparent 25%);
+            z-index: -1;
+            animation: pulseBackground 15s infinite alternate;
+        }
+
+        @keyframes pulseBackground {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1002;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: scale(1.1);
+        }
+
         .sidebar {
             position: fixed;
             top: 0;
             left: 0;
-            width: 280px;
+            width: 260px;
             height: 100vh;
-            background: linear-gradient(180deg, #921e24 0%, #6b1519 100%) !important;
+            background: var(--web-dark);
             color: white;
             padding: 30px 20px;
             overflow-y: auto;
@@ -75,28 +146,42 @@
             padding: 12px 15px;
             border-radius: 8px;
             font-weight: 500;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: var(--transition);
+            position: relative;
         }
 
-        .sidebar a:hover {
-            background-color: #28a745;
+        .sidebar a.active, .sidebar a:hover {
+            background: rgba(155, 93, 229, 0.3);
             transform: translateX(5px);
         }
 
+        .sidebar a.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 0 4px 4px 0;
+        }
+
         .sidebar .btn-logout {
-            background: linear-gradient(45deg, #28a745);
-            color: black;
-            font-weight: bold;
+            background: var(--primary);
+            color: var(--secondary);
+            font-weight: 600;
             border: none;
             padding: 12px;
             width: 100%;
             margin-top: 20px;
             border-radius: 8px;
-            transition: background 0.3s ease, transform 0.2s ease;
+            transition: var(--transition);
         }
 
         .sidebar .btn-logout:hover {
-            background: linear-gradient(45deg, #218838, #c9e265);
+            background: var(--accent-success);
+            color: white;
             transform: scale(1.05);
         }
 
@@ -106,8 +191,8 @@
 
         .sidebar .search-form .form-control {
             border-radius: 8px 0 0 8px;
-            border: 2px solid #ffffff;
-            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
         }
 
@@ -117,31 +202,38 @@
 
         .sidebar .search-form .btn {
             border-radius: 0 8px 8px 0;
-            background-color: #ffffff;
-            border: 2px solid #ffffff;
+            background: var(--primary);
+            color: var(--secondary);
+            border: 2px solid var(--primary);
             border-left: none;
+            transition: var(--transition);
         }
 
-        /* Hamburger Menu Button */
+        .sidebar .search-form .btn:hover {
+            background: var(--accent-success);
+            color: white;
+        }
+
         .menu-toggle {
             position: fixed;
             top: 15px;
             left: 15px;
             z-index: 1002;
-            background: none;
+            background: var(--primary);
             border: none;
-            color: #fff;
+            color: var(--secondary);
             font-size: 1.5rem;
             padding: 10px;
+            border-radius: 5px;
             cursor: pointer;
             display: none;
         }
 
         .menu-toggle:hover {
-            color: #d36671;
+            background: var(--accent-success);
+            color: white;
         }
 
-        /* Sidebar Overlay */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -154,44 +246,43 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Main Content Styling */
         .main-content {
-            margin-left: 280px;
+            margin-left: 260px;
             padding: 40px;
             min-height: 100vh;
-            background-color: #fff;
-            border-radius: 15px 0 0 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            margin: 20px 20px 20px 300px;
+            background: var(--bg);
+            margin: 20px 20px 20px 280px;
             transition: margin-left 0.3s ease;
         }
 
         .main-content h2 {
             font-size: 2.2rem;
             font-weight: 600;
-            color: #921e24;
+            color: var(--secondary);
             margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            animation: fadeInDown 0.3s ease;
+            animation: fadeInDown 0.5s ease;
         }
 
-        /* Card Styling */
-        .card {
+        .settings-card {
             border: none;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: #fff;
+            background: var(--card-bg);
+            background: linear-gradient(145deg, var(--card-bg) 0%, rgba(155, 93, 229, 0.05) 100%);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
         }
 
-        .card:hover {
+        .settings-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
         .card-header {
-            background: linear-gradient(45deg, #90237c 0%, #b92b9a 100%) !important;
+            background: var(--secondary);
             color: white;
             font-weight: 600;
             padding: 15px;
@@ -202,54 +293,36 @@
 
         .card-body {
             padding: 20px;
+            position: relative;
         }
 
-        .card h4 {
+        .card-body h4 {
             font-size: 1.3rem;
-            color: #ffffff;
+            color: var(--text);
             margin-bottom: 15px;
         }
 
-        .card p {
+        .card-body p {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #ffffff;
-            animation: bounceIn 0.3s ease;
+            color: var(--primary);
+            animation: fadeIn 0.5s ease;
         }
 
-        /* Specific Card Backgrounds with Double-Color Gradients */
-        #totalUsersCount {
-            background: linear-gradient(45deg, #28a745, #00ff00) !important;
-            /* Green to Lime */
-            color: #fff;
-            /* White text for contrast */
+        #totalUsersCount, #activeUsersCount, #expiringSoonCount {
+            background: var(--card-bg);
         }
 
-        #activeUsersCount {
-            background: linear-gradient(45deg, #007bff, #00ffff) !important;
-            /* Blue to Aqua */
-            color: #fff;
-            /* White text for contrast */
-        }
-
-        #expiringSoonCount {
-            background: linear-gradient(45deg, #ff6b6b, #ff69b4) !important;
-            /* Orange to Pink */
-            color: #fff;
-            /* White text for contrast */
-        }
-
-        /* Table Styling */
         .table {
-            background-color: #fff;
-            border-radius: 10px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--box-shadow);
         }
 
         .table thead th {
-            background-color: #f8f9fa;
-            color: #333;
+            background: var(--secondary);
+            color: white;
             font-weight: 600;
             padding: 15px;
             text-transform: uppercase;
@@ -257,11 +330,15 @@
         }
 
         .table tbody tr {
-            transition: background-color 0.3s ease;
+            transition: background 0.3s ease;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: rgba(155, 93, 229, 0.02);
         }
 
         .table tbody tr:hover {
-            background-color: #f1f1f1;
+            background: rgba(155, 93, 229, 0.1);
         }
 
         .table td {
@@ -269,61 +346,88 @@
             vertical-align: middle;
         }
 
-        .btn-sm {
+        .btn-primary, .btn-warning, .btn-info {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
             padding: 8px 15px;
             border-radius: 5px;
-            transition: transform 0.2s ease, background-color 0.3s ease;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-sm:hover {
+        .btn-primary:hover, .btn-warning:hover, .btn-info:hover {
+            background: var(--accent-success);
+            color: white;
             transform: scale(1.1);
         }
 
-        /* Filter Inputs Styling */
-        .form-control,
-        .form-select {
+        .btn-primary::after, .btn-warning::after, .btn-info::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .btn-primary:hover::after, .btn-warning:hover::after, .btn-info:hover::after {
+            width: 200px;
+            height: 200px;
+        }
+
+        .btn-primary:disabled, .btn-warning:disabled, .btn-info:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid rgba(155, 93, 229, 0.3);
             border-radius: 8px;
-            border: 2px solid #921e24;
             padding: 10px;
-            background-color: #fff5f5;
-            color: #333;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            transition: var(--transition);
         }
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #b3242a;
-            background-color: #ffffff;
-            box-shadow: 0 0 8px rgba(146, 30, 36, 0.4);
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(155, 93, 229, 0.3);
+            background: rgba(255, 255, 255, 0.1);
             outline: none;
-        }
-
-        .form-control:hover,
-        .form-select:hover {
-            border-color: #b3242a;
-            background-color: #fffafa;
         }
 
         .form-label {
             font-weight: 500;
-            color: #921e24;
+            color: var(--text);
             margin-bottom: 8px;
         }
 
-        /* Modal Styling */
         .modal-content {
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            animation: fadeInUp 0.3s ease;
-            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-            border: 2px solid #921e24;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal-header {
-            background: linear-gradient(45deg, #90237c 0%, #b92b9a 100%);
+            background: var(--secondary);
             color: white;
-            border-bottom: 2px solid #921e24;
-            border-radius: 10px 10px 0 0;
+            border-bottom: none;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
         }
 
         .modal-title {
@@ -332,29 +436,28 @@
         }
 
         .modal-body {
-            color: #333;
-            font-size: 1.1rem;
+            color: var(--text);
             padding: 20px;
         }
 
         .modal-footer {
-            background: #f8f9fa;
-            border-top: 2px solid #921e24;
-            border-radius: 0 0 10px 10px;
+            background: var(--card-bg);
+            border-top: none;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
         }
 
         .btn-secondary {
-            background-color: #6c757d;
-            border-color: #6c757d;
-            color: white;
+            background: var(--text-light);
+            border: none;
+            color: var(--card-bg);
+            transition: var(--transition);
         }
 
         .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #5a6268;
+            background: var(--accent-urgent);
+            color: white;
         }
 
-        /* Custom Modal Styling */
         .custom-modal {
             position: fixed;
             top: 50%;
@@ -362,53 +465,112 @@
             transform: translate(-50%, -50%);
             z-index: 1050;
             padding: 20px;
-            background: linear-gradient(135deg, #ffffff 0%, #f1f1f1 100%);
-            border: 2px solid #921e24;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
             max-width: 90%;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            color: #333;
+            color: var(--text);
+            animation: slideIn 0.3s ease;
         }
 
         .custom-modal .btn-danger {
-            margin-top: 15px;
-            padding: 8px 20px;
-            background-color: #921e24;
+            background: var(--accent-urgent);
             color: white;
             border: none;
+            padding: 8px 20px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: var(--transition);
         }
 
         .custom-modal .btn-danger:hover {
-            background-color: #b3242a;
+            background: var(--secondary);
         }
 
-        /* Professional Enhancements */
-        .main-content,
-        .card {
-            background: beige;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        .error-message {
+            display: none;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(217, 95, 14, 0.1);
+            border: 1px solid var(--accent-urgent);
+            border-radius: 8px;
+            color: var(--accent-urgent);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
         }
 
-        h2 {
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: var(--primary);
         }
 
-        .form-control,
-        .form-select {
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        .loading-spinner i {
+            font-size: 1.5rem;
+            animation: spin 1s linear infinite;
         }
 
-        /* Enhanced Mobile Responsiveness */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-clear {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-clear:hover {
+            background: var(--accent-success);
+            transform: scale(1.05);
+        }
+
+        .tooltip {
+            position: absolute;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        button:hover .tooltip {
+            opacity: 1;
+        }
+
+        footer {
+            background: var(--highlight);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--accent-success);
+        }
+
         @media (max-width: 768px) {
             .sidebar {
-                transform: translateX(-280px);
-                width: 250px;
+                transform: translateX(-260px);
+                width: 240px;
                 padding: 20px 15px;
             }
 
@@ -420,304 +582,222 @@
                 margin-left: 0;
                 padding: 20px 15px;
                 margin: 15px;
-                border-radius: 0;
             }
 
             .sidebar .brand h1 {
                 font-size: 1.5rem;
-                margin-bottom: 20px;
             }
 
             .sidebar h4 {
                 font-size: 1.2rem;
-                margin: 15px 0 15px;
             }
 
             .sidebar a {
-                padding: 12px 15px;
                 font-size: 0.95rem;
-                margin-bottom: 5px;
             }
 
             .main-content h2 {
                 font-size: 1.8rem;
-                margin-bottom: 30px;
             }
 
-            .card {
+            .settings-card {
                 margin-bottom: 25px;
-                border-radius: 8px;
             }
 
             .card-body {
                 padding: 15px;
             }
 
-            .card p {
+            .card-body p {
                 font-size: 1.3rem;
             }
 
             .table-responsive {
-                width: 100%;
                 overflow-x: auto;
-                margin-top: 20px;
-                margin-bottom: 20px;
             }
 
-            .table {
-                min-width: 300px;
-                margin-bottom: 15px;
-            }
-
-            .table td,
-            .table th {
-                padding: 12px;
+            .table td, .table th {
                 font-size: 0.9rem;
             }
 
-            .form-control,
-            .form-select {
-                padding: 12px;
+            .form-control, .form-select {
                 font-size: 0.95rem;
-                margin-bottom: 15px;
-            }
-
-            .row.mb-3>.col-md-3 {
-                margin-bottom: 20px;
-            }
-
-            .btn-sm {
-                padding: 8px 15px;
-                font-size: 0.95rem;
-                margin: 0 10px 10px 0;
-            }
-
-            .form-label {
-                font-size: 1rem;
-                margin-bottom: 10px;
             }
 
             .menu-toggle {
                 display: block;
-                color: #000;
-                background: #fff;
-                border-radius: 5px;
-            }
-
-            .menu-toggle:hover {
-                color: #333;
             }
 
             .modal-dialog {
                 margin: 1rem;
                 max-width: 90%;
             }
+        }
 
-            .modal-content {
-                border-radius: 8px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 15px 10px;
             }
 
-            .modal-body {
-                padding: 15px;
+            .main-content h2 {
+                font-size: 1.6rem;
             }
 
-            .modal-header,
-            .modal-footer {
-                padding: 10px;
+            .btn-primary, .btn-warning, .btn-info {
+                font-size: 0.9rem;
             }
 
-            .modal-title {
-                font-size: 1.3rem;
-            }
-
-            .custom-modal {
-                max-width: 90%;
-                width: 90%;
-                max-height: 80vh;
+            .form-control, .form-select {
+                font-size: 0.9rem;
             }
         }
 
-        /* Animations */
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 
 <body>
-  <!-- Hamburger Menu Button -->
-  <button class="menu-toggle d-md-none"><i class="bi bi-list"></i></button>
+    <button class="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+    <button class="menu-toggle d-md-none" aria-label="Toggle Sidebar"><i class="bi bi-list"></i></button>
+    <div class="sidebar-overlay"></div>
 
-  <!-- Sidebar Overlay -->
-  <div class="sidebar-overlay"></div>
+    <nav class="sidebar" role="navigation" aria-label="Main navigation">
+        <div class="brand">
+            <h1>MOBI-COMM</h1>
+        </div>
+        <h4>Admin Panel</h4>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="manage-user.html">Managing Users</a>
+        <a href="manage-plans.html">Managing Plans</a>
+        <a href="billingandtransaction.html">Billing & Transactions</a>
+        <a href="report&analytics.html">Report & Analytics</a>
+        <a href="adminProfile.html">
+            <i class="bi bi-person-fill"></i> Profile
+        </a>
+        <button class="btn-logout" onclick="logout()" aria-label="Log out">Logout</button>
+    </nav>
 
-  <!-- Sidebar -->
-  <nav class="sidebar">
-      <div class="brand">
-          <img src="/imageS/Logo.png" alt="Mobi-Comm Logo" class="img-fluid">
-          <h1>MOBI-COMM</h1>
-      </div>
-      <form class="search-form d-flex">
-          <input type="text" class="form-control" placeholder="Search">
-          <button class="btn" type="button"><i class="bi bi-search"></i></button>
-      </form>
-      <h4>Admin Panel</h4>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="manage-user.html">Managing Users</a>
-      <a href="manage-plans.html">Managing Plans</a>
-      <!-- <a href="graph and pie.html">Graphs & Pie Charts</a> -->
-      <a href="3.billingandtransaction.html">Billing & Transactions</a>
-      <a href="4.report&analytics.html">Report & Analytics</a>
-      <!-- <a href="7.securityandfraudmonitoring.html">Security & Fraud Monitoring</a> -->
-      <a href="8.network&systemhealth.html">Network & System Health</a>
-      <a href="adminProfile.html">
-          <i class="bi bi-person-fill"></i> Profile
-      </a>
-      <button class="btn-logout" onclick="logout()">Logout</button>
-  </nav>
-
-    <!-- Main_Content -->
     <div class="main-content">
-        <h2>Dashboard</h2>
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body" id="totalUsersCount">
-                        <h4>Total Users</h4>
-                        <p id="totalUsersCountValue">0</p>
-                    </div>
-                </div>
+        <div class="container">
+            <h2>Dashboard</h2>
+            <div class="error-message" id="errorMessage" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i> <span id="errorText">Failed to load data.</span>
+                <button class="btn btn-clear ms-2" onclick="retryFetch()" aria-label="Retry loading data">Retry</button>
             </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body" id="activeUsersCount">
-                        <h4>Active Users</h4>
-                        <p id="activeUsersCountValue">0</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-center">
-                    <div class="card-body" id="expiringSoonCount">
-                        <h4>Expiring Soon</h4>
-                        <p id="expiringSoonCountValue">0</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Subscribers with Plans Expiring in Next 3 Days</div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="filterDays" class="form-label">Filter by Expiry Days:</label>
-                            <select id="filterDays" class="form-select">
-                                <option value="all">All</option>
-                                <option value="1">Expiring in 1 day</option>
-                                <option value="2">Expiring in 2 days</option>
-                                <option value="3">Expiring in 3 days</option>
-                            </select>
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="settings-card text-center" style="animation-delay: 0.1s;">
+                        <div class="card-body" id="totalUsersCount">
+                            <h4>Total Users</h4>
+                            <p id="totalUsersCountValue">0</p>
+                            <div class="loading-spinner" id="totalUsersSpinner"><i class="fas fa-spinner"></i></div>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Plan Expiry Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="expiringSubscribersList">
-                                    <tr>
-                                        <td colspan="4">Loading...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="settings-card text-center" style="animation-delay: 0.2s;">
+                        <div class="card-body" id="activeUsersCount">
+                            <h4>Active Users</h4>
+                            <p id="activeUsersCountValue">0</p>
+                            <div class="loading-spinner" id="activeUsersSpinner"><i class="fas fa-spinner"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="settings-card text-center" style="animation-delay: 0.3s;">
+                        <div class="card-body" id="expiringSoonCount">
+                            <h4>Expiring Soon</h4>
+                            <p id="expiringSoonCountValue">0</p>
+                            <div class="loading-spinner" id="expiringSoonSpinner"><i class="fas fa-spinner"></i></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">User Details</div>
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <input type="text" id="filterName" class="form-control" placeholder="Filter by Name">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="settings-card">
+                        <div class="card-header">Subscribers with Plans Expiring in Next 3 Days</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="filterDays" class="form-label">Filter by Expiry Days:</label>
+                                <select id="filterDays" class="form-select" aria-label="Filter by expiry days">
+                                    <option value="all">All</option>
+                                    <option value="1">Expiring in 1 day</option>
+                                    <option value="2">Expiring in 2 days</option>
+                                    <option value="3">Expiring in 3 days</option>
+                                </select>
                             </div>
-                            <div class="col-md-3">
-                                <input type="text" id="filterPrice" class="form-control"
-                                    placeholder="Filter by Price (e.g., ₹299)">
-                            </div>
-                            <div class="col-md-3">
-                                <input type="date" id="filterDate" class="form-control"
-                                    placeholder="Filter by Recharge Date">
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" id="filterPackage" class="form-control"
-                                    placeholder="Filter by Package (e.g., Basic)">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" aria-live="polite">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Phone Number</th>
+                                            <th>Plan Expiry Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="expiringSubscribersList">
+                                        <tr>
+                                            <td colspan="4">Loading...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="loading-spinner" id="expiringTableSpinner"><i class="fas fa-spinner"></i></div>
                             </div>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Recharge Date</th>
-                                        <th>Next Recharge</th>
-                                        <th>Price</th>
-                                        <th>Package</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="userDetailsList">
-                                    <tr>
-                                        <td colspan="7">Loading...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="settings-card">
+                        <div class="card-header">User Details</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <input type="text" id="filterName" class="form-control" placeholder="Filter by Name" aria-label="Filter by name">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" id="filterPrice" class="form-control" placeholder="Filter by Price (e.g., ₹299)" aria-label="Filter by price">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" id="filterDate" class="form-control" placeholder="Filter by Recharge Date" aria-label="Filter by recharge date">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" id="filterPackage" class="form-control" placeholder="Filter by Package (e.g., Basic)" aria-label="Filter by package">
+                                </div>
+                            </div>
+                            <button class="btn btn-clear mb-3" onclick="clearFilters()" aria-label="Clear all filters">Clear Filters</button>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" aria-live="polite">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Phone Number</th>
+                                            <th>Recharge Date</th>
+                                            <th>Next Recharge</th>
+                                            <th>Price</th>
+                                            <th>Package</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userDetailsList">
+                                        <tr>
+                                            <td colspan="7">Loading...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="loading-spinner" id="userTableSpinner"><i class="fas fa-spinner"></i></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -725,13 +805,12 @@
         </div>
     </div>
 
-    <!-- Bootstrap Modal for View and Notify -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="infoModalLabel">User Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalBodyContent">
                 </div>
@@ -742,7 +821,63 @@
         </div>
     </div>
 
+   
+
     <script>
+        // Utility: Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Theme toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // Cache management
+        const CACHE_KEY = 'dashboard_data';
+        const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
+        function getCachedData() {
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (!cached) return null;
+            const { data, timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp > CACHE_EXPIRY) {
+                localStorage.removeItem(CACHE_KEY);
+                return null;
+            }
+            return data;
+        }
+
+        function setCachedData(data) {
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+                data,
+                timestamp: Date.now()
+            }));
+        }
+
         function logout() {
             const token = localStorage.getItem('adminToken');
             fetch('http://localhost:9045/api/auth/admin/logout', {
@@ -753,15 +888,17 @@
             })
             .then(response => {
                 localStorage.removeItem('adminToken');
+                localStorage.removeItem(CACHE_KEY);
                 window.location.href = 'login.html';
             })
             .catch(error => {
                 console.error('Logout error:', error);
                 localStorage.removeItem('adminToken');
+                localStorage.removeItem(CACHE_KEY);
                 window.location.href = 'login.html';
             });
         }
-    
+
         function resetBodyStyles() {
             document.body.style.overflow = 'auto';
             document.body.style.background = '';
@@ -770,90 +907,152 @@
             const modalBackdrop = document.querySelector('.modal-backdrop');
             if (modalBackdrop) modalBackdrop.remove();
         }
-    
+
+        // Fetch with timeout
+        async function fetchWithTimeout(url, options, timeout = 10000) {
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            try {
+                const response = await fetch(url, { ...options, signal: controller.signal });
+                clearTimeout(id);
+                return response;
+            } catch (error) {
+                clearTimeout(id);
+                throw error;
+            }
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            document.getElementById('errorText').textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function showSpinner(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function hideSpinner(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function clearFilters() {
+            document.getElementById('filterName').value = '';
+            document.getElementById('filterPrice').value = '';
+            document.getElementById('filterDate').value = '';
+            document.getElementById('filterPackage').value = '';
+            populateUserDetailsTable();
+        }
+
+        let allSubscribers = [];
+        let expiringSubscribers = [];
+
+        async function retryFetch() {
+            hideError();
+            await fetchDashboardData();
+        }
+
+        async function fetchDashboardData() {
+            const token = localStorage.getItem('adminToken');
+            const cachedData = getCachedData();
+
+            if (cachedData) {
+                document.getElementById('totalUsersCountValue').textContent = cachedData.metrics.newCustomers || 0;
+                document.getElementById('activeUsersCountValue').textContent = cachedData.metrics.monthlySubscriptions || 0;
+                document.getElementById('expiringSoonCountValue').textContent = cachedData.metrics.inactiveCustomers || 0;
+                allSubscribers = cachedData.subscribers;
+                expiringSubscribers = cachedData.expiring;
+                populateUserDetailsTable();
+                populateExpiringTable('all');
+                return;
+            }
+
+            try {
+                showSpinner('totalUsersSpinner');
+                showSpinner('activeUsersSpinner');
+                showSpinner('expiringSoonSpinner');
+
+                const metricsResponse = await fetchWithTimeout('http://localhost:9045/admin/dashboard/metrics', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!metricsResponse.ok) throw new Error(metricsResponse.status === 401 ? 'Unauthorized' : 'Failed to fetch metrics');
+                const metricsData = await metricsResponse.json();
+
+                document.getElementById('totalUsersCountValue').textContent = metricsData.newCustomers || 0;
+                document.getElementById('activeUsersCountValue').textContent = metricsData.monthlySubscriptions || 0;
+                document.getElementById('expiringSoonCountValue').textContent = metricsData.inactiveCustomers || 0;
+
+                hideSpinner('totalUsersSpinner');
+                hideSpinner('activeUsersSpinner');
+                hideSpinner('expiringSoonSpinner');
+
+                showSpinner('userTableSpinner');
+                const subscribersResponse = await fetchWithTimeout('http://localhost:9045/admin/dashboard/subscribers', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!subscribersResponse.ok) throw new Error('Failed to fetch subscribers');
+                allSubscribers = await subscribersResponse.json();
+                populateUserDetailsTable();
+                hideSpinner('userTableSpinner');
+
+                showSpinner('expiringTableSpinner');
+                const expiringResponse = await fetchWithTimeout('http://localhost:9045/admin/dashboard/subscribers/expiring', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!expiringResponse.ok) throw new Error('Failed to fetch expiring subscribers');
+                expiringSubscribers = await expiringResponse.json();
+                populateExpiringTable('all');
+                hideSpinner('expiringTableSpinner');
+
+                setCachedData({
+                    metrics: metricsData,
+                    subscribers: allSubscribers,
+                    expiring: expiringSubscribers
+                });
+            } catch (error) {
+                console.error('Fetch error:', error);
+                const message = error.name === 'AbortError' ? 'Request timed out' : error.message.includes('Unauthorized') ? 'Session expired. Please log in again.' : 'Failed to load data.';
+                showError(message);
+                document.getElementById('totalUsersCountValue').textContent = 'Error';
+                document.getElementById('activeUsersCountValue').textContent = 'Error';
+                document.getElementById('expiringSoonCountValue').textContent = 'Error';
+                document.getElementById('userDetailsList').innerHTML = '<tr><td colspan="7">Error: Failed to load data</td></tr>';
+                document.getElementById('expiringSubscribersList').innerHTML = '<tr><td colspan="4">Error: Failed to load data</td></tr>';
+                hideSpinner('totalUsersSpinner');
+                hideSpinner('activeUsersSpinner');
+                hideSpinner('expiringSoonSpinner');
+                hideSpinner('userTableSpinner');
+                hideSpinner('expiringTableSpinner');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const token = localStorage.getItem('adminToken');
             if (!token) {
                 window.location.href = 'login.html';
                 return;
             }
-    
-            // Fetch dashboard metrics
-            fetch('http://localhost:9045/admin/dashboard/metrics', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch metrics');
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('totalUsersCountValue').textContent = data.newCustomers || 0;
-                document.getElementById('activeUsersCountValue').textContent = data.monthlySubscriptions || 0;
-                document.getElementById('expiringSoonCountValue').textContent = data.inactiveCustomers || 0;
-            })
-            .catch(error => {
-                console.error('Error fetching metrics:', error);
-                document.getElementById('totalUsersCountValue').textContent = 'Error';
-                document.getElementById('activeUsersCountValue').textContent = 'Error';
-                document.getElementById('expiringSoonCountValue').textContent = 'Error';
-            });
-    
-            // Fetch all subscribers
-            let allSubscribers = [];
-            fetch('http://localhost:9045/admin/dashboard/subscribers', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch subscribers');
-                return response.json();
-            })
-            .then(data => {
-                allSubscribers = data;
-                populateUserDetailsTable();
-            })
-            .catch(error => {
-                console.error('Error fetching subscribers:', error);
-                document.getElementById('userDetailsList').innerHTML = '<tr><td colspan="7">Error: Failed to load data</td></tr>';
-            });
-    
-            // Fetch expiring subscribers
-            let expiringSubscribers = [];
-            fetch('http://localhost:9045/admin/dashboard/subscribers/expiring', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch expiring subscribers');
-                return response.json();
-            })
-            .then(data => {
-                expiringSubscribers = data;
-                populateExpiringTable("all");
-            })
-            .catch(error => {
-                console.error('Error fetching expiring subscribers:', error);
-                document.getElementById('expiringSubscribersList').innerHTML = '<tr><td colspan="4">Error: Failed to load data</td></tr>';
-            });
-    
+
+            fetchDashboardData();
+
             const expiringSubscribersTable = document.getElementById('expiringSubscribersList');
             const filterDropdown = document.getElementById('filterDays');
             function populateExpiringTable(daysFilter) {
                 expiringSubscribersTable.innerHTML = "";
                 let expiringSoonCount = 0;
                 const today = new Date();
-    
+
                 if (expiringSubscribers.length === 0) {
                     expiringSubscribersTable.innerHTML = '<tr><td colspan="4">No data available</td></tr>';
                 } else {
                     expiringSubscribers.forEach(subscriber => {
                         const expiryDate = new Date(subscriber.planExpiry);
                         const differenceInDays = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-    
+
                         if (daysFilter === "all" || (differenceInDays >= 0 && differenceInDays <= parseInt(daysFilter))) {
                             const row = document.createElement('tr');
                             row.innerHTML = `
@@ -861,13 +1060,13 @@
                                 <td>${subscriber.mobileNumber || 'N/A'}</td>
                                 <td>${subscriber.planExpiry || 'N/A'}</td>
                                 <td class="d-flex justify-content-between">
-                                    <button class="btn btn-primary btn-sm view-btn" data-name="${subscriber.name || 'N/A'}" data-phone="${subscriber.mobileNumber || 'N/A'}" data-expiry="${subscriber.planExpiry || 'N/A'}" data-email="${subscriber.email || 'N/A'}">View</button>
-                                    <button class="btn btn-warning btn-sm notify-btn" data-email="${subscriber.email || 'N/A'}">Notify</button>
+                                    <button class="btn btn-primary btn-sm view-btn" data-name="${subscriber.name || 'N/A'}" data-phone="${subscriber.mobileNumber || 'N/A'}" data-expiry="${subscriber.planExpiry || 'N/A'}" data-email="${subscriber.email || 'N/A'}" aria-label="View subscriber details">View</button>
+                                    <button class="btn btn-warning btn-sm notify-btn" data-email="${subscriber.email || 'N/A'}" aria-label="Notify subscriber">Notify</button>
                                 </td>
                             `;
                             expiringSubscribersTable.appendChild(row);
                         }
-    
+
                         if (differenceInDays >= 0 && differenceInDays <= 3) {
                             expiringSoonCount++;
                         }
@@ -876,23 +1075,23 @@
                 document.getElementById('expiringSoonCountValue').textContent = expiringSoonCount;
                 addButtonListeners();
             }
-    
+
             const userDetailsTable = document.getElementById('userDetailsList');
             function populateUserDetailsTable(filterName = '', filterPrice = '', filterDate = '', filterPackage = '') {
                 userDetailsTable.innerHTML = '';
                 let totalUsersCount = 0;
                 let activeUsersCount = 0;
                 const today = new Date();
-    
+
                 if (allSubscribers.length === 0) {
                     userDetailsTable.innerHTML = '<tr><td colspan="7">No data available</td></tr>';
                 } else {
                     allSubscribers.forEach(user => {
                         const nameMatch = (user.name || '').toLowerCase().includes(filterName.toLowerCase());
-                        const priceMatch = true; // Add price filtering logic if needed
+                        const priceMatch = true;
                         const dateMatch = filterDate === '' || (user.rechargeDate === filterDate);
-                        const packageMatch = true; // Add package filtering logic if needed
-    
+                        const packageMatch = true;
+
                         if (nameMatch && priceMatch && dateMatch && packageMatch) {
                             const row = document.createElement('tr');
                             row.innerHTML = `
@@ -906,7 +1105,7 @@
                                     <button class="btn btn-info btn-sm view-history-btn" 
                                         data-name="${user.name || 'N/A'}" 
                                         data-phone="${user.mobileNumber || 'N/A'}" 
-                                        data-email="${user.email || 'N/A'}">View History</button>
+                                        data-email="${user.email || 'N/A'}" aria-label="View user history">View History</button>
                                 </td>
                             `;
                             userDetailsTable.appendChild(row);
@@ -920,9 +1119,14 @@
                 document.getElementById('totalUsersCountValue').textContent = totalUsersCount;
                 document.getElementById('activeUsersCountValue').textContent = activeUsersCount;
             }
-    
+
+            // Debounced filter handlers
+            const debouncedPopulate = debounce((name, price, date, pkg) => {
+                populateUserDetailsTable(name, price, date, pkg);
+            }, 300);
+
             document.getElementById('filterName').addEventListener('input', function () {
-                populateUserDetailsTable(
+                debouncedPopulate(
                     this.value,
                     document.getElementById('filterPrice').value,
                     document.getElementById('filterDate').value,
@@ -930,7 +1134,7 @@
                 );
             });
             document.getElementById('filterPrice').addEventListener('input', function () {
-                populateUserDetailsTable(
+                debouncedPopulate(
                     document.getElementById('filterName').value,
                     this.value,
                     document.getElementById('filterDate').value,
@@ -938,7 +1142,7 @@
                 );
             });
             document.getElementById('filterDate').addEventListener('change', function () {
-                populateUserDetailsTable(
+                debouncedPopulate(
                     document.getElementById('filterName').value,
                     document.getElementById('filterPrice').value,
                     this.value,
@@ -946,40 +1150,49 @@
                 );
             });
             document.getElementById('filterPackage').addEventListener('input', function () {
-                populateUserDetailsTable(
+                debouncedPopulate(
                     document.getElementById('filterName').value,
                     document.getElementById('filterPrice').value,
                     document.getElementById('filterDate').value,
                     this.value
                 );
             });
-    
+
             filterDropdown.addEventListener('change', function () {
                 populateExpiringTable(this.value);
             });
-    
+
             document.querySelector('.menu-toggle').addEventListener('click', function () {
                 const sidebar = document.querySelector('.sidebar');
                 const overlay = document.querySelector('.sidebar-overlay');
                 sidebar.classList.toggle('active');
                 overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
             });
-    
+
             document.querySelector('.sidebar-overlay').addEventListener('click', function () {
                 const sidebar = document.querySelector('.sidebar');
                 sidebar.classList.remove('active');
                 this.style.display = 'none';
             });
-    
+
+            // Keyboard navigation
+            document.querySelector('.sidebar').addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    e.target.classList.remove('active');
+                    document.querySelector('.sidebar-overlay').style.display = 'none';
+                }
+            });
+
             function addButtonListeners() {
                 document.querySelectorAll('.view-btn').forEach(button => {
                     button.addEventListener('click', function () {
                         try {
+                            button.disabled = true;
                             const name = this.getAttribute('data-name');
                             const phone = this.getAttribute('data-phone');
                             const email = this.getAttribute('data-email');
                             const expiry = this.getAttribute('data-expiry');
-    
+
                             const modalBody = document.getElementById('modalBodyContent');
                             modalBody.innerHTML = `
                                 <p><strong>Name:</strong> <span class="text-primary">${name}</span></p>
@@ -990,44 +1203,50 @@
                             document.getElementById('infoModalLabel').textContent = 'Subscriber Details';
                             const modal = new bootstrap.Modal(document.getElementById('infoModal'));
                             modal.show();
+                            button.disabled = false;
                         } catch (error) {
                             console.error('Error in view button:', error);
                             resetBodyStyles();
+                            button.disabled = false;
                         }
                     });
                 });
-    
+
                 document.querySelectorAll('.notify-btn').forEach(button => {
                     button.addEventListener('click', function () {
                         try {
+                            button.disabled = true;
                             const email = this.getAttribute('data-email');
-    
+
                             const modalBody = document.getElementById('modalBodyContent');
                             modalBody.innerHTML = `<p class="text-success">Notification sent to <strong>${email}</strong></p>`;
                             document.getElementById('infoModalLabel').textContent = 'Notification';
                             const modal = new bootstrap.Modal(document.getElementById('infoModal'));
                             modal.show();
+                            button.disabled = false;
                         } catch (error) {
                             console.error('Error in notify button:', error);
                             resetBodyStyles();
+                            button.disabled = false;
                         }
                     });
                 });
-    
+
                 document.querySelectorAll('.view-history-btn').forEach(button => {
                     button.addEventListener('click', function (event) {
                         event.preventDefault();
                         try {
+                            button.disabled = true;
                             const name = this.getAttribute('data-name');
                             const phone = this.getAttribute('data-phone');
                             const email = this.getAttribute('data-email');
-    
-                            let historyDetails = `<h3 style="color: #921e24; font-weight: bold;">History for ${name}</h3>`;
-                            historyDetails += `<p style="color: #333; font-size: 1.1rem;">Phone Number: <span style="color: #007bff;">${phone}</span></p>`;
-                            historyDetails += `<p style="color: #333; font-size: 1.1rem;">Email ID: <span style="color: #007bff;">${email}</span></p>`;
-                            historyDetails += `<p style="color: #333; font-size: 1.1rem;">Number of Transactions: <span style="color: #28a745; font-weight: bold;">0</span></p>`;
-                            historyDetails += `<table class="table table-bordered" style="background-color: #f8f9fa; margin-top: 15px;">
-                                <thead style="background-color: #921e24; color: white;">
+
+                            let historyDetails = `<h3 style="color: var(--secondary); font-weight: bold;">History for ${name}</h3>`;
+                            historyDetails += `<p style="color: var(--text); font-size: 1.1rem;">Phone Number: <span style="color: var(--primary);">${phone}</span></p>`;
+                            historyDetails += `<p style="color: var(--text); font-size: 1.1rem;">Email ID: <span style="color: var(--primary);">${email}</span></p>`;
+                            historyDetails += `<p style="color: var(--text); font-size: 1.1rem;">Number of Transactions: <span style="color: var(--accent-success); font-weight: bold;">0</span></p>`;
+                            historyDetails += `<table class="table table-bordered" style="margin-top: 15px;">
+                                <thead>
                                     <tr>
                                         <th>Date of Recharge</th>
                                         <th>Mode of Recharge</th>
@@ -1036,47 +1255,40 @@
                                         <th>Plans</th>
                                     </tr>
                                 </thead>
-                                <tbody style="background-color: #ffffff;">
+                                <tbody>
                                     <tr><td colspan="5">No transaction history available</td></tr>
                                 </tbody>
                             </table>`;
-    
+
                             const modalBody = document.createElement('div');
                             modalBody.innerHTML = historyDetails;
                             modalBody.className = 'custom-modal';
                             document.body.appendChild(modalBody);
-    
+
                             const closeButton = document.createElement('button');
                             closeButton.innerText = 'Close';
                             closeButton.className = 'btn btn-danger';
-                            closeButton.style.marginTop = '15px';
-                            closeButton.style.padding = '8px 20px';
-                            closeButton.style.backgroundColor = '#921e24';
-                            closeButton.style.color = 'white';
-                            closeButton.style.border = 'none';
-                            closeButton.style.borderRadius = '5px';
-                            closeButton.style.cursor = 'pointer';
-                            closeButton.style.transition = 'background-color 0.3s ease';
-                            closeButton.onmouseover = () => closeButton.style.backgroundColor = '#b3242a';
-                            closeButton.onmouseout = () => closeButton.style.backgroundColor = '#921e24';
                             closeButton.onclick = () => {
                                 document.body.removeChild(modalBody);
                                 resetBodyStyles();
                             };
                             modalBody.appendChild(closeButton);
-    
+
                             document.body.style.overflow = 'hidden';
+                            button.disabled = false;
                         } catch (error) {
                             console.error('Error in view history button:', error);
                             resetBodyStyles();
+                            button.disabled = false;
                         }
                     });
                 });
             }
-    
+
             document.getElementById('infoModal').addEventListener('hidden.bs.modal', function () {
                 resetBodyStyles();
             });
         });
     </script>
+</body>
 </html>
