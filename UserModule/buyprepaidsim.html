@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy New SIM | Mobi-Comm</title>
+    <meta name="description" content="Get a new Mobi-Comm SIM card and enjoy premium network services with exciting plans.">
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="font">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📱</text></svg>">
+    <!-- External CSS Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Styles -->
+    <style>
+          /* Root Variables - Enhanced Light Theme */
+          :root {
+            --primary: #d06ab2; /* Warm light yellow for highlights (softer gold) */
+            --secondary: #6b2d6b; /* Richer purple for emphasis */
+            --bg: #f5f6ff; /* Subtle off-white with a hint of blue */
+            --text: #1a1a1a; /* Deep charcoal for strong readability */
+            --text-light: #4a4a4a; /* Softer gray for secondary text */
+            --accent-success: #3871c2; /* Brighter professional blue */
+            --accent-urgent: #d95f0e; /* Vivid muted orange */
+            --highlight: #4a1a4a; /* Deeper purple for footer */
+            --web: #4a1a4a; /* Consistent brand purple */
+            --web-dark: #2d0a2d; /* Darker purple-toned header */
+            --blue-primary: #4a1a4a; /* Deep purple for login gradient */
+            --blue-secondary: #6d2d6d; /* Lighter purple gradient */
+            --card-bg: #ffffff; /* Pure white for cards */
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Dark Theme Variables - Enhanced for Vibrancy and Depth */
+        [data-theme="dark"] {
+            --primary: #f2db8e; /* Vibrant amber-gold for highlights */
+            --secondary: #ab47bc; /* Brighter, more vivid purple */
+            --bg: #12122e; /* Deep navy with a hint of purple */
+            --text: #e8eaf6; /* Light off-white for readability */
+            --text-light: #b0bec5; /* Cool gray-blue for secondary text */
+            --accent-success: #26c6da; /* Bright cyan for success */
+            --accent-urgent: #ff7043; /* Warm coral for urgency */
+            --highlight: #0d1a3a; /* Dark navy for footer depth */
+            --web: #ab47bc; /* Matching vibrant purple */
+            --web-dark: #09091a; /* Almost black with a purple undertone */
+            --blue-primary: #7e57c2; /* Electric purple for login gradient */
+            --blue-secondary: #00bcd4; /* Bright cyan for gradient contrast */
+            --card-bg: #1e1e3f; /* Dark purple-blue for cards */
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(171, 71, 188, 0.25); /* Enhanced glow */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-block {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .port-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .port-header h1 {
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .port-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--secondary);
+            z-index: 0;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .step.active .step-number {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .step.active .step-label {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(155, 93, 229, 0.3);
+            background: var(--bg);
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(155, 93, 229, 0.25);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .otp-input-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(155, 93, 229, 0.3);
+        }
+
+        .resend-otp {
+            text-align: center;
+            margin: 15px 0;
+            color: var(--text-light);
+        }
+
+        .resend-otp a {
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .address-field {
+            margin-bottom: 20px;
+        }
+
+        .address-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .confirmation-message i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .confirmation-message h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-header h2 {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .accordion {
+            --bs-accordion-bg: var(--card-bg);
+            --bs-accordion-border-color: rgba(155, 93, 229, 0.2);
+            --bs-accordion-btn-color: var(--secondary);
+            --bs-accordion-active-color: var(--secondary);
+            --bs-accordion-active-bg: rgba(155, 93, 229, 0.1);
+            --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(155, 93, 229, 0.25);
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .accordion-body {
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .section-block {
+                padding: 20px;
+            }
+            
+            .step-label {
+                font-size: 0.8rem;
+            }
+            
+            .otp-input {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Header styles */
+        header {
+            background: var(--secondary);
+            padding: 12px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        nav h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav h1 i {
+            font-size: 22px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            transition: var(--transition);
+            border-radius: 20px;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 5px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+         /* Footer */
+         footer {
+            background: var(--highlight);
+            color: #ffffff;
+            padding: 80px 0 0;
+            position: relative;
+        }
+
+        .footer-wave .shape-fill {
+            fill: var(--bg);
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .footer-about p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: inline;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
+            margin: 0 10px;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            padding: 5px;
+        }
+
+        footer h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary); /* Gold in dark mode */
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        footer h4::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links a {
+            display: block;
+            padding: 8px 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .footer-contact i {
+            margin-top: 3px;
+            color: var(--primary);
+        }
+
+        .footer-newsletter input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .footer-newsletter input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .footer-newsletter button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .footer-newsletter button:hover {
+            background: white;
+            transform: translateY(-2px);
+            color: var(--web-dark);
+        }
+
+        .footer-bottom {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--secondary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            opacity: 0;
+            z-index: 999;
+            border: 2px solid var(--primary);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <h1><i class="fas fa-mobile-alt"></i> Mobi-Comm</h1>
+            <ul>
+                <li><a href="login.html">Home</a></li>
+                <li><a href="#portBlock">Buy new sim</a></li>
+                <li><a href="#faqBlock">FAQs</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Buy New SIM Block -->
+        <div class="main-container">
+            <div class="section-block" id="portBlock">
+                <div class="port-header">
+                    <h1>Buy a new Mobi-Comm SIM</h1>
+                    <p>Get started with our premium network services with a brand new SIM card</p>
+                </div>
+
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step active" id="step1-indicator">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Enter Details</div>
+                    </div>
+                    <div class="step" id="step2-indicator">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Verify OTP</div>
+                    </div>
+                    <div class="step" id="step3-indicator">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Delivery Address</div>
+                    </div>
+                    <div class="step" id="step4-indicator">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Confirmation</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Enter User Details -->
+                <div class="form-section active" id="step1">
+                    <form id="userDetailsForm">
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="userName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="currentNumber" class="form-label">Mobile Number</label>
+                            <input type="tel" class="form-control" id="currentNumber" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email address" required>
+                        </div>
+                        <button type="button" class="btn btn-primary w-100" onclick="generateOTP()">Generate OTP</button>
+                    </form>
+                </div>
+
+                <!-- Step 2: Verify OTP -->
+                <div class="form-section" id="step2">
+                    <div class="port-header">
+                        <h3>Verify your mobile number</h3>
+                        <p>The OTP has been sent to <strong id="displayNumber">9876543210</strong></p>
+                    </div>
+
+                    <form id="verifyOTPForm">
+                        <div class="otp-input-container">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                        </div>
+                        
+                        <div class="resend-otp">
+                            <span id="timer-text">Resend OTP in <span id="otp-timer">00:30</span></span>
+                            <a id="resend-link" style="display: none;" onclick="resendOTP()">Resend OTP</a>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary w-100" onclick="verifyOTP()">Verify OTP</button>
+                    </form>
+                </div>
+
+                <!-- Step 3: Delivery Address -->
+                <div class="form-section" id="step3">
+                    <div class="port-header">
+                        <h3>Delivery Address</h3>
+                        <p>Where do you want your new Mobi-Comm SIM to be delivered?</p>
+                    </div>
+
+                    <form id="addressForm">
+                        <div class="address-field">
+                            <label for="pinCode">PIN Code</label>
+                            <input type="text" class="form-control" id="pinCode" placeholder="Enter 6-digit PIN code" pattern="[0-9]{6}" required>
+                        </div>
+                        
+                        <div class="address-field">
+                            <label for="addressLine1">Address Line 1</label>
+                            <input type="text" class="form-control" id="addressLine1" placeholder="House/Flat number, Building, Street" required>
+                        </div>
+                        
+                        <div class="address-field">
+                            <label for="addressLine2">Address Line 2</label>
+                            <input type="text" class="form-control" id="addressLine2" placeholder="Area, Locality">
+                        </div>
+                        
+                        <div class="address-field">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" placeholder="Enter your city" required>
+                        </div>
+                        
+                        <div class="address-field">
+                            <label for="state">State</label>
+                            <select class="form-control" id="state" required>
+                                <option value="">Select State</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <!-- Add more states as needed -->
+                            </select>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary w-100 mt-4" onclick="submitAddress()">Proceed to Confirmation</button>
+                    </form>
+                </div>
+
+                <!-- Step 4: Confirmation -->
+                <div class="form-section" id="step4">
+                    <div class="confirmation-message">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>New SIM Order Successful!</h3>
+                        <p>Your request for a new Mobi-Comm SIM has been received.</p>
+                        <p>We'll deliver your new SIM card within 2-3 business days.</p>
+                        <p>You'll receive an SMS with activation instructions once delivered.</p>
+                        <button type="button" class="btn btn-primary mt-4" onclick="window.location.href='login.html'">Back to Home</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Block -->
+            <div class="section-block" id="faqBlock">
+                <div class="faq-header">
+                    <h2>New SIM Card - FAQs</h2>
+                    <p>Find answers to common questions about getting a new Mobi-Comm SIM</p>
+                </div>
+                
+                <div class="accordion" id="portingFaqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                How long does delivery take?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#portingFaqAccordion">
+                            <div class="accordion-body">
+                                We typically deliver new SIM cards within 2-3 business days in metro cities and 3-5 business days in other locations. You'll receive a tracking SMS once your SIM is dispatched.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                What documents do I need to activate my new SIM?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#portingFaqAccordion">
+                            <div class="accordion-body">
+                                You'll need to provide:
+                                <ul>
+                                    <li>Clear photocopy of your ID proof (Aadhaar, PAN, Passport, etc.)</li>
+                                    <li>Clear photocopy of your address proof (if different from ID proof)</li>
+                                    <li>Passport size photograph</li>
+                                </ul>
+                                Our delivery executive will verify these documents when delivering your SIM card.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Can I choose my mobile number?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#portingFaqAccordion">
+                            <div class="accordion-body">
+                                Currently, we assign numbers automatically based on availability in your area. However, you can request a specific number series (like starting with 9 or 8) in the special instructions during checkout, and we'll try to accommodate if available.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                What plans are available with a new SIM?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#portingFaqAccordion">
+                            <div class="accordion-body">
+                                Our new SIM comes with a variety of prepaid and postpaid plan options. You can choose from:
+                                <ul>
+                                    <li>Starter packs with limited validity</li>
+                                    <li>Unlimited data and calling plans</li>
+                                    <li>Family and group plans</li>
+                                    <li>International roaming packs</li>
+                                </ul>
+                                You'll be able to select your preferred plan during the activation process after receiving your SIM.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                Is there any delivery charge?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#portingFaqAccordion">
+                            <div class="accordion-body">
+                                We offer free delivery for all new SIM card orders. There are no hidden charges for the delivery process. However, if you need express delivery (within 24 hours), there may be an additional charge depending on your location.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                How do I activate my new SIM card?
+                            </button>
+                        </h2>
+                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#portingFaqAccordion">
+                            <div class="accordion-body">
+                                Once you receive your SIM card:
+                                <ol>
+                                    <li>Insert the SIM into your phone</li>
+                                    <li>Power on your device</li>
+                                    <li>Follow the on-screen activation instructions</li>
+                                    <li>You'll receive an SMS confirming activation</li>
+                                    <li>Choose your preferred plan and make payment</li>
+                                </ol>
+                                Our customer care team is available 24/7 if you need any assistance.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                                Can I return or exchange my SIM card?
+                            </button>
+                        </h2>
+                        <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#portingFaqAccordion">
+                            <div class="accordion-body">
+                                SIM cards cannot be returned or exchanged once activated due to regulatory requirements. However, if you receive a defective SIM card, please contact our customer care within 7 days of delivery for a free replacement.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <h3><i class="fas fa-mobile-alt"></i> Mobi-Comm</h3>
+                    </div>
+                    <p>India's fastest growing telecommunications provider offering premium services with nationwide coverage.</p>
+                    <div class="social-links">
+                        <a href="https://m.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://in.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="login.html">Home</a>
+                    <a href="#portBlock">Buy New SIM</a>
+                    <a href="recharge.html">Plans & Offers</a>
+                    <!-- <a href="coverage.html">Coverage Map</a> -->
+                    <a href="#faqBlock">FAQs</a>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-headset"></i> Customer Care: 1800 123 4567</p>
+                    <p><i class="fas fa-envelope"></i> Email: support@mobicomm.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Corporate Office: 123 Tech Park, Sector 18, Gurugram, Haryana 122001</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="currentYear"></span> Mobi-Comm Telecommunications Ltd. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Set current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // SIM purchase process functionality
+        let currentMobileNumber = '';
+        let otpAttempts = 0;
+        const MAX_OTP_ATTEMPTS = 3;
+        let countdownInterval;
+
+        // Initialize OTP timer
+        function startOTPTimer() {
+            let timeLeft = 30;
+            document.getElementById('resend-link').style.display = 'none';
+            document.getElementById('timer-text').style.display = 'block';
+            
+            countdownInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('otp-timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('timer-text').style.display = 'none';
+                    document.getElementById('resend-link').style.display = 'inline';
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        // OTP input handling
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1) {
+                    if (index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value.length === 0) {
+                    if (index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                }
+            });
+        });
+
+        // Navigation between steps
+        function generateOTP() {
+            const userName = document.getElementById('userName').value;
+            currentMobileNumber = document.getElementById('currentNumber').value;
+            const email = document.getElementById('email').value;
+            
+            // Validate form
+            if (!userName || !/^\d{10}$/.test(currentMobileNumber) || !email) {
+                alert('Please enter valid details');
+                return;
+            }
+            
+            document.getElementById('displayNumber').textContent = currentMobileNumber;
+            
+            // In a real app, you would send OTP to the mobile number here
+            console.log('OTP sent to', currentMobileNumber);
+            
+            // For demo, we'll use a fixed OTP (123456)
+            // Move to OTP verification step
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('step1-indicator').classList.remove('active');
+            document.getElementById('step2-indicator').classList.add('active');
+            
+            // Start OTP timer
+            startOTPTimer();
+            
+            // Auto-focus first OTP input
+            otpInputs[0].focus();
+        }
+
+        function resendOTP() {
+            if (otpAttempts >= MAX_OTP_ATTEMPTS) {
+                alert('Maximum OTP attempts reached. Please try again later.');
+                return;
+            }
+            
+            // In a real app, you would resend OTP here
+            console.log('Resending OTP to', currentMobileNumber);
+            otpAttempts++;
+            
+            // Clear OTP inputs
+            otpInputs.forEach(input => input.value = '');
+            otpInputs[0].focus();
+            
+            // Restart timer
+            clearInterval(countdownInterval);
+            startOTPTimer();
+            
+            alert('New OTP sent to your mobile number');
+        }
+
+        function verifyOTP() {
+            // Get entered OTP
+            let enteredOTP = '';
+            otpInputs.forEach(input => {
+                enteredOTP += input.value;
+            });
+            
+            // For demo, we'll accept any 6-digit OTP
+            if (enteredOTP.length !== 6) {
+                alert('Please enter complete 6-digit OTP');
+                return;
+            }
+            
+            // In a real app, you would verify OTP with server here
+            console.log('Verifying OTP:', enteredOTP);
+            
+            // Move to address step
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('step2-indicator').classList.remove('active');
+            document.getElementById('step3-indicator').classList.add('active');
+            
+            // Clear timer
+            clearInterval(countdownInterval);
+        }
+
+        function submitAddress() {
+            const pinCode = document.getElementById('pinCode').value;
+            const addressLine1 = document.getElementById('addressLine1').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            
+            // Validate form
+            if (!pinCode || !addressLine1 || !city || !state) {
+                alert('Please fill all required address fields');
+                return;
+            }
+            
+            // In a real app, you would submit address here
+            console.log('Address submitted:', { pinCode, addressLine1, city, state });
+            
+            // Move to confirmation step
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('step3-indicator').classList.remove('active');
+            // No indicator for confirmation step
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+    </script>
+</body>
+</html>

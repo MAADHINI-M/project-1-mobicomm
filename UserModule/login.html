@@ -103,12 +103,6 @@
             transition: var(--transition);
         }
 
-        header.scrolled {
-            background: rgba(15, 15, 27, 0.98); /* Adjusted for dark mode */
-            backdrop-filter: blur(8px);
-            padding: 8px 30px;
-        }
-
         nav {
             max-width: 1300px;
             margin: 0 auto;
@@ -416,7 +410,7 @@
         .cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 50px;
             margin-top: 40px;
         }
 
@@ -557,7 +551,10 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
+            /* margin: 50px 0 10px 10px; */
             margin-top: 50px;
+            margin-left: 10px;
+            margin-right: 10px;
         }
 
         .testimonial {
@@ -773,11 +770,12 @@
             height: 40px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            display: flex;
+            display: inline;
             align-items: center;
             justify-content: center;
             color: white;
             transition: var(--transition);
+            margin: 0 10px;
         }
 
         .social-links a:hover {
@@ -785,6 +783,7 @@
             color: var(--secondary);
             transform: translateY(-3px);
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            padding: 5px;
         }
 
         footer h4 {
@@ -919,7 +918,7 @@
         /* Theme Toggle Button */
         .theme-toggle {
             position: fixed;
-            top: 20px;
+            top: 10px;
             right: 20px;
             background: var(--primary);
             color: var(--secondary);
@@ -993,7 +992,7 @@
         }
 
         @media (max-width: 991px) {
-            nav ul { gapcorrected: 10px; }
+            nav ul { gap: 10px; }
             .section-header h3 { font-size: 2rem; }
             .cards { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
         }
@@ -1075,27 +1074,27 @@
                 <p>Join thousands of satisfied customers enjoying our premium network services</p>
             </div>
             <div class="cards">
-                <div class="card" data-bs-toggle="modal" data-bs-target="#prepaidModal">
+                <div class="card" onclick="window.location.href='buyprepaidsim.html'">
                     <div class="card-icon">
                         <i class="fas fa-sim-card"></i>
                     </div>
                     <h4>Buy Prepaid SIM</h4>
                     <p>Order your SIM online and get it delivered free to your doorstep</p>
                 </div>
-                <div class="card" id="port" data-bs-toggle="modal" data-bs-target="#portModal">
+                <div class="card" id="port" onclick="window.location.href='porttomobi.html'">
                     <div class="card-icon">
                         <i class="fas fa-exchange-alt"></i>
                     </div>
                     <h4>Port to MobiComm</h4>
                     <p>Keep your number and switch to our superior network in minutes</p>
                 </div>
-                <div class="card" id="fancy" data-bs-toggle="modal" data-bs-target="#fancyModal">
+                <div class="card" id="fancy" onclick="window.location.href='fancyNumber.html'">
                     <div class="card-icon">
                         <i class="fas fa-star"></i>
                     </div>
                     <h4>Fancy Number</h4>
                     <p>Choose from our exclusive collection of memorable numbers</p>
-                </div>
+                </div>                
             </div>
         </section>
 
@@ -1347,7 +1346,7 @@
                 <h3>Ready to Experience Premium Connectivity?</h3>
                 <p>Join Mobi-Comm today and enjoy seamless communication with India's most reliable network</p>
                 <div class="cta-buttons">
-                    <button class="btn-primary">Get Started Now</button>
+                    <a href="#main-content"><button class="btn-primary">Get Started Now</button></a>
                 </div>
             </div>
         </section>
@@ -1371,11 +1370,11 @@
                     </div>
                     <p>Mobi-Comm is a leading telecommunications provider committed to delivering seamless connectivity and innovative services across India since 2010.</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="https://m.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://in.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
@@ -1440,68 +1439,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="submitForm('prepaid')">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Port to MobiComm Modal -->
-    <div class="modal fade" id="portModal" tabindex="-1" aria-labelledby="portModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="portModalLabel">Port to MobiComm</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="portForm">
-                        <input type="text" placeholder="Full Name" required>
-                        <input type="tel" placeholder="Current Mobile Number" pattern="[0-9]{10}" title="Please enter a 10-digit number" required>
-                        <input type="text" placeholder="Porting Code (UPC)" required>
-                        <input type="email" placeholder="Email Address" required>
-                        <input type="text" placeholder="Address" required>
-                        <input type="text" placeholder="Pin Code" pattern="[0-9]{6}" title="Please enter a 6-digit pin code" required>
-                    </form>
-                    <div id="portConfirmation" style="display: none; color: var(--accent-success);">
-                        <p>Details submitted successfully! Your number will be ported and SIM delivered within 2 days.</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="submitForm('port')">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fancy Number Modal -->
-    <div class="modal fade" id="fancyModal" tabindex="-1" aria-labelledby="fancyModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="fancyModalLabel">Choose a Fancy Number</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="fancyForm">
-                        <input type="text" placeholder="Full Name" required>
-                        <select required>
-                            <option value="" disabled selected>Select a Fancy Number</option>
-                            <option value="9999999999">9999999999</option>
-                            <option value="8888888888">8888888888</option>
-                            <option value="7777777777">7777777777</option>
-                        </select>
-                        <input type="email" placeholder="Email Address" required>
-                        <input type="text" placeholder="Address" required>
-                        <input type="text" placeholder="Pin Code" pattern="[0-9]{6}" title="Please enter a 6-digit pin code" required>
-                    </form>
-                    <div id="fancyConfirmation" style="display: none; color: var(--accent-success);">
-                        <p>Details submitted successfully! Your fancy number SIM will be delivered within 2 days.</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="submitForm('fancy')">Submit</button>
                 </div>
             </div>
         </div>
@@ -1591,25 +1528,6 @@
                 alert('This number is not a MobiComm subscriber. Please register or port your number.');
             }
         });
-    
-        // Modal Form Submission
-        function submitForm(type) {
-            const form = document.getElementById(`${type}Form`);
-            const confirmation = document.getElementById(`${type}Confirmation`);
-            
-            if (form.checkValidity()) {
-                form.style.display = 'none';
-                confirmation.style.display = 'block';
-                setTimeout(() => {
-                    bootstrap.Modal.getInstance(document.getElementById(`${type}Modal`)).hide();
-                    form.reset();
-                    form.style.display = 'block';
-                    confirmation.style.display = 'none';
-                }, 2000); // Hide modal after 2 seconds
-            } else {
-                form.reportValidity();
-            }
-        }
     </script>
 </body>
 </html>

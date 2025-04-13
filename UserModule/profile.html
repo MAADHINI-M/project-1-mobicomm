@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Mobicomm</title>
+    <title>Profile - Mobicomm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +17,6 @@
             --accent-success: #3871c2;
             --accent-urgent: #d95f0e;
             --highlight: #4a1a4a;
-            --web: #4a1a4a;
             --web-dark: #2d0a2d;
             --card-bg: #ffffff;
             --border-radius: 12px;
@@ -133,7 +132,7 @@
             width: 100%;
         }
 
-        .contact-card {
+        .profile-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
             padding: 30px;
@@ -141,7 +140,7 @@
             transition: var(--transition);
         }
 
-        .contact-card:hover {
+        .profile-card:hover {
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
@@ -203,6 +202,27 @@
             display: none;
         }
 
+        .profile-info p {
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .profile-info strong {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(56, 113, 194, 0.1);
+            border: 1px solid var(--accent-success);
+            border-radius: 8px;
+            color: var(--accent-success);
+            text-align: center;
+        }
+
         footer {
             background: var(--highlight);
             color: white;
@@ -222,17 +242,6 @@
             color: var(--accent-success);
         }
 
-        .success-message {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(56, 113, 194, 0.1);
-            border: 1px solid var(--accent-success);
-            border-radius: 8px;
-            color: var(--accent-success);
-            text-align: center;
-        }
-
         @media (max-width: 992px) {
             .main-content {
                 padding: 60px 20px;
@@ -249,7 +258,7 @@
             h2 {
                 font-size: 1.6rem;
             }
-            .contact-card {
+            .profile-card {
                 padding: 20px;
             }
         }
@@ -294,7 +303,7 @@
                         <a class="nav-link" href="recharge.html">Special Offers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="support.html">Support</a>
+                        <a class="nav-link" href="support.html">Support</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
@@ -303,10 +312,10 @@
                             <i class="fas fa-user-circle me-1"></i> My Account
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><a class="dropdown-item active" href="profile.html">Profile</a></li>
                             <li><a class="dropdown-item" href="settings.html">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                            <li><a class="dropdown-item" href="#" id="logoutLink">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -315,10 +324,17 @@
     </nav>
 
     <div class="main-content">
-        <h2>Contact Us</h2>
-        <div class="contact-card">
-            <h5>Get in Touch</h5>
-            <form id="contactForm">
+        <h2>My Profile</h2>
+        <div class="profile-card">
+            <h5>User Information</h5>
+            <div class="profile-info" id="profileInfo">
+                <p><strong>Name:</strong> <span id="displayName">John Doe</span></p>
+                <p><strong>Email:</strong> <span id="displayEmail">john.doe@example.com</span></p>
+                <p><strong>Phone:</strong> <span id="displayPhone">9876543210</span></p>
+                <p><strong>Plan:</strong> <span id="displayPlan">Premium 4GB/Day (28 days)</span></p>
+            </div>
+            <button class="btn btn-primary mt-3" id="editProfileBtn">Edit Profile</button>
+            <form id="editProfileForm" class="mt-4" style="display: none;">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
@@ -330,14 +346,15 @@
                     <div class="validation-message" id="emailValidation">Please enter a valid email address.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" rows="5" placeholder="Describe your issue..." required></textarea>
-                    <div class="validation-message" id="messageValidation">Please enter a message (minimum 10 characters).</div>
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                    <div class="validation-message" id="phoneValidation">Please enter a valid 10-digit phone number starting with 987.</div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-secondary ms-2" id="cancelEditBtn">Cancel</button>
             </form>
             <div class="success-message" id="successMessage">
-                <i class="fas fa-check-circle me-2"></i> Your message has been submitted! Ticket ID: <span id="ticketId"></span>
+                <i class="fas fa-check-circle me-2"></i> Profile updated successfully!
             </div>
         </div>
     </div>
@@ -374,17 +391,37 @@
             themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
         }
 
-        // Contact Form Validation and Submission
-        const contactForm = document.getElementById('contactForm');
+        // Profile functionality
+        const profileInfo = document.getElementById('profileInfo');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const successMessage = document.getElementById('successMessage');
         const nameInput = document.getElementById('name');
         const emailInput = document.getElementById('email');
-        const messageInput = document.getElementById('message');
+        const phoneInput = document.getElementById('phone');
         const nameValidation = document.getElementById('nameValidation');
         const emailValidation = document.getElementById('emailValidation');
-        const messageValidation = document.getElementById('messageValidation');
-        const successMessage = document.getElementById('successMessage');
-        const ticketIdSpan = document.getElementById('ticketId');
+        const phoneValidation = document.getElementById('phoneValidation');
 
+        // Load profile from localStorage
+        function loadProfile() {
+            const profile = JSON.parse(localStorage.getItem('userProfile')) || {
+                name: 'John Doe',
+                email: 'john.doe@example.com',
+                phone: '9876543210',
+                plan: 'Premium 4GB/Day (28 days)'
+            };
+            document.getElementById('displayName').textContent = profile.name;
+            document.getElementById('displayEmail').textContent = profile.email;
+            document.getElementById('displayPhone').textContent = profile.phone;
+            document.getElementById('displayPlan').textContent = profile.plan;
+            nameInput.value = profile.name;
+            emailInput.value = profile.email;
+            phoneInput.value = profile.phone;
+        }
+
+        // Validate input
         function validateInput(input, validationElement, isValid) {
             if (!isValid) {
                 input.classList.add('is-invalid');
@@ -405,11 +442,33 @@
             validateInput(emailInput, emailValidation, emailRegex.test(emailInput.value.trim()));
         });
 
-        messageInput.addEventListener('input', () => {
-            validateInput(messageInput, messageValidation, messageInput.value.trim().length >= 10);
+        phoneInput.addEventListener('input', () => {
+            const phoneRegex = /^987\d{7}$/;
+            validateInput(phoneInput, phoneValidation, phoneRegex.test(phoneInput.value.trim()));
         });
 
-        contactForm.addEventListener('submit', function(e) {
+        // Toggle edit form
+        editProfileBtn.addEventListener('click', () => {
+            profileInfo.style.display = 'none';
+            editProfileForm.style.display = 'block';
+            editProfileBtn.style.display = 'none';
+        });
+
+        cancelEditBtn.addEventListener('click', () => {
+            profileInfo.style.display = 'block';
+            editProfileForm.style.display = 'none';
+            editProfileBtn.style.display = 'block';
+            loadProfile(); // Reset form
+            nameInput.classList.remove('is-invalid');
+            emailInput.classList.remove('is-invalid');
+            phoneInput.classList.remove('is-invalid');
+            nameValidation.style.display = 'none';
+            emailValidation.style.display = 'none';
+            phoneValidation.style.display = 'none';
+        });
+
+        // Handle form submission
+        editProfileForm.addEventListener('submit', (e) => {
             e.preventDefault();
             let isValid = true;
 
@@ -425,39 +484,39 @@
                 isValid = false;
             }
 
-            if (messageInput.value.trim().length < 10) {
-                validateInput(messageInput, messageValidation, false);
+            const phoneRegex = /^987\d{7}$/;
+            if (!phoneRegex.test(phoneInput.value.trim())) {
+                validateInput(phoneInput, phoneValidation, false);
                 isValid = false;
             }
 
             if (isValid) {
-                const submissions = JSON.parse(localStorage.getItem('contactSubmissions')) || [];
-                submissions.push({
+                const profile = {
                     name: nameInput.value.trim(),
                     email: emailInput.value.trim(),
-                    message: messageInput.value.trim(),
-                    date: new Date().toISOString()
-                });
-                localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
-
-                const tickets = JSON.parse(localStorage.getItem('supportTickets')) || [];
-                const ticketId = 'TICKET' + (1000 + tickets.length + 1);
-                tickets.push({
-                    id: ticketId,
-                    issue: messageInput.value.trim().substring(0, 50) + '...',
-                    date: new Date().toISOString().split('T')[0],
-                    status: 'Open'
-                });
-                localStorage.setItem('supportTickets', JSON.stringify(tickets));
-
-                ticketIdSpan.textContent = ticketId;
+                    phone: phoneInput.value.trim(),
+                    plan: document.getElementById('displayPlan').textContent
+                };
+                localStorage.setItem('userProfile', JSON.stringify(profile));
+                loadProfile();
+                profileInfo.style.display = 'block';
+                editProfileForm.style.display = 'none';
+                editProfileBtn.style.display = 'block';
                 successMessage.style.display = 'block';
-                contactForm.reset();
-
                 setTimeout(() => {
                     successMessage.style.display = 'none';
-                }, 5000);
+                }, 3000);
             }
+        });
+
+        // Load profile on page load
+        loadProfile();
+
+        // Logout functionality
+        document.getElementById('logoutLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('activeUser'); // Clear session data
+            window.location.href = 'login.html';
         });
     </script>
 </body>

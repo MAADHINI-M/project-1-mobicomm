@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobi-Comm | Fancy Number Selection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #d06ab2;
+            --secondary: #6b2d6b;
+            --bg: #f5f6ff;
+            --text: #1a1a1a;
+            --text-light: #4a4a4a;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --section-gap: 30px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #f2db8e;
+            --secondary: #ab47bc;
+            --bg: #12122e;
+            --text: #e8eaf6;
+            --text-light: #b0bec5;
+            --card-bg: #1e1e3f;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding-bottom: 50px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-block {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: var(--section-gap);
+        }
+
+        .fancy-number-container {
+            /* Styles moved to section-block */
+        }
+
+        .fancy-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .fancy-header h1 {
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .fancy-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--secondary);
+            z-index: 0;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .step.active .step-number {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .step.active .step-label {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(155, 93, 229, 0.3);
+            background: var(--bg);
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(155, 93, 229, 0.25);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .otp-input-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(155, 93, 229, 0.3);
+        }
+
+        .number-list {
+            margin-top: 30px;
+        }
+
+        .number-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid rgba(155, 93, 229, 0.2);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .number-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .number-item.selected {
+            border-color: var(--primary);
+            background: rgba(155, 93, 229, 0.1);
+        }
+
+        .number-checkbox {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .number-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(155, 93, 229, 0.1);
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .confirmation-message i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .confirmation-message h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .resend-otp {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .resend-otp a {
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* FAQ Styles */
+        .faq-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-header h2 {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .accordion {
+            --bs-accordion-bg: var(--card-bg);
+            --bs-accordion-border-color: rgba(155, 93, 229, 0.2);
+            --bs-accordion-btn-color: var(--secondary);
+            --bs-accordion-active-color: var(--secondary);
+            --bs-accordion-active-bg: rgba(155, 93, 229, 0.1);
+            --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(155, 93, 229, 0.25);
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .accordion-body {
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .section-block {
+                padding: 20px;
+            }
+            
+            .step-label {
+                font-size: 0.8rem;
+            }
+            
+            .otp-input {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Fancy Number Block -->
+        <div class="section-block" id="fancyNumberBlock">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active" id="step1-indicator">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Verify Number</div>
+                </div>
+                <div class="step" id="step2-indicator">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Enter Details</div>
+                </div>
+                <div class="step" id="step3-indicator">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Choose Number</div>
+                </div>
+                <div class="step" id="step4-indicator">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Confirmation</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Verify Mobile Number -->
+            <div class="form-section active" id="step1">
+                <div class="fancy-header">
+                    <h1>Stand out with a postpaid mobile number of your choice</h1>
+                    <p>Now book a choice number in simple steps</p>
+                </div>
+
+                <form id="verifyNumberForm">
+                    <div class="mb-4">
+                        <label for="currentNumber" class="form-label">Enter current mobile number</label>
+                        <input type="tel" class="form-control" id="currentNumber" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required>
+                    </div>
+                    <button type="button" class="btn btn-primary w-100" onclick="generateOTP()">Generate OTP</button>
+                </form>
+            </div>
+
+            <!-- Step 2: Verify OTP -->
+            <div class="form-section" id="step2">
+                <div class="fancy-header">
+                    <h1>Verify Your Mobile Number</h1>
+                    <p>We've sent a 6-digit OTP to <strong id="displayNumber">9876543210</strong></p>
+                </div>
+
+                <form id="verifyOTPForm">
+                    <div class="otp-input-container">
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                        <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    </div>
+                    
+                    <div class="resend-otp">
+                        <span>Didn't receive OTP? </span>
+                        <a onclick="resendOTP()">Resend OTP</a>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary w-100" onclick="verifyOTP()">Verify OTP</button>
+                </form>
+            </div>
+
+            <!-- Step 3: Enter User Details -->
+            <div class="form-section" id="step3">
+                <div class="fancy-header">
+                    <h1>Find postpaid number of your choice</h1>
+                    <p>Enter your lucky number, date of birth, or any favorite number series and check the numbers available for your PIN Code.</p>
+                </div>
+
+                <form id="userDetailsForm">
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">Your name</label>
+                        <input type="text" class="form-control" id="userName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pinCode" class="form-label">PIN Code</label>
+                        <input type="text" class="form-control" id="pinCode" required pattern="[0-9]{6}" title="Please enter a 6-digit PIN code">
+                    </div>
+                    <div class="mb-3">
+                        <label for="preferredDigits" class="form-label">Preferred 4-5 digits</label>
+                        <input type="text" class="form-control" id="preferredDigits" required pattern="[0-9]{4,5}" title="Please enter 4-5 digits">
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="checkCurrentNumber">
+                        <label class="form-check-label" for="checkCurrentNumber">Would you like to check recommendations based on your current mobile number?</label>
+                    </div>
+                    <button type="button" class="btn btn-primary w-100" onclick="showNumberResults()">Show available numbers</button>
+                </form>
+            </div>
+
+            <!-- Step 4: Choose Number -->
+            <div class="form-section" id="step4">
+                <div class="fancy-header">
+                    <h1>Yay! We have got numbers matching your preference</h1>
+                    <p>For your PIN Code <strong id="displayPinCode">636108</strong>, here is/are the mobile number(s) with the exact number series <strong id="displayPreferredDigits">63694</strong> you want in your new number.</p>
+                </div>
+
+                <div class="number-list" id="numberList">
+                    <div class="number-item">
+                        <input type="radio" name="selectedNumber" class="number-checkbox" id="number1" value="934263694">
+                        <label for="number1" class="number-value">934263694</label>
+                    </div>
+                    <div class="number-item">
+                        <input type="radio" name="selectedNumber" class="number-checkbox" id="number2" value="9342636949">
+                        <label for="number2" class="number-value">9342636949</label>
+                    </div>
+                    <div class="number-item">
+                        <input type="radio" name="selectedNumber" class="number-checkbox" id="number3" value="9342636944">
+                        <label for="number3" class="number-value">9342636944</label>
+                    </div>
+                    <div class="number-item">
+                        <input type="radio" name="selectedNumber" class="number-checkbox" id="number4" value="9342636945">
+                        <label for="number4" class="number-value">9342636945</label>
+                    </div>
+                    <div class="number-item">
+                        <input type="radio" name="selectedNumber" class="number-checkbox" id="number5" value="9363063694">
+                        <label for="number5" class="number-value">9363063694</label>
+                    </div>
+                </div>
+
+                <div class="text-center mb-4">
+                    <a href="#" class="text-primary">View more</a>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-outline" onclick="backToStep3()">Back</button>
+                    <button type="button" class="btn btn-primary" id="proceedBtn" disabled onclick="showConfirmation()">Proceed</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Confirmation -->
+            <div class="form-section" id="step5">
+                <div class="confirmation-message">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Number Booked Successfully!</h3>
+                    <p>Your selected number <strong id="confirmedNumber">9342636949</strong> has been reserved for you.</p>
+                    <p>We'll deliver your new SIM card within 2-3 business days.</p>
+                    <button type="button" class="btn btn-primary mt-4" onclick="window.location.href='index.html'">Back to Home</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Block -->
+        <div class="section-block" id="faqBlock">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What kind of number series does Choice Number allow for searching?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You can search for any 4-5 digit number series that you prefer, such as your lucky numbers, birth date, anniversary date, or any memorable number sequence. The system will show you available mobile numbers containing your preferred digits.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Can I book multiple similar series numbers for my family/friends?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, you can book multiple numbers with similar series for your family members or friends, provided they meet the verification requirements and the numbers are available in your area.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Will I get a new SIM by opting for a Choice Number?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, when you book a Choice Number, you'll receive a new SIM card with your selected number. This will be a separate connection from your existing mobile number.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            I have a vehicle with a VIP number, can I use a similar number as my mobile number?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, if the number series is available in our database, you can certainly search for and book a mobile number that matches or is similar to your vehicle's VIP number.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            What happens if I don't activate the number I booked?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            If you don't activate your booked number within 7 days, the reservation will be automatically cancelled and the number will be made available for others to book.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                            Is the choice number facility available in all areas?
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            The Choice Number service is available in most metropolitan cities and many rural areas. Availability depends on the number series you're searching for and the inventory in your selected PIN code area.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                            Can I book a choice number as a prepaid connection?
+                        </button>
+                    </h2>
+                    <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Currently, the Choice Number service is only available for postpaid connections. We may introduce this feature for prepaid connections in the future.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global variables
+        let currentMobileNumber = '';
+        let otpAttempts = 0;
+        const MAX_OTP_ATTEMPTS = 3;
+
+        // Handle number selection
+        const numberCheckboxes = document.querySelectorAll('.number-checkbox');
+        const proceedBtn = document.getElementById('proceedBtn');
+        
+        numberCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Add selected class to parent
+                    this.closest('.number-item').classList.add('selected');
+                    // Remove from siblings
+                    const siblings = this.closest('.number-list').querySelectorAll('.number-item');
+                    siblings.forEach(sib => {
+                        if (sib !== this.closest('.number-item')) {
+                            sib.classList.remove('selected');
+                        }
+                    });
+                    proceedBtn.disabled = false;
+                    
+                    // Store selected number for confirmation
+                    document.getElementById('confirmedNumber').textContent = this.value;
+                }
+            });
+        });
+
+        // OTP input handling
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1) {
+                    if (index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value.length === 0) {
+                    if (index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                }
+            });
+        });
+
+        // Navigation between steps
+        function generateOTP() {
+            const currentNumber = document.getElementById('currentNumber').value;
+            
+            // Validate mobile number
+            if (!/^\d{10}$/.test(currentNumber)) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+            }
+            
+            currentMobileNumber = currentNumber;
+            document.getElementById('displayNumber').textContent = currentNumber;
+            
+            // In a real app, you would send OTP to the mobile number here
+            console.log('OTP sent to', currentNumber);
+            
+            // For demo, we'll use a fixed OTP (123456)
+            // Move to OTP verification step
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('step1-indicator').classList.remove('active');
+            document.getElementById('step2-indicator').classList.add('active');
+            
+            // Auto-focus first OTP input
+            otpInputs[0].focus();
+        }
+
+        function resendOTP() {
+            if (otpAttempts >= MAX_OTP_ATTEMPTS) {
+                alert('Maximum OTP attempts reached. Please try again later.');
+                return;
+            }
+            
+            // In a real app, you would resend OTP here
+            console.log('Resending OTP to', currentMobileNumber);
+            otpAttempts++;
+            
+            // Clear OTP inputs
+            otpInputs.forEach(input => input.value = '');
+            otpInputs[0].focus();
+            
+            alert('New OTP sent to your mobile number');
+        }
+
+        function verifyOTP() {
+            // Get entered OTP
+            let enteredOTP = '';
+            otpInputs.forEach(input => {
+                enteredOTP += input.value;
+            });
+            
+            // For demo, we'll accept any 6-digit OTP
+            if (enteredOTP.length !== 6) {
+                alert('Please enter complete 6-digit OTP');
+                return;
+            }
+            
+            // In a real app, you would verify OTP with server here
+            console.log('Verifying OTP:', enteredOTP);
+            
+            // Move to user details step
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('step2-indicator').classList.remove('active');
+            document.getElementById('step3-indicator').classList.add('active');
+        }
+
+        function showNumberResults() {
+            // Validate form
+            const form = document.getElementById('userDetailsForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Get user details
+            const pinCode = document.getElementById('pinCode').value;
+            const preferredDigits = document.getElementById('preferredDigits').value;
+            
+            // Display in the next step
+            document.getElementById('displayPinCode').textContent = pinCode;
+            document.getElementById('displayPreferredDigits').textContent = preferredDigits;
+            
+            // Move to number selection step
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('step3-indicator').classList.remove('active');
+            document.getElementById('step4-indicator').classList.add('active');
+        }
+
+        function backToStep3() {
+            document.getElementById('step4').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('step4-indicator').classList.remove('active');
+            document.getElementById('step3-indicator').classList.add('active');
+        }
+
+        function showConfirmation() {
+            document.getElementById('step4').classList.remove('active');
+            document.getElementById('step5').classList.add('active');
+            document.getElementById('step4-indicator').classList.remove('active');
+            // No indicator for confirmation step
+        }
+
+        // Theme toggle functionality (consistent with your main site)
+        const themeToggle = document.createElement('button');
+        themeToggle.className = 'theme-toggle';
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        themeToggle.setAttribute('aria-label', 'Toggle Theme');
+        themeToggle.style.position = 'fixed';
+        themeToggle.style.top = '20px';
+        themeToggle.style.right = '20px';
+        themeToggle.style.zIndex = '1000';
+        document.body.appendChild(themeToggle);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+
+        // Initialize Bootstrap tooltips for FAQ
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+</body>
+</html>

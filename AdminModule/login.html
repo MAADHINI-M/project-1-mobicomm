@@ -3,111 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Mobicomm</title>
+    <title>Admin Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        :root {
-          --primary: #000000;
-          --secondary: #FFD700;
-          --bg: #121212;
-          --text: #E0E0E0;
-          --accent-success: #00E676;
-          --accent-urgent: #FF4081;
-          --highlight: #a20b4f;
-        }
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--bg);
-            height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .login-container {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1.6;
+            padding: 20px;
         }
-        .login-card {
-            background-color: #1E1E1E;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-            padding: 2rem;
-            width: 100%;
-            max-width: 400px;
-            border: 2px solid var(--secondary);
-        }
-        .btn-primary {
-            background: linear-gradient(90deg, var(--accent-urgent), #FF6B9E);
+        .card {
             border: none;
-            border-radius: 50px;
-            transition: all 0.3s;
-            font-weight: bold;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .logo {
+            width: 150px;
+            margin: 20px auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        .card-header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
         }
         .form-control {
-            background-color: #2E2E2E;
-            border: 1px solid var(--secondary);
-            color: var(--text);
-            border-radius: 50px;
+            border: 2px solid #34495e;
+            border-radius: 8px;
+            padding: 12px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .form-control:focus {
-            background-color: #2E2E2E;
-            color: var(--text);
-            border-color: var(--accent-urgent);
-            box-shadow: 0 0 0 0.25rem rgba(255, 64, 129, 0.25);
+            border-color: #e74c3c;
+            box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+            outline: none;
         }
         .form-label {
-            color: var(--secondary);
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
         }
-        h2 {
-            color: var(--secondary);
-            text-align: center;
-            margin-bottom: 1.5rem;
+        .btn-primary {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
         }
-        .text-muted {
-            color: var(--secondary) !important;
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #c0392b, #e74c3c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
-        a {
-            text-decoration: none;
-            transition: color 0.3s;
+        .slider-container {
+            max-width: 100%;
+            overflow: hidden;
+            position: relative;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-        a:hover {
-            color: var(--accent-urgent) !important;
+        .slider-img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .slider-container:hover .slider-img {
+            transform: scale(1.02);
+        }
+        .panel-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        @media (max-width: 768px) {
+            .slider-img {
+                height: 250px;
+            }
+            .card {
+                margin: 15px;
+            }
+            .panel-title {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h2>Mobicomm Login</h2>
-        <form id="loginForm">
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+    
+    <div class="container login-container">
+        <div class="row w-100 g-0">
+            <h1 class="text-center panel-title">Admin Panel</h1>
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="slider-container">
+                    <img src="image/logo side.jpg" class="slider-img img-fluid" alt="Image 1">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="card p-4" style="max-width: 450px; width: 100%;">
+                    <img src="image/Logo.png" alt="Company Logo" class="logo">
+                    <div class="card-header text-center">
+                        <h3>Admin Login</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <div class="mb-4">
+                                <label for="adminUser" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="adminUser" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="adminPass" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="adminPass" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-            <p class="text-center mt-3">
-                <a href="#" class="text-muted">Forgot Password?</a> | 
-                <a href="#" class="text-muted">Sign Up</a>
-            </p>
-        </form>
+        </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const phone = document.getElementById('phone').value;
-            // Simulate admin/user check (replace with backend logic)
-            if (phone === 'admin123') {
-                window.location.href = 'admin-dashboard.html';
-            } else {
-                window.location.href = 'user-dashboard.html';
+  
+    <!-- <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+    
+            const username = document.getElementById("adminUser").value;
+            const password = document.getElementById("adminPass").value;
+    
+            if (!username || !password) {
+                alert("Please enter both username and password.");
+                return;
             }
+    
+            const loginData = { username, password };
+    
+            fetch('http://localhost:9045/api/auth/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(loginData)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Login failed: " + response.statusText);
+                return response.json();
+            })
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('adminToken', data.token);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert(data.message || "Login failed");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message || "An unexpected error occurred.");
+            });
         });
-    </script>
+    </script> -->
+<!-- <script>document.getElementById("loginForm").addEventListener("submit", function(event) { 
+    event.preventDefault();
+
+    const username = document.getElementById("adminUser").value;
+    const password = document.getElementById("adminPass").value;
+
+    if (!username || !password) {
+        alert("Please enter both username and password.");
+        return;
+    }
+
+    const loginData = { username, password };
+
+    fetch('http://localhost:8081/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Login failed: " + response.statusText);
+        return response.json();
+    })
+    .then(data => {
+        if (data.token) {
+            localStorage.setItem('adminToken', data.token);
+            window.location.href = 'dashboard.html';
+        } else {
+            alert(data.message || "Login failed");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert(error.message || "An unexpected error occurred.");
+    });
+});
+</script>-->
+<script>document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent page reload
+
+    // Get values from input fields
+    const username = document.getElementById("adminUser").value.trim();
+    const password = document.getElementById("adminPass").value.trim();
+
+    if (!username || !password) {
+        alert("Please enter both username and password.");
+        return;
+    }
+
+    // Prepare login data
+    const loginData = { username, password };
+
+    fetch('http://localhost:8081/admin/login', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Login failed: " + response.statusText);
+        }
+        return response.text(); // Receive token as plain text
+    })
+    .then(token => {
+        if (token.startsWith("Bearer ")) {
+            token = token.replace("Bearer ", ""); // Remove "Bearer " prefix
+        }
+
+        // Store token in localStorage
+        localStorage.setItem('adminToken', token);
+        alert("Login successful!");
+
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+    })
+    .catch(error => {
+        console.error('Login error:', error);
+        alert(error.message || "Invalid username or password.");
+    });
+});
+</script>
 </body>
 </html>

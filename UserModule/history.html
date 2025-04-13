@@ -1,179 +1,633 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transaction History - Mobicomm</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #000000;
-      --secondary: #FFD700;
-      --bg: #1a3c34;
-      --text: #E0E0E0;
-      --accent-success: #00E676;
-      --accent-urgent: #FF4081;
-      --highlight: #a20b4f;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History - Mobicomm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #d06ab2;
+            --secondary: #6b2d6b;
+            --bg: #f5f6ff;
+            --text: #1a1a1a;
+            --text-light: #4a4a4a;
+            --accent-success: #3871c2;
+            --accent-urgent: #d95f0e;
+            --highlight: #4a1a4a;
+            --web-dark: #2d0a2d;
+            --card-bg: #ffffff;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
+        [data-theme="dark"] {
+            --primary: #f2db8e;
+            --secondary: #ab47bc;
+            --bg: #12122e;
+            --text: #e8eaf6;
+            --text-light: #b0bec5;
+            --card-bg: #1e1e3f;
+            --highlight: #0d1a3a;
+            --web-dark: #2d0a2d;
+        }
 
-    .navbar {
-      background: #a20b4f;
-      color: var(--secondary);
-      border-bottom: 3px solid var(--secondary);
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
 
-    .navbar-brand,
-    .nav-link {
-      color: #fff !important;
-    }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(0, 245, 212, 0.1) 0%, transparent 25%);
+            z-index: -1;
+            animation: pulseBackground 15s infinite alternate;
+        }
 
-    .nav-link:hover {
-      color: var(--accent-urgent) !important;
-      font-weight: bold;
-      border-radius: 3px;
-      background-color: var(--secondary);
-      padding: 5px;
-      transform: translateY(-2px);
-      box-shadow: 0 15px 35px rgba(255, 215, 0, 0.2);
-    }
+        @keyframes pulseBackground {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
 
-    .table {
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
-      background-color: #1E1E1E;
-    }
+        .navbar {
+            background: var(--web-dark);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    .table thead {
-      background-color: var(--highlight);
-      color: var(--secondary);
-      border-bottom: 2px solid var(--secondary);
-    }
+        .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
 
-    .table tbody tr {
-      border-bottom: 1px solid #2E2E2E;
-    }
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 15px;
+        }
 
-    .table tbody tr:hover {
-      background-color: #2E2E2E;
-    }
+        .nav-link {
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
 
-    .form-select,
-    .form-control {
-      border-radius: 50px;
-      background-color: #2E2E2E;
-      border: 1px solid var(--secondary);
-      color: var(--text);
-    }
+        .nav-link:hover {
+            background: rgba(155, 93, 229, 0.3);
+            color: var(--primary) !important;
+            transform: translateY(-2px);
+        }
 
-    .form-select:focus,
-    .form-control:focus {
-      background-color: #2E2E2E;
-      color: var(--text);
-      border-color: var(--accent-urgent);
-      box-shadow: 0 0 0 0.25rem rgba(255, 64, 129, 0.25);
-    }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
 
-    .btn-primary {
-      background: linear-gradient(90deg, var(--accent-urgent), #FF6B9E);
-      border: none;
-      border-radius: 50px;
-      transition: all 0.3s;
-    }
+        .theme-toggle:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: scale(1.1);
+        }
 
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
-    }
+        .main-content {
+            flex: 1;
+            padding: 80px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
 
-    h2 {
-      color: var(--secondary);
-    }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
 
-    .text-success {
-      color: var(--accent-success) !important;
-    }
+        .btn-primary:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
 
-    /* Enhanced Footer */
-    footer {
-      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-      color: var(--text);
-      padding: 3rem 0 1rem;
-      border-top: 3px solid var(--secondary);
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      margin: auto;
-      z-index: 1000;
-    }
-  </style>
+        .form-control, .form-select {
+            border: 2px solid rgba(155, 93, 229, 0.3);
+            border-radius: 8px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(155, 93, 229, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .table {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(155, 93, 229, 0.1);
+        }
+
+        .table tbody tr.refunded {
+            background: rgba(217, 95, 14, 0.05);
+        }
+
+        .table th, .table td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .badge-success {
+            background: var(--accent-success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .text-refunded {
+            color: var(--accent-urgent) !important;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: var(--secondary);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .filter-row {
+            position: sticky;
+            top: 60px;
+            background: var(--bg);
+            z-index: 100;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--box-shadow);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background: var(--secondary);
+            color: white;
+        }
+
+        .modal-body {
+            color: var(--text);
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background: var(--highlight);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--accent-success);
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                padding: 60px 20px;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 1.6rem;
+            }
+            .table th, .table td {
+                padding: 10px;
+            }
+            .filter-row {
+                top: 56px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 40px 15px;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            .form-control, .form-select {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+            .table {
+                font-size: 0.9rem;
+            }
+            .btn-primary {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="user-dashboard.html">Mobicomm</a>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link text-white" href="login.html">Logout</a>
-      </div>
-    </div>
-  </nav>
+    <button class="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
 
-  <div class="container mt-5">
-    <h2 class="mb-4">Transaction History</h2>
-    <div class="row mb-3">
-      <div class="col-md-3"><select class="form-select">
-          <option>All Time</option>
-          <option>Last 30 Days</option>
-        </select></div>
-      <div class="col-md-3"><input type="text" class="form-control" placeholder="Search by Phone or Plan"></div>
-    </div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Phone</th>
-          <th>Plan</th>
-          <th>Amount</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>2025-03-01</td>
-          <td>9876543210</td>
-          <td>1GB Daily</td>
-          <td>₹199</td>
-          <td class="text-success fw-bold">Success</td>
-        </tr>
-        <tr>
-          <td>2025-02-01</td>
-          <td>9123456789</td>
-          <td>2GB Daily</td>
-          <td>₹299</td>
-          <td class="text-success fw-bold">Success</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <footer class="text-center py-3 mt-5">
-    <p class="text-center">&copy; <span id="year"></span> Mobi Comm. All rights reserved. | <a href="#">Privacy
-        Policy</a> | <a href="#">Terms of Service</a></p>
-  </footer>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="login.html">
+               Mobicomm
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recharge.html">Recharge Plans</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="recharge.html">Special Offers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="support.html">Support</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle me-1"></i> My Account
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutLink">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Set current year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+    <div class="main-content">
+        <h2 class="mb-4" id="historyTitle">Transaction History</h2>
+        <div class="filter-row row mb-3">
+            <div class="col-md-3 col-sm-6 mb-2">
+                <label for="timeFilter" class="filter-label">Time Period</label>
+                <select class="form-select" id="timeFilter" aria-label="Select time period">
+                    <option value="all">All Time</option>
+                    <option value="30days">Last 30 Days</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-2">
+                <label for="typeFilter" class="filter-label">Transaction Type</label>
+                <select class="form-select" id="typeFilter" aria-label="Select transaction type">
+                    <option value="all">All Transactions</option>
+                    <option value="recharge">Recharge</option>
+                    <option value="refund">Refund</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-2">
+                <label for="sortFilter" class="filter-label">Sort By</label>
+                <select class="form-select" id="sortFilter" aria-label="Sort transactions">
+                    <option value="date-desc">Date (Newest First)</option>
+                    <option value="date-asc">Date (Oldest First)</option>
+                    <option value="amount-desc">Amount (High to Low)</option>
+                    <option value="amount-asc">Amount (Low to High)</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-end">
+                <button class="btn btn-primary w-100" id="exportBtn" aria-label="Export transactions to CSV">
+                    <i class="fas fa-download me-2"></i>Export CSV
+                </button>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Plan</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="transactionTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Transaction Details Modal -->
+    <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Date:</strong> <span id="modalDate"></span></p>
+                    <p><strong>Plan:</strong> <span id="modalPlan"></span></p>
+                    <p><strong>Amount:</strong> <span id="modalAmount"></span></p>
+                    <p><strong>Type:</strong> <span id="modalType"></span></p>
+                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                    <p><strong>Transaction ID:</strong> <span id="modalTxId"></span></p>
+                    <p><strong>Payment Method:</strong> <span id="modalPayment"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p class="mb-0">© <span id="year"></span> Mobi Comm. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // Transaction filter functionality
+        const timeFilter = document.getElementById('timeFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const exportBtn = document.getElementById('exportBtn');
+        const transactionTable = document.getElementById('transactionTable');
+        const historyTitle = document.getElementById('historyTitle');
+
+        // Load user from localStorage
+        const activeUser = JSON.parse(localStorage.getItem('activeUser')) || { name: 'User' };
+        historyTitle.textContent = `${activeUser.name}'s Transaction History`;
+
+        // Sample transactions
+        const transactions = [
+            { date: '2025-03-01', plan: '1GB Daily', amount: 199, type: 'recharge', status: 'Success', txId: 'TX123456', payment: 'UPI' },
+            { date: '2025-02-01', plan: '2GB Daily', amount: 299, type: 'recharge', status: 'Success', txId: 'TX123457', payment: 'Credit Card' },
+            { date: '2025-01-15', plan: '1GB Daily', amount: 199, type: 'refund', status: 'Success', txId: 'TX123458', payment: 'UPI' },
+            { date: '2024-12-20', plan: '3GB Daily', amount: 499, type: 'recharge', status: 'Success', txId: 'TX123459', payment: 'Debit Card' }
+        ];
+
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        function renderTransactions() {
+            const timeValue = timeFilter.value;
+            const typeValue = typeFilter.value;
+            const sortValue = sortFilter.value;
+
+            // Filter transactions
+            let filteredTransactions = [...transactions];
+
+            if (timeValue === '30days') {
+                const thirtyDaysAgo = new Date();
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                filteredTransactions = filteredTransactions.filter(tx => {
+                    const txDate = new Date(tx.date);
+                    return txDate >= thirtyDaysAgo;
+                });
+            }
+
+            if (typeValue !== 'all') {
+                filteredTransactions = filteredTransactions.filter(tx => tx.type === typeValue);
+            }
+
+            // Sort transactions
+            filteredTransactions.sort((a, b) => {
+                if (sortValue === 'date-desc') return new Date(b.date) - new Date(a.date);
+                if (sortValue === 'date-asc') return new Date(a.date) - new Date(b.date);
+                if (sortValue === 'amount-desc') return b.amount - a.amount;
+                if (sortValue === 'amount-asc') return a.amount - b.amount;
+                return 0;
+            });
+
+            // Render table
+            transactionTable.innerHTML = '';
+            filteredTransactions.forEach(tx => {
+                const row = document.createElement('tr');
+                if (tx.type === 'refund') row.classList.add('refunded');
+                row.innerHTML = `
+                    <td>${tx.date}</td>
+                    <td>${tx.plan}</td>
+                    <td>₹${tx.amount}</td>
+                    <td>${tx.type.charAt(0).toUpperCase() + tx.type.slice(1)}</td>
+                    <td><span class="badge-success">${tx.status}</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm details-btn" 
+                                data-date="${tx.date}" 
+                                data-plan="${tx.plan}" 
+                                data-amount="${tx.amount}" 
+                                data-type="${tx.type}" 
+                                data-status="${tx.status}" 
+                                data-txid="${tx.txId}" 
+                                data-payment="${tx.payment}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#transactionModal"
+                                aria-label="View transaction details">
+                            Details
+                        </button>
+                    </td>
+                `;
+                transactionTable.appendChild(row);
+            });
+
+            if (filteredTransactions.length === 0) {
+                transactionTable.innerHTML = '<tr><td colspan="6" class="text-center">No transactions found.</td></tr>';
+            }
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const timeValue = timeFilter.value;
+            const typeValue = typeFilter.value;
+            let filteredTransactions = [...transactions];
+
+            if (timeValue === '30days') {
+                const thirtyDaysAgo = new Date();
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                filteredTransactions = filteredTransactions.filter(tx => {
+                    const txDate = new Date(tx.date);
+                    return txDate >= thirtyDaysAgo;
+                });
+            }
+
+            if (typeValue !== 'all') {
+                filteredTransactions = filteredTransactions.filter(tx => tx.type === typeValue);
+            }
+
+            const csv = [
+                'Date,Plan,Amount,Type,Status,Transaction ID,Payment Method',
+                ...filteredTransactions.map(tx => 
+                    `${tx.date},${tx.plan},₹${tx.amount},${tx.type},${tx.status},${tx.txId},${tx.payment}`
+                )
+            ].join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${activeUser.name.replace(/\s/g, '_')}_transactions.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Modal population
+        transactionTable.addEventListener('click', (e) => {
+            if (e.target.classList.contains('details-btn')) {
+                document.getElementById('modalDate').textContent = e.target.dataset.date;
+                document.getElementById('modalPlan').textContent = e.target.dataset.plan;
+                document.getElementById('modalAmount').textContent = `₹${e.target.dataset.amount}`;
+                document.getElementById('modalType').textContent = 
+                    e.target.dataset.type.charAt(0).toUpperCase() + e.target.dataset.type.slice(1);
+                document.getElementById('modalStatus').textContent = e.target.dataset.status;
+                document.getElementById('modalTxId').textContent = e.target.dataset.txid;
+                document.getElementById('modalPayment').textContent = e.target.dataset.payment;
+            }
+        });
+
+        // Debounced render
+        const debouncedRender = debounce(renderTransactions, 300);
+        timeFilter.addEventListener('change', debouncedRender);
+        typeFilter.addEventListener('change', debouncedRender);
+        sortFilter.addEventListener('change', debouncedRender);
+        exportBtn.addEventListener('click', exportToCSV);
+
+        // Initial render
+        renderTransactions();
+
+        // Logout functionality
+        document.getElementById('logoutLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('activeUser');
+            window.location.href = 'login.html';
+        });
+    </script>
 </body>
-
 </html>

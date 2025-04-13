@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobi-Comm | Premium Telecommunications</title>
+    <meta name="description" content="Mobi-Comm offers premium mobile services with unlimited data, crystal-clear calls, and nationwide coverage.">
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="font">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" as="style">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📱</text></svg>">
+    <!-- External CSS Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Styles -->
+    <style>
+        /* Root Variables - Enhanced Light Theme */
+        :root {
+            --primary: #d06ab2; /* Warm light yellow for highlights (softer gold) */
+            --secondary: #6b2d6b; /* Richer purple for emphasis */
+            --bg: #f5f6ff; /* Subtle off-white with a hint of blue */
+            --text: #1a1a1a; /* Deep charcoal for strong readability */
+            --text-light: #4a4a4a; /* Softer gray for secondary text */
+            --accent-success: #3871c2; /* Brighter professional blue */
+            --accent-urgent: #d95f0e; /* Vivid muted orange */
+            --highlight: #4a1a4a; /* Deeper purple for footer */
+            --web: #4a1a4a; /* Consistent brand purple */
+            --web-dark: #2d0a2d; /* Darker purple-toned header */
+            --blue-primary: #4a1a4a; /* Deep purple for login gradient */
+            --blue-secondary: #6d2d6d; /* Lighter purple gradient */
+            --card-bg: #ffffff; /* Pure white for cards */
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Dark Theme Variables - Enhanced for Vibrancy and Depth */
+        [data-theme="dark"] {
+            --primary: #f2db8e; /* Vibrant amber-gold for highlights */
+            --secondary: #ab47bc; /* Brighter, more vivid purple */
+            --bg: #12122e; /* Deep navy with a hint of purple */
+            --text: #e8eaf6; /* Light off-white for readability */
+            --text-light: #b0bec5; /* Cool gray-blue for secondary text */
+            --accent-success: #26c6da; /* Bright cyan for success */
+            --accent-urgent: #ff7043; /* Warm coral for urgency */
+            --highlight: #0d1a3a; /* Dark navy for footer depth */
+            --web: #ab47bc; /* Matching vibrant purple */
+            --web-dark: #09091a; /* Almost black with a purple undertone */
+            --blue-primary: #7e57c2; /* Electric purple for login gradient */
+            --blue-secondary: #00bcd4; /* Bright cyan for gradient contrast */
+            --card-bg: #1e1e3f; /* Dark purple-blue for cards */
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(171, 71, 188, 0.25); /* Enhanced glow */
+        }
+
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            font-weight: 400;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Enhanced Background for Dark Mode */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(0, 245, 212, 0.1) 0%, transparent 25%);
+            z-index: -1;
+            animation: pulseBackground 15s infinite alternate;
+        }
+
+        @keyframes pulseBackground {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Header */
+        header {
+            background: var(--web-dark);
+            padding: 12px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        
+
+        nav {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        nav h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav h1:hover {
+            transform: scale(1.02);
+            color: var(--primary);
+        }
+
+        nav h1 i {
+            font-size: 22px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            transition: var(--transition);
+            border-radius: 20px;
+            text-transform: capitalize;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+            background: rgba(155, 93, 229, 0.3); /* Subtle purple glow */
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { 
+            from { transform: translateY(30px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
+        }
+        @keyframes float { 
+            0% { transform: translateY(0px); } 
+            50% { transform: translateY(-8px); } 
+            100% { transform: translateY(0px); } 
+        }
+        @keyframes fadeInSlogan { 
+            0% { opacity: 0.95; transform: scale(1); } 
+            100% { opacity: 1; transform: scale(1.02); } 
+        }
+        @keyframes underlineGrow { 
+            0% { width: 60px; } 
+            100% { width: 100px; } 
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+        }
+
+        /* Slogan and Login */
+        .slogan {
+            text-align: center;
+            margin: 70px 0 50px;
+            padding: 0 20px;
+        }
+
+        .slogan h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            line-height: 1.2;
+            animation: fadeInSlogan 3s ease-in-out infinite alternate;
+            text-shadow: 0 0 10px rgba(155, 93, 229, 0.5); /* Glow in dark mode */
+        }
+
+        .slogan p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-light);
+            animation: fadeIn 1.5s ease-out;
+        }
+        /* Sections */
+        .section {
+            padding: 80px 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h3 {
+            font-size: 2.2rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 8px rgba(155, 93, 229, 0.4); /* Subtle glow */
+        }
+
+        .section-header h3::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+            animation: underlineGrow 2s infinite alternate;
+        }
+
+        .section-header p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(155, 93, 229, 0.2); /* Subtle purple border */
+            padding: 35px 30px;
+            text-align: center;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            animation: float 8s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer; /* Make cards clickable */
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 0 20px rgba(155, 93, 229, 0.3);
+            animation-play-state: paused;
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(155, 93, 229, 0.2); /* Brighter in dark mode */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            color: var(--secondary);
+            font-size: 1.8rem;
+            box-shadow: 0 0 15px rgba(155, 93, 229, 0.3); /* Glow effect */
+        }
+
+        .card h4 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .card .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary); /* Gold in dark mode */
+            margin-top: auto;
+        }
+
+        /* Why Choose Us */
+        .why-choose-us {
+            background: linear-gradient(to bottom, var(--bg) 0%, var(--card-bg) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-choose-us::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239b5de5' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .why-choose-us .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(155, 93, 229, 0.3);
+        }
+
+        .feature h4 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature h4 i {
+            color: var(--accent-success);
+        }
+
+        .feature p {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--secondary);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .testimonials .section-header h3,
+        .testimonials .section-header p {
+            color: white;
+        }
+
+        .testimonials .section-header h3::after {
+            background: var(--primary);
+        }
+
+        .testimonial-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            /* margin: 50px 0 10px 10px; */
+            margin-top: 50px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .testimonial {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(155, 93, 229, 0.2); /* Glow in dark mode */
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .author-info h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .author-info p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* FAQs */
+        .faq-section {
+            background: var(--card-bg);
+        }
+
+        .accordion {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .accordion-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(155, 93, 229, 0.2);
+            border-radius: 8px !important;
+            margin-bottom: 15px;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .accordion-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(155, 93, 229, 0.3);
+        }
+
+        .accordion-button {
+            color: var(--secondary);
+            font-weight: 500;
+            background: var(--card-bg);
+            padding: 20px 25px;
+            font-size: 1.1rem;
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: var(--primary);
+            background: rgba(155, 93, 229, 0.1);
+            box-shadow: none;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .accordion-body {
+            padding: 20px 25px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Call to Action */
+        .cta-section {
+            background: linear-gradient(135deg, var(--blue-primary), var(--blue-secondary));
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0z' fill='none'/%3E%3Cpath d='M20 20h20v20H20zM60 20h20v20H60zM20 60h20v20H20zM60 60h20v20H60z' fill='%23FFFFFF' fill-opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 245, 212, 0.5); /* Cyan glow */
+        }
+
+        .cta-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); /* Gold glow */
+        }
+
+        .btn-primary:hover {
+            background: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: var(--web-dark);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(155, 93, 229, 0.3);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(155, 93, 229, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--highlight);
+            color: #ffffff;
+            padding: 80px 0 0;
+            position: relative;
+        }
+
+        .footer-wave .shape-fill {
+            fill: var(--bg);
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .footer-about p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: inline;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
+            margin: 0 10px;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            padding: 5px;
+        }
+
+        footer h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary); /* Gold in dark mode */
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        footer h4::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links a {
+            display: block;
+            padding: 8px 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .footer-contact i {
+            margin-top: 3px;
+            color: var(--primary);
+        }
+
+        .footer-newsletter input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .footer-newsletter input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .footer-newsletter button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .footer-newsletter button:hover {
+            background: white;
+            transform: translateY(-2px);
+            color: var(--web-dark);
+        }
+
+        .footer-bottom {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--secondary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            opacity: 0;
+            z-index: 999;
+            border: 2px solid var(--primary);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary);
+            color: var(--secondary);
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-success);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.4);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-block {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: var(--section-gap);
+        }
+
+        .fancy-number-container {
+            /* Styles moved to section-block */
+        }
+
+        .fancy-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .fancy-header h1 {
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .fancy-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--secondary);
+            z-index: 0;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .step.active .step-number {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .step.active .step-label {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(155, 93, 229, 0.3);
+            background: var(--bg);
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(155, 93, 229, 0.25);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .otp-input-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(155, 93, 229, 0.3);
+        }
+
+        .number-list {
+            margin-top: 30px;
+        }
+
+        .number-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid rgba(155, 93, 229, 0.2);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .number-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .number-item.selected {
+            border-color: var(--primary);
+            background: rgba(155, 93, 229, 0.1);
+        }
+
+        .number-checkbox {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .number-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(155, 93, 229, 0.1);
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .confirmation-message i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .confirmation-message h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .resend-otp {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .resend-otp a {
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* FAQ Styles */
+        .faq-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-header h2 {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .accordion {
+            --bs-accordion-bg: var(--card-bg);
+            --bs-accordion-border-color: rgba(155, 93, 229, 0.2);
+            --bs-accordion-btn-color: var(--secondary);
+            --bs-accordion-active-color: var(--secondary);
+            --bs-accordion-active-bg: rgba(155, 93, 229, 0.1);
+            --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(155, 93, 229, 0.25);
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .accordion-body {
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .section-block {
+                padding: 20px;
+            }
+            
+            .step-label {
+                font-size: 0.8rem;
+            }
+            
+            .otp-input {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <h1><i class="fas fa-mobile-alt"></i> MobiComm</h1>
+            <ul>
+                <li><a href="recharge.html">View Plans</a></li>
+                <li><a href="recharge.html">Offers</a></li>
+                <li><a href="#fancyNumberBlock">Fancy Number</a></li>
+                <li><a href="#services">Our Services</a></li>
+                <li><a href="#faqBlock">FAQs</a></li>
+                <li><a href="#about">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="slogan">
+            <h2>Premium Connectivity, Unmatched Performance</h2>
+            <p>Experience the future of telecommunications with our lightning-fast 5G network and nationwide coverage</p>
+        </section>
+
+<!-- Fancy number -->
+<div class="main-container">
+    <!-- Fancy Number Block -->
+    <div class="section-block" id="fancyNumberBlock">
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" id="step1-indicator">
+                <div class="step-number">1</div>
+                <div class="step-label">Verify Number</div>
+            </div>
+            <div class="step" id="step2-indicator">
+                <div class="step-number">2</div>
+                <div class="step-label">Enter Details</div>
+            </div>
+            <div class="step" id="step3-indicator">
+                <div class="step-number">3</div>
+                <div class="step-label">Choose Number</div>
+            </div>
+            <div class="step" id="step4-indicator">
+                <div class="step-number">4</div>
+                <div class="step-label">Confirmation</div>
+            </div>
+        </div>
+
+        <!-- Step 1: Verify Mobile Number -->
+        <div class="form-section active" id="step1">
+            <div class="fancy-header">
+                <h1>Stand out with a postpaid mobile number of your choice</h1>
+                <p>Now book a choice number in simple steps</p>
+            </div>
+
+            <form id="verifyNumberForm">
+                <div class="mb-4">
+                    <label for="currentNumber" class="form-label">Enter current mobile number</label>
+                    <input type="tel" class="form-control" id="currentNumber" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required>
+                </div>
+                <button type="button" class="btn btn-primary w-100" onclick="generateOTP()">Generate OTP</button>
+            </form>
+        </div>
+
+        <!-- Step 2: Verify OTP -->
+        <div class="form-section" id="step2">
+            <div class="fancy-header">
+                <h1>Verify Your Mobile Number</h1>
+                <p>We've sent a 6-digit OTP to <strong id="displayNumber">9876543210</strong></p>
+            </div>
+
+            <form id="verifyOTPForm">
+                <div class="otp-input-container">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                </div>
+                
+                <div class="resend-otp">
+                    <span>Didn't receive OTP? </span>
+                    <a onclick="resendOTP()">Resend OTP</a>
+                </div>
+                
+                <button type="button" class="btn btn-primary w-100" onclick="verifyOTP()">Verify OTP</button>
+            </form>
+        </div>
+
+        <!-- Step 3: Enter User Details -->
+        <div class="form-section" id="step3">
+            <div class="fancy-header">
+                <h1>Find postpaid number of your choice</h1>
+                <p>Enter your lucky number, date of birth, or any favorite number series and check the numbers available for your PIN Code.</p>
+            </div>
+
+            <form id="userDetailsForm">
+                <div class="mb-3">
+                    <label for="userName" class="form-label">Your name</label>
+                    <input type="text" class="form-control" id="userName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="pinCode" class="form-label">PIN Code</label>
+                    <input type="text" class="form-control" id="pinCode" required pattern="[0-9]{6}" title="Please enter a 6-digit PIN code">
+                </div>
+                <div class="mb-3">
+                    <label for="preferredDigits" class="form-label">Preferred 4-5 digits</label>
+                    <input type="text" class="form-control" id="preferredDigits" required pattern="[0-9]{4,5}" title="Please enter 4-5 digits">
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="checkCurrentNumber">
+                    <label class="form-check-label" for="checkCurrentNumber">Would you like to check recommendations based on your current mobile number?</label>
+                </div>
+                <button type="button" class="btn btn-primary w-100" onclick="showNumberResults()">Show available numbers</button>
+            </form>
+        </div>
+
+        <!-- Step 4: Choose Number -->
+        <div class="form-section" id="step4">
+            <div class="fancy-header">
+                <h1>Yay! We have got numbers matching your preference</h1>
+                <p>For your PIN Code <strong id="displayPinCode">636108</strong>, here is/are the mobile number(s) with the exact number series <strong id="displayPreferredDigits">63694</strong> you want in your new number.</p>
+            </div>
+
+            <div class="number-list" id="numberList">
+                <div class="number-item">
+                    <input type="radio" name="selectedNumber" class="number-checkbox" id="number1" value="934263694">
+                    <label for="number1" class="number-value">934263694</label>
+                </div>
+                <div class="number-item">
+                    <input type="radio" name="selectedNumber" class="number-checkbox" id="number2" value="9342636949">
+                    <label for="number2" class="number-value">9342636949</label>
+                </div>
+                <div class="number-item">
+                    <input type="radio" name="selectedNumber" class="number-checkbox" id="number3" value="9342636944">
+                    <label for="number3" class="number-value">9342636944</label>
+                </div>
+                <div class="number-item">
+                    <input type="radio" name="selectedNumber" class="number-checkbox" id="number4" value="9342636945">
+                    <label for="number4" class="number-value">9342636945</label>
+                </div>
+                <div class="number-item">
+                    <input type="radio" name="selectedNumber" class="number-checkbox" id="number5" value="9363063694">
+                    <label for="number5" class="number-value">9363063694</label>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <a href="#" class="text-primary">View more</a>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn btn-outline" onclick="backToStep3()">Back</button>
+                <button type="button" class="btn btn-primary" id="proceedBtn" disabled onclick="showConfirmation()">Proceed</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Confirmation -->
+        <div class="form-section" id="step5">
+            <div class="confirmation-message">
+                <i class="fas fa-check-circle"></i>
+                <h3>Number Booked Successfully!</h3>
+                <p>Your selected number <strong id="confirmedNumber">9342636949</strong> has been reserved for you.</p>
+                <p>We'll deliver your new SIM card within 2-3 business days.</p>
+                <button type="button" class="btn btn-primary mt-4" onclick="window.location.href='login.html'">Back to Home</button>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- Why Choose Us -->
+        <section class="section why-choose-us" id="why">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Why Mobi-Comm Stands Out</h3>
+                    <p>Discover the difference of a network built for performance and reliability</p>
+                </div>
+                <div class="features">
+                    <div class="feature">
+                        <h4><i class="fas fa-tower-cell"></i> Nationwide Coverage</h4>
+                        <p>Our extensive network ensures you stay connected whether you're in bustling cities or remote countryside locations, with 98% coverage across the nation.</p>
+                    </div>
+                    <div class="feature">
+                        <h4><i class="fas fa-bolt"></i> Blazing Fast Speeds</h4>
+                        <p>Experience ultra-fast 5G speeds that let you stream, download, and browse without buffering or lag, powered by our cutting-edge infrastructure.</p>
+                    </div>
+                    <div class="feature">
+                        <h4><i class="fas fa-headset"></i> Premium Support</h4>
+                        <p>Our dedicated customer service team is available 24/7 to resolve any issues quickly, with average response times under 2 minutes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="section testimonials">
+            <div class="section-header">
+                <h3>What Our Customers Say</h3>
+                <p>Join thousands of satisfied users enjoying seamless connectivity</p>
+            </div>
+            <div class="testimonial-cards">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "I switched to Mobi-Comm six months ago and the difference in network quality is night and day. No more dropped calls even in my rural location!"
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Riya Sharma">
+                        <div class="author-info">
+                            <h5>Riya Sharma</h5>
+                            <p>Small Business Owner</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "The 5G speeds are incredible - I can download large work files in seconds. Mobi-Comm has transformed how I work on the go."
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Arjun Patel">
+                        <div class="author-info">
+                            <h5>Arjun Patel</h5>
+                            <p>IT Consultant</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "Customer service actually answers quickly and solves problems. After years with other providers, this level of support is refreshing."
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya Nair">
+                        <div class="author-info">
+                            <h5>Priya Nair</h5>
+                            <p>College Student</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Services -->
+        <section class="section" id="services">
+            <div class="section-header">
+                <h3>Our Comprehensive Services</h3>
+                <p>Everything you need for seamless communication</p>
+            </div>
+            <div class="cards">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h4>Unlimited Calls</h4>
+                    <p>Crystal clear voice calls to any network</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <h4>High-Speed Data</h4>
+                    <p>5G and 4G LTE nationwide coverage</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-sms"></i>
+                    </div>
+                    <h4>Unlimited SMS</h4>
+                    <p>Text messages to any mobile number</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h4>Rural Coverage</h4>
+                    <p>Strong signal in remote areas</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Security</h4>
+                    <p>Enterprise-grade call and data protection</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>24/7 Support</h4>
+                    <p>Always available customer service</p>
+                </div>
+            </div>
+        </section>
+
+         <!-- FAQ Block -->
+          <div class="main-container">
+         <div class="section-block" id="faqBlock">
+            <div class="faq-header">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What kind of number series does Choice Number allow for searching?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You can search for any 4-5 digit number series that you prefer, such as your lucky numbers, birth date, anniversary date, or any memorable number sequence. The system will show you available mobile numbers containing your preferred digits.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Can I book multiple similar series numbers for my family/friends?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, you can book multiple numbers with similar series for your family members or friends, provided they meet the verification requirements and the numbers are available in your area.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Will I get a new SIM by opting for a Choice Number?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, when you book a Choice Number, you'll receive a new SIM card with your selected number. This will be a separate connection from your existing mobile number.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            I have a vehicle with a VIP number, can I use a similar number as my mobile number?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, if the number series is available in our database, you can certainly search for and book a mobile number that matches or is similar to your vehicle's VIP number.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            What happens if I don't activate the number I booked?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            If you don't activate your booked number within 7 days, the reservation will be automatically cancelled and the number will be made available for others to book.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                            Is the choice number facility available in all areas?
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            The Choice Number service is available in most metropolitan cities and many rural areas. Availability depends on the number series you're searching for and the inventory in your selected PIN code area.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                            Can I book a choice number as a prepaid connection?
+                        </button>
+                    </h2>
+                    <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Currently, the Choice Number service is only available for postpaid connections. We may introduce this feature for prepaid connections in the future.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h3>Ready to Experience Premium Connectivity?</h3>
+                <p>Join Mobi-Comm today and enjoy seamless communication with India's most reliable network</p>
+                <div class="cta-buttons">
+                     <a href="#main-content"><button class="btn-primary">Get Started Now</button></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="about">
+        <div class="footer-wave">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+                <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+            </svg>
+        </div>
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-mobile-alt fa-lg"></i>
+                        <h3>Mobi-Comm</h3>
+                    </div>
+                    <p>Mobi-Comm is a leading telecommunications provider committed to delivering seamless connectivity and innovative services across India since 2010.</p>
+                    <div class="social-links">
+                        <a href="https://m.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/?lang=en" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://in.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="login.html">Home</a>
+                    <a href="#portBlock">Port to Mobi-Comm</a>
+                    <a href="recharge.html">Plans & Offers</a>
+                    <!-- <a href="coverage.html">Coverage Map</a> -->
+                    <a href="#faqBlock">FAQs</a>
+                </div>
+             
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Tech Park, Sector 18, Gurugram, Haryana 122001</p>
+                    <p><i class="fas fa-phone-alt"></i> <a href="tel:18001234567">1800 123 4567</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:info@mobicomm.com">info@mobicomm.com</a></p>
+                    <p><i class="fas fa-clock"></i> Customer Support: 24/7</p>
+                    <p><i class="fas fa-store"></i> Store Hours: 10AM - 8PM</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="copyright">© <span id="year"></span> Mobi-Comm Telecommunications Ltd. All Rights Reserved. | <a href="#" style="color: var(--primary);">Privacy Policy</a> | <a href="#" style="color: var(--primary);">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-top" onclick="window.scrollTo(0, 0);"><i class="fas fa-arrow-up"></i></div>
+
+   
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    
+        // Header scroll effect
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            const scrollTop = document.querySelector('.scroll-top')
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+                scrollTop.classList.add('visible');
+            } else {
+                header.classList.remove('scrolled');
+                scrollTop.classList.remove('visible');
+            }
+        });
+    
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    
+        // Animation on scroll
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.card, .feature, .testimonial');
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                if(elementPosition < screenPosition) {
+                    element.style.animation = 'slideUp 0.8s ease-out forwards';
+                }
+            });
+        };
+    
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    
+        // Theme Toggle Functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+
+        //fancy number
+         // Global variables
+         let currentMobileNumber = '';
+        let otpAttempts = 0;
+        const MAX_OTP_ATTEMPTS = 3;
+
+        // Handle number selection
+        const numberCheckboxes = document.querySelectorAll('.number-checkbox');
+        const proceedBtn = document.getElementById('proceedBtn');
+        
+        numberCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Add selected class to parent
+                    this.closest('.number-item').classList.add('selected');
+                    // Remove from siblings
+                    const siblings = this.closest('.number-list').querySelectorAll('.number-item');
+                    siblings.forEach(sib => {
+                        if (sib !== this.closest('.number-item')) {
+                            sib.classList.remove('selected');
+                        }
+                    });
+                    proceedBtn.disabled = false;
+                    
+                    // Store selected number for confirmation
+                    document.getElementById('confirmedNumber').textContent = this.value;
+                }
+            });
+        });
+
+        // OTP input handling
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1) {
+                    if (index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value.length === 0) {
+                    if (index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                }
+            });
+        });
+
+        // Navigation between steps
+        function generateOTP() {
+            const currentNumber = document.getElementById('currentNumber').value;
+            
+            // Validate mobile number
+            if (!/^\d{10}$/.test(currentNumber)) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+            }
+            
+            currentMobileNumber = currentNumber;
+            document.getElementById('displayNumber').textContent = currentNumber;
+            
+            // In a real app, you would send OTP to the mobile number here
+            console.log('OTP sent to', currentNumber);
+            
+            // For demo, we'll use a fixed OTP (123456)
+            // Move to OTP verification step
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('step1-indicator').classList.remove('active');
+            document.getElementById('step2-indicator').classList.add('active');
+            
+            // Auto-focus first OTP input
+            otpInputs[0].focus();
+        }
+
+        function resendOTP() {
+            if (otpAttempts >= MAX_OTP_ATTEMPTS) {
+                alert('Maximum OTP attempts reached. Please try again later.');
+                return;
+            }
+            
+            // In a real app, you would resend OTP here
+            console.log('Resending OTP to', currentMobileNumber);
+            otpAttempts++;
+            
+            // Clear OTP inputs
+            otpInputs.forEach(input => input.value = '');
+            otpInputs[0].focus();
+            
+            alert('New OTP sent to your mobile number');
+        }
+
+        function verifyOTP() {
+            // Get entered OTP
+            let enteredOTP = '';
+            otpInputs.forEach(input => {
+                enteredOTP += input.value;
+            });
+            
+            // For demo, we'll accept any 6-digit OTP
+            if (enteredOTP.length !== 6) {
+                alert('Please enter complete 6-digit OTP');
+                return;
+            }
+            
+            // In a real app, you would verify OTP with server here
+            console.log('Verifying OTP:', enteredOTP);
+            
+            // Move to user details step
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('step2-indicator').classList.remove('active');
+            document.getElementById('step3-indicator').classList.add('active');
+        }
+
+        function showNumberResults() {
+            // Validate form
+            const form = document.getElementById('userDetailsForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Get user details
+            const pinCode = document.getElementById('pinCode').value;
+            const preferredDigits = document.getElementById('preferredDigits').value;
+            
+            // Display in the next step
+            document.getElementById('displayPinCode').textContent = pinCode;
+            document.getElementById('displayPreferredDigits').textContent = preferredDigits;
+            
+            // Move to number selection step
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('step3-indicator').classList.remove('active');
+            document.getElementById('step4-indicator').classList.add('active');
+        }
+
+        function backToStep3() {
+            document.getElementById('step4').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('step4-indicator').classList.remove('active');
+            document.getElementById('step3-indicator').classList.add('active');
+        }
+
+        function showConfirmation() {
+            document.getElementById('step4').classList.remove('active');
+            document.getElementById('step5').classList.add('active');
+            document.getElementById('step4-indicator').classList.remove('active');
+            // No indicator for confirmation step
+        }
+
+    </script>
+</body>
+</html>

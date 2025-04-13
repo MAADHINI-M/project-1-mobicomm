@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Mobicomm</title>
+    <title>Settings - Mobicomm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +17,6 @@
             --accent-success: #3871c2;
             --accent-urgent: #d95f0e;
             --highlight: #4a1a4a;
-            --web: #4a1a4a;
             --web-dark: #2d0a2d;
             --card-bg: #ffffff;
             --border-radius: 12px;
@@ -133,7 +132,7 @@
             width: 100%;
         }
 
-        .contact-card {
+        .settings-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
             padding: 30px;
@@ -141,7 +140,7 @@
             transition: var(--transition);
         }
 
-        .contact-card:hover {
+        .settings-card:hover {
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
@@ -163,7 +162,7 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .form-control {
+        .form-control, .form-select {
             border: 2px solid rgba(155, 93, 229, 0.3);
             border-radius: 8px;
             padding: 12px 15px;
@@ -172,13 +171,13 @@
             transition: var(--transition);
         }
 
-        .form-control:focus {
+        .form-control:focus, .form-select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 10px rgba(155, 93, 229, 0.3);
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .form-control.is-invalid {
+        .form-control.is-invalid, .form-select.is-invalid {
             border-color: var(--accent-urgent);
             background: rgba(255, 235, 238, 0.5);
         }
@@ -196,11 +195,37 @@
             margin-bottom: 20px;
         }
 
+        h6 {
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
         .validation-message {
             color: var(--accent-urgent);
             font-size: 0.9rem;
             margin-top: 5px;
             display: none;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-label {
+            color: var(--text);
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(56, 113, 194, 0.1);
+            border: 1px solid var(--accent-success);
+            border-radius: 8px;
+            color: var(--accent-success);
+            text-align: center;
         }
 
         footer {
@@ -222,17 +247,6 @@
             color: var(--accent-success);
         }
 
-        .success-message {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(56, 113, 194, 0.1);
-            border: 1px solid var(--accent-success);
-            border-radius: 8px;
-            color: var(--accent-success);
-            text-align: center;
-        }
-
         @media (max-width: 992px) {
             .main-content {
                 padding: 60px 20px;
@@ -249,7 +263,7 @@
             h2 {
                 font-size: 1.6rem;
             }
-            .contact-card {
+            .settings-card {
                 padding: 20px;
             }
         }
@@ -265,7 +279,7 @@
                 width: 100%;
                 margin-bottom: 10px;
             }
-            .form-control {
+            .form-control, .form-select {
                 font-size: 0.9rem;
             }
         }
@@ -276,7 +290,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="login.html">
+            <a class="navbar-brand" href="index.html">
                  Mobicomm
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -294,7 +308,7 @@
                         <a class="nav-link" href="recharge.html">Special Offers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="support.html">Support</a>
+                        <a class="nav-link" href="support.html">Support</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
@@ -304,9 +318,9 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                            <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                            <li><a class="dropdown-item active" href="settings.html">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                            <li><a class="dropdown-item" href="#" id="logoutLink">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -315,29 +329,81 @@
     </nav>
 
     <div class="main-content">
-        <h2>Contact Us</h2>
-        <div class="contact-card">
-            <h5>Get in Touch</h5>
-            <form id="contactForm">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
-                    <div class="validation-message" id="nameValidation">Please enter a valid name (letters and spaces only, 2+ characters).</div>
+        <h2>Settings</h2>
+        <div class="settings-card">
+            <h5>Account Settings</h5>
+            <form id="settingsForm">
+                <div class="mb-4">
+                    <h6>Notification Preferences</h6>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="emailNotifications">
+                        <label class="form-check-label" for="emailNotifications">
+                            Receive email notifications
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="smsNotifications">
+                        <label class="form-check-label" for="smsNotifications">
+                            Receive SMS notifications
+                        </label>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-                    <div class="validation-message" id="emailValidation">Please enter a valid email address.</div>
+                <div class="mb-4">
+                    <h6>Theme Preference</h6>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="theme" id="themeLight" value="light">
+                        <label class="form-check-label" for="themeLight">
+                            Light Theme
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="theme" id="themeDark" value="dark">
+                        <label class="form-check-label" for="themeDark">
+                            Dark Theme
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="theme" id="themeSystem" value="system">
+                        <label class="form-check-label" for="themeSystem">
+                            System Default
+                        </label>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" rows="5" placeholder="Describe your issue..." required></textarea>
-                    <div class="validation-message" id="messageValidation">Please enter a message (minimum 10 characters).</div>
+                <div class="mb-4">
+                    <h6>Recharge Preferences</h6>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="autopay">
+                        <label class="form-check-label" for="autopay">
+                            Enable Autopay for plan renewals
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="defaultRecharge" class="form-label">Default Recharge Amount</label>
+                        <select class="form-select" id="defaultRecharge">
+                            <option value="">Select amount</option>
+                            <option value="199">₹199 (1GB/Day, 28 days)</option>
+                            <option value="299">₹299 (2GB/Day, 28 days)</option>
+                            <option value="499">₹499 (3GB/Day, 28 days)</option>
+                            <option value="699">₹699 (4GB/Day, 28 days)</option>
+                        </select>
+                        <div class="validation-message" id="defaultRechargeValidation">
+                            Please select a recharge amount.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rechargeReminder" class="form-label">Recharge Reminder</label>
+                        <select class="form-select" id="rechargeReminder">
+                            <option value="none">None</option>
+                            <option value="1">1 day before expiry</option>
+                            <option value="3">3 days before expiry</option>
+                            <option value="5">5 days before expiry</option>
+                        </select>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Save Settings</button>
             </form>
             <div class="success-message" id="successMessage">
-                <i class="fas fa-check-circle me-2"></i> Your message has been submitted! Ticket ID: <span id="ticketId"></span>
+                <i class="fas fa-check-circle me-2"></i> Settings updated successfully!
             </div>
         </div>
     </div>
@@ -361,30 +427,69 @@
                 document.body.removeAttribute('data-theme');
                 themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
                 localStorage.setItem('theme', 'light');
+                document.getElementById('themeLight').checked = true;
             } else {
                 document.body.setAttribute('data-theme', 'dark');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
                 localStorage.setItem('theme', 'dark');
+                document.getElementById('themeDark').checked = true;
             }
         });
 
         // Load saved theme
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.setAttribute('data-theme', 'dark');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                document.getElementById('themeDark').checked = true;
+            } else if (savedTheme === 'light') {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                document.getElementById('themeLight').checked = true;
+            } else {
+                document.getElementById('themeSystem').checked = true;
+            }
         }
 
-        // Contact Form Validation and Submission
-        const contactForm = document.getElementById('contactForm');
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const messageInput = document.getElementById('message');
-        const nameValidation = document.getElementById('nameValidation');
-        const emailValidation = document.getElementById('emailValidation');
-        const messageValidation = document.getElementById('messageValidation');
+        // Settings functionality
+        const settingsForm = document.getElementById('settingsForm');
+        const emailNotifications = document.getElementById('emailNotifications');
+        const smsNotifications = document.getElementById('smsNotifications');
+        const themeLight = document.getElementById('themeLight');
+        const themeDark = document.getElementById('themeDark');
+        const themeSystem = document.getElementById('themeSystem');
+        const autopay = document.getElementById('autopay');
+        const defaultRecharge = document.getElementById('defaultRecharge');
+        const rechargeReminder = document.getElementById('rechargeReminder');
+        const defaultRechargeValidation = document.getElementById('defaultRechargeValidation');
         const successMessage = document.getElementById('successMessage');
-        const ticketIdSpan = document.getElementById('ticketId');
 
+        // Load settings from localStorage
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('userSettings')) || {
+                emailNotifications: true,
+                smsNotifications: false,
+                theme: 'system',
+                autopay: false,
+                defaultRecharge: '',
+                rechargeReminder: 'none'
+            };
+            emailNotifications.checked = settings.emailNotifications;
+            smsNotifications.checked = settings.smsNotifications;
+            autopay.checked = settings.autopay;
+            defaultRecharge.value = settings.defaultRecharge;
+            rechargeReminder.value = settings.rechargeReminder;
+            if (settings.theme === 'light') {
+                themeLight.checked = true;
+            } else if (settings.theme === 'dark') {
+                themeDark.checked = true;
+            } else {
+                themeSystem.checked = true;
+            }
+        }
+
+        // Validate input
         function validateInput(input, validationElement, isValid) {
             if (!isValid) {
                 input.classList.add('is-invalid');
@@ -395,69 +500,65 @@
             }
         }
 
-        nameInput.addEventListener('input', () => {
-            const nameRegex = /^[A-Za-z\s]{2,}$/;
-            validateInput(nameInput, nameValidation, nameRegex.test(nameInput.value.trim()));
-        });
-
-        emailInput.addEventListener('input', () => {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            validateInput(emailInput, emailValidation, emailRegex.test(emailInput.value.trim()));
-        });
-
-        messageInput.addEventListener('input', () => {
-            validateInput(messageInput, messageValidation, messageInput.value.trim().length >= 10);
-        });
-
-        contactForm.addEventListener('submit', function(e) {
+        // Handle form submission
+        settingsForm.addEventListener('submit', (e) => {
             e.preventDefault();
             let isValid = true;
 
-            const nameRegex = /^[A-Za-z\s]{2,}$/;
-            if (!nameRegex.test(nameInput.value.trim())) {
-                validateInput(nameInput, nameValidation, false);
+            if (!defaultRecharge.value) {
+                validateInput(defaultRecharge, defaultRechargeValidation, false);
                 isValid = false;
-            }
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(emailInput.value.trim())) {
-                validateInput(emailInput, emailValidation, false);
-                isValid = false;
-            }
-
-            if (messageInput.value.trim().length < 10) {
-                validateInput(messageInput, messageValidation, false);
-                isValid = false;
+            } else {
+                validateInput(defaultRecharge, defaultRechargeValidation, true);
             }
 
             if (isValid) {
-                const submissions = JSON.parse(localStorage.getItem('contactSubmissions')) || [];
-                submissions.push({
-                    name: nameInput.value.trim(),
-                    email: emailInput.value.trim(),
-                    message: messageInput.value.trim(),
-                    date: new Date().toISOString()
-                });
-                localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+                const settings = {
+                    emailNotifications: emailNotifications.checked,
+                    smsNotifications: smsNotifications.checked,
+                    theme: themeLight.checked ? 'light' : themeDark.checked ? 'dark' : 'system',
+                    autopay: autopay.checked,
+                    defaultRecharge: defaultRecharge.value,
+                    rechargeReminder: rechargeReminder.value
+                };
+                localStorage.setItem('userSettings', JSON.stringify(settings));
 
-                const tickets = JSON.parse(localStorage.getItem('supportTickets')) || [];
-                const ticketId = 'TICKET' + (1000 + tickets.length + 1);
-                tickets.push({
-                    id: ticketId,
-                    issue: messageInput.value.trim().substring(0, 50) + '...',
-                    date: new Date().toISOString().split('T')[0],
-                    status: 'Open'
-                });
-                localStorage.setItem('supportTickets', JSON.stringify(tickets));
+                // Update theme
+                if (settings.theme === 'light') {
+                    document.body.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                } else if (settings.theme === 'dark') {
+                    document.body.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    localStorage.removeItem('theme');
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.body.setAttribute('data-theme', 'dark');
+                        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    } else {
+                        document.body.removeAttribute('data-theme');
+                        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    }
+                }
 
-                ticketIdSpan.textContent = ticketId;
                 successMessage.style.display = 'block';
-                contactForm.reset();
-
                 setTimeout(() => {
                     successMessage.style.display = 'none';
-                }, 5000);
+                }, 3000);
             }
+        });
+
+        // Load settings and theme on page load
+        loadSettings();
+        loadTheme();
+
+        // Logout functionality
+        document.getElementById('logoutLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('activeUser');
+            window.location.href = 'login.html';
         });
     </script>
 </body>
