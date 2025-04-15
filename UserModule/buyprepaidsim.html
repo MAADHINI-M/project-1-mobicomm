@@ -16,42 +16,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom Styles -->
     <style>
-          /* Root Variables - Enhanced Light Theme */
-          :root {
-            --primary: #d06ab2; /* Warm light yellow for highlights (softer gold) */
-            --secondary: #6b2d6b; /* Richer purple for emphasis */
-            --bg: #f5f6ff; /* Subtle off-white with a hint of blue */
-            --text: #1a1a1a; /* Deep charcoal for strong readability */
-            --text-light: #4a4a4a; /* Softer gray for secondary text */
-            --accent-success: #3871c2; /* Brighter professional blue */
-            --accent-urgent: #d95f0e; /* Vivid muted orange */
-            --highlight: #4a1a4a; /* Deeper purple for footer */
-            --web: #4a1a4a; /* Consistent brand purple */
-            --web-dark: #2d0a2d; /* Darker purple-toned header */
-            --blue-primary: #4a1a4a; /* Deep purple for login gradient */
-            --blue-secondary: #6d2d6d; /* Lighter purple gradient */
-            --card-bg: #ffffff; /* Pure white for cards */
+        /* [Your existing CSS remains unchanged] */
+        :root {
+            --primary: #d06ab2;
+            --secondary: #6b2d6b;
+            --bg: #f5f6ff;
+            --text: #1a1a1a;
+            --text-light: #4a4a4a;
+            --accent-success: #3871c2;
+            --accent-urgent: #d95f0e;
+            --highlight: #4a1a4a;
+            --web: #4a1a4a;
+            --web-dark: #2d0a2d;
+            --blue-primary: #4a1a4a;
+            --blue-secondary: #6d2d6d;
+            --card-bg: #ffffff;
             --border-radius: 12px;
             --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Dark Theme Variables - Enhanced for Vibrancy and Depth */
         [data-theme="dark"] {
-            --primary: #f2db8e; /* Vibrant amber-gold for highlights */
-            --secondary: #ab47bc; /* Brighter, more vivid purple */
-            --bg: #12122e; /* Deep navy with a hint of purple */
-            --text: #e8eaf6; /* Light off-white for readability */
-            --text-light: #b0bec5; /* Cool gray-blue for secondary text */
-            --accent-success: #26c6da; /* Bright cyan for success */
-            --accent-urgent: #ff7043; /* Warm coral for urgency */
-            --highlight: #0d1a3a; /* Dark navy for footer depth */
-            --web: #ab47bc; /* Matching vibrant purple */
-            --web-dark: #09091a; /* Almost black with a purple undertone */
-            --blue-primary: #7e57c2; /* Electric purple for login gradient */
-            --blue-secondary: #00bcd4; /* Bright cyan for gradient contrast */
-            --card-bg: #1e1e3f; /* Dark purple-blue for cards */
-            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(171, 71, 188, 0.25); /* Enhanced glow */
+            --primary: #f2db8e;
+            --secondary: #ab47bc;
+            --bg: #12122e;
+            --text: #e8eaf6;
+            --text-light: #b0bec5;
+            --accent-success: #26c6da;
+            --accent-urgent: #ff7043;
+            --highlight: #0d1a3a;
+            --web: #ab47bc;
+            --web-dark: #09091a;
+            --blue-primary: #7e57c2;
+            --blue-secondary: #00bcd4;
+            --card-bg: #1e1e3f;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(171, 71, 188, 0.25);
         }
 
         body {
@@ -361,8 +360,9 @@
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-         /* Footer */
-         footer {
+
+        /* Footer */
+        footer {
             background: var(--highlight);
             color: #ffffff;
             padding: 80px 0 0;
@@ -423,7 +423,7 @@
         footer h4 {
             font-size: 1.2rem;
             font-weight: 600;
-            color: var(--primary); /* Gold in dark mode */
+            color: var(--primary);
             margin-bottom: 20px;
             position: relative;
             padding-bottom: 10px;
@@ -548,7 +548,6 @@
             transform: scale(1.1) translateY(-5px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.4);
         }
-
     </style>
 </head>
 <body>
@@ -679,7 +678,6 @@
                                 <option value="Tamil Nadu">Tamil Nadu</option>
                                 <option value="Karnataka">Karnataka</option>
                                 <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                <!-- Add more states as needed -->
                             </select>
                         </div>
                         
@@ -846,7 +844,6 @@
                     <a href="login.html">Home</a>
                     <a href="#portBlock">Buy New SIM</a>
                     <a href="recharge.html">Plans & Offers</a>
-                    <!-- <a href="coverage.html">Coverage Map</a> -->
                     <a href="#faqBlock">FAQs</a>
                 </div>
                 <div class="footer-contact">
@@ -864,18 +861,17 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-        // Set current year
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // SIM purchase process functionality
+        // JavaScript
+        const BACKEND_URL = 'http://localhost:9045';
+    
         let currentMobileNumber = '';
         let otpAttempts = 0;
         const MAX_OTP_ATTEMPTS = 3;
         let countdownInterval;
-
-        // Initialize OTP timer
+        const otpInputs = document.querySelectorAll('.otp-input');
+    
+        // Start OTP Timer
         function startOTPTimer() {
             let timeLeft = 30;
             document.getElementById('resend-link').style.display = 'none';
@@ -895,138 +891,188 @@
                 timeLeft--;
             }, 1000);
         }
-
-        // OTP input handling
-        const otpInputs = document.querySelectorAll('.otp-input');
-        otpInputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1) {
-                    if (index < otpInputs.length - 1) {
-                        otpInputs[index + 1].focus();
+    
+        // Generate OTP
+        async function generateOTP() {
+            const userName = document.getElementById('userName').value.trim();
+            currentMobileNumber = document.getElementById('currentNumber').value.trim();
+            const email = document.getElementById('email').value.trim();
+            
+            if (!userName || !/^\d{10}$/.test(currentMobileNumber) || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter valid details (10-digit mobile number and valid email)');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/sim/otp/generate/${currentMobileNumber}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: userName, email })
+                });
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (jsonError) {
+                    console.error('JSON Parse Error:', jsonError);
+                    throw new Error('Invalid JSON response: ' + text);
+                }
+                console.log('Generate OTP Response:', { status: response.status, data, raw: text });
+                if (response.ok) {
+                    document.getElementById('displayNumber').textContent = currentMobileNumber;
+                    document.getElementById('step1').classList.remove('active');
+                    document.getElementById('step2').classList.add('active');
+                    document.getElementById('step1-indicator').classList.remove('active');
+                    document.getElementById('step2-indicator').classList.add('active');
+                    startOTPTimer();
+                    otpInputs[0].focus();
+                    otpAttempts = 0;
+                } else {
+                    alert(data.message || `Failed to generate OTP (Status: ${response.status}) - ${text}`);
+                }
+            } catch (error) {
+                console.error('Fetch Error:', { message: error.message, stack: error.stack, raw: error.message.includes('response') ? await response.text() : null });
+                alert('Error connecting to server: ' + error.message);
+            }
+        }
+    
+        // Verify OTP
+        async function verifyOTP() {
+            // Collect OTP from input fields
+            const otp = Array.from(document.querySelectorAll('.otp-input'))
+                .map(input => input.value.trim())
+                .join('');
+            
+            if (!/^\d{6}$/.test(otp)) {
+                alert('Please enter a valid 6-digit OTP');
+                return;
+            }
+    
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/sim/otp/validate?mobileNumber=${encodeURIComponent(currentMobileNumber)}&otp=${encodeURIComponent(otp)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (jsonError) {
+                    console.error('JSON Parse Error:', jsonError);
+                    throw new Error('Invalid JSON response: ' + text);
+                }
+                console.log('Verify OTP Response:', { status: response.status, data, raw: text });
+                if (response.ok && data.status === 'success') {
+                    document.getElementById('step2').classList.remove('active');
+                    document.getElementById('step3').classList.add('active');
+                    document.getElementById('step2-indicator').classList.remove('active');
+                    document.getElementById('step3-indicator').classList.add('active');
+                    clearInterval(countdownInterval); // Stop the timer
+                } else {
+                    alert(data.message || `OTP verification failed (Status: ${response.status}) - ${text}`);
+                    otpAttempts++;
+                    if (otpAttempts >= MAX_OTP_ATTEMPTS) {
+                        alert('Maximum OTP attempts reached. Please generate a new OTP.');
+                        resetOTPFields();
                     }
                 }
-            });
-            
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && e.target.value.length === 0) {
-                    if (index > 0) {
-                        otpInputs[index - 1].focus();
-                    }
-                }
-            });
-        });
-
-        // Navigation between steps
-        function generateOTP() {
-            const userName = document.getElementById('userName').value;
-            currentMobileNumber = document.getElementById('currentNumber').value;
-            const email = document.getElementById('email').value;
-            
-            // Validate form
-            if (!userName || !/^\d{10}$/.test(currentMobileNumber) || !email) {
-                alert('Please enter valid details');
-                return;
+            } catch (error) {
+                console.error('Fetch Error:', { message: error.message, stack: error.stack, raw: error.message.includes('response') ? await response.text() : null });
+                alert('An unexpected error occurred. Please re-enter your mobile number in the required field. Please enter your mobile number in the correct format.');
             }
-            
-            document.getElementById('displayNumber').textContent = currentMobileNumber;
-            
-            // In a real app, you would send OTP to the mobile number here
-            console.log('OTP sent to', currentMobileNumber);
-            
-            // For demo, we'll use a fixed OTP (123456)
-            // Move to OTP verification step
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-            document.getElementById('step1-indicator').classList.remove('active');
-            document.getElementById('step2-indicator').classList.add('active');
-            
-            // Start OTP timer
-            startOTPTimer();
-            
-            // Auto-focus first OTP input
-            otpInputs[0].focus();
         }
-
-        function resendOTP() {
-            if (otpAttempts >= MAX_OTP_ATTEMPTS) {
-                alert('Maximum OTP attempts reached. Please try again later.');
-                return;
-            }
-            
-            // In a real app, you would resend OTP here
-            console.log('Resending OTP to', currentMobileNumber);
-            otpAttempts++;
-            
-            // Clear OTP inputs
-            otpInputs.forEach(input => input.value = '');
-            otpInputs[0].focus();
-            
-            // Restart timer
-            clearInterval(countdownInterval);
-            startOTPTimer();
-            
-            alert('New OTP sent to your mobile number');
-        }
-
-        function verifyOTP() {
-            // Get entered OTP
-            let enteredOTP = '';
-            otpInputs.forEach(input => {
-                enteredOTP += input.value;
-            });
-            
-            // For demo, we'll accept any 6-digit OTP
-            if (enteredOTP.length !== 6) {
-                alert('Please enter complete 6-digit OTP');
-                return;
-            }
-            
-            // In a real app, you would verify OTP with server here
-            console.log('Verifying OTP:', enteredOTP);
-            
-            // Move to address step
+    
+        // Helper function to reset OTP fields
+        function resetOTPFields() {
+            document.querySelectorAll('.otp-input').forEach(input => input.value = '');
             document.getElementById('step2').classList.remove('active');
-            document.getElementById('step3').classList.add('active');
+            document.getElementById('step1').classList.add('active');
             document.getElementById('step2-indicator').classList.remove('active');
-            document.getElementById('step3-indicator').classList.add('active');
-            
-            // Clear timer
+            document.getElementById('step1-indicator').classList.add('active');
             clearInterval(countdownInterval);
+            document.getElementById('timer-text').style.display = 'none';
+            document.getElementById('resend-link').style.display = 'none';
+            otpAttempts = 0;
         }
-
-        function submitAddress() {
-            const pinCode = document.getElementById('pinCode').value;
-            const addressLine1 = document.getElementById('addressLine1').value;
-            const city = document.getElementById('city').value;
-            const state = document.getElementById('state').value;
-            
-            // Validate form
-            if (!pinCode || !addressLine1 || !city || !state) {
-                alert('Please fill all required address fields');
+    
+        // Submit Address
+        async function submitAddress() {
+            const pinCode = document.getElementById('pinCode').value.trim();
+            const addressLine1 = document.getElementById('addressLine1').value.trim();
+            const addressLine2 = document.getElementById('addressLine2').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+    
+            if (!/^\d{6}$/.test(pinCode) || !addressLine1 || !city || !state) {
+                alert('Please enter valid address details (6-digit PIN code, address line 1, city, and state are required)');
                 return;
             }
-            
-            // In a real app, you would submit address here
-            console.log('Address submitted:', { pinCode, addressLine1, city, state });
-            
-            // Move to confirmation step
-            document.getElementById('step3').classList.remove('active');
-            document.getElementById('step4').classList.add('active');
-            document.getElementById('step3-indicator').classList.remove('active');
-            // No indicator for confirmation step
+    
+            const addressData = {
+                pinCode,
+                addressLine1,
+                addressLine2,
+                city,
+                state
+            };
+    
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/sim/address/submit?mobileNumber=${encodeURIComponent(currentMobileNumber)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(addressData)
+                });
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (jsonError) {
+                    console.error('JSON Parse Error:', jsonError);
+                    throw new Error('Invalid JSON response: ' + text);
+                }
+                console.log('Submit Address Response:', { status: response.status, data, raw: text });
+                if (response.ok && data.message === 'Address submitted and order confirmed') {
+                    document.getElementById('step3').classList.remove('active');
+                    document.getElementById('step4').classList.add('active');
+                    document.getElementById('step3-indicator').classList.remove('active');
+                    document.getElementById('step4-indicator').classList.add('active');
+                    alert('Address submitted and order confirmed'); // Show alert
+                    window.location.href = 'login.html'; // Redirect to login page after OK
+                } else {
+                    alert(data.message || `Failed to submit address (Status: ${response.status}) - ${text}`);
+                }
+            } catch (error) {
+                console.error('Fetch Error:', { message: error.message, stack: error.stack, raw: error.message.includes('response') ? await response.text() : null });
+                alert('Error submitting address: ' + error.message);
+            }
         }
-
-        // Theme toggle functionality
+    
+        // Resend OTP (placeholder - to be implemented)
+        function resendOTP() {
+            alert('Resend OTP functionality not yet implemented');
+        }
+    
+        // Update current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    
+        // Theme Toggle
         const themeToggle = document.querySelector('.theme-toggle');
         themeToggle.addEventListener('click', () => {
-            const currentTheme = document.body.getAttribute('data-theme');
-            if (currentTheme === 'dark') {
-                document.body.removeAttribute('data-theme');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            } else {
-                document.body.setAttribute('data-theme', 'dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            }
+            document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+        });
+    
+        // Scroll to Top
+        const scrollTopBtn = document.createElement('div');
+        scrollTopBtn.className = 'scroll-top';
+        scrollTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        document.body.appendChild(scrollTopBtn);
+    
+        window.addEventListener('scroll', () => {
+            scrollTopBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+    
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
