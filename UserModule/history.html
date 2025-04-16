@@ -445,189 +445,232 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Set current year
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Theme toggle functionality
-        const themeToggle = document.querySelector('.theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.body.getAttribute('data-theme');
-            if (currentTheme === 'dark') {
-                document.body.removeAttribute('data-theme');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.body.setAttribute('data-theme', 'dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-
-        // Load saved theme
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.setAttribute('data-theme', 'dark');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-
-        // Transaction filter functionality
-        const timeFilter = document.getElementById('timeFilter');
-        const typeFilter = document.getElementById('typeFilter');
-        const sortFilter = document.getElementById('sortFilter');
-        const exportBtn = document.getElementById('exportBtn');
-        const transactionTable = document.getElementById('transactionTable');
-        const historyTitle = document.getElementById('historyTitle');
-
         // Load user from localStorage
-        const activeUser = JSON.parse(localStorage.getItem('activeUser')) || { name: 'User' };
-        historyTitle.textContent = `${activeUser.name}'s Transaction History`;
+const activeUser = JSON.parse(localStorage.getItem('activeUser')) || { name: 'User', mobileNumber: null };
+const historyTitle = document.getElementById('historyTitle');
+const transactionTable = document.getElementById('transactionTable');
+const timeFilter = document.getElementById('timeFilter');
+const typeFilter = document.getElementById('typeFilter');
+const sortFilter = document.getElementById('sortFilter');
+const exportBtn = document.getElementById('exportBtn');
 
-        // Sample transactions
-        const transactions = [
-            { date: '2025-03-01', plan: '1GB Daily', amount: 199, type: 'recharge', status: 'Success', txId: 'TX123456', payment: 'UPI' },
-            { date: '2025-02-01', plan: '2GB Daily', amount: 299, type: 'recharge', status: 'Success', txId: 'TX123457', payment: 'Credit Card' },
-            { date: '2025-01-15', plan: '1GB Daily', amount: 199, type: 'refund', status: 'Success', txId: 'TX123458', payment: 'UPI' },
-            { date: '2024-12-20', plan: '3GB Daily', amount: 499, type: 'recharge', status: 'Success', txId: 'TX123459', payment: 'Debit Card' }
-        ];
+// Update title with user's name
+historyTitle.textContent = `${activeUser.name}'s Transaction History`;
 
-        // Debounce function
-        function debounce(func, wait) {
-            let timeout;
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
+// Backend API base URL
+const API_BASE_URL = 'http://localhost:9045/mobicomm';
 
-        function renderTransactions() {
-            const timeValue = timeFilter.value;
-            const typeValue = typeFilter.value;
-            const sortValue = sortFilter.value;
+// Debounce function
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
 
-            // Filter transactions
-            let filteredTransactions = [...transactions];
+// Format timestamp to readable date (e.g., 2025-03-01)
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    return date.toISOString().split('T')[0];
+}
 
-            if (timeValue === '30days') {
-                const thirtyDaysAgo = new Date();
-                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-                filteredTransactions = filteredTransactions.filter(tx => {
-                    const txDate = new Date(tx.date);
-                    return txDate >= thirtyDaysAgo;
-                });
-            }
+// Map backend transaction to frontend format
+function mapTransaction(tx) {
+    return {
+        date: formatDate(tx.rechargeDate),
+        plan: tx.planName || 'Unknown Plan',
+        amount: tx.amount,
+        type: 'recharge', // Assuming all transactions are recharges; adjust if refunds are supported
+        status: 'Success', // Assuming successful transactions are returned; adjust if status is available
+        txId: tx.transactionId,
+        payment: tx.paymentId || 'Unknown' // Use paymentId or adjust based on backend
+    };
+}
 
-            if (typeValue !== 'all') {
-                filteredTransactions = filteredTransactions.filter(tx => tx.type === typeValue);
-            }
+// Fetch transactions from backend
+async function fetchTransactions() {
+    if (!activeUser.mobileNumber) {
+        transactionTable.innerHTML = '<tr><td colspan="6" class="text-center">Please log in to view transactions.</td></tr>';
+        return [];
+    }
 
-            // Sort transactions
-            filteredTransactions.sort((a, b) => {
-                if (sortValue === 'date-desc') return new Date(b.date) - new Date(a.date);
-                if (sortValue === 'date-asc') return new Date(a.date) - new Date(b.date);
-                if (sortValue === 'amount-desc') return b.amount - a.amount;
-                if (sortValue === 'amount-asc') return a.amount - b.amount;
-                return 0;
-            });
-
-            // Render table
-            transactionTable.innerHTML = '';
-            filteredTransactions.forEach(tx => {
-                const row = document.createElement('tr');
-                if (tx.type === 'refund') row.classList.add('refunded');
-                row.innerHTML = `
-                    <td>${tx.date}</td>
-                    <td>${tx.plan}</td>
-                    <td>₹${tx.amount}</td>
-                    <td>${tx.type.charAt(0).toUpperCase() + tx.type.slice(1)}</td>
-                    <td><span class="badge-success">${tx.status}</span></td>
-                    <td>
-                        <button class="btn btn-primary btn-sm details-btn" 
-                                data-date="${tx.date}" 
-                                data-plan="${tx.plan}" 
-                                data-amount="${tx.amount}" 
-                                data-type="${tx.type}" 
-                                data-status="${tx.status}" 
-                                data-txid="${tx.txId}" 
-                                data-payment="${tx.payment}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#transactionModal"
-                                aria-label="View transaction details">
-                            Details
-                        </button>
-                    </td>
-                `;
-                transactionTable.appendChild(row);
-            });
-
-            if (filteredTransactions.length === 0) {
-                transactionTable.innerHTML = '<tr><td colspan="6" class="text-center">No transactions found.</td></tr>';
-            }
-        }
-
-        // Export to CSV
-        function exportToCSV() {
-            const timeValue = timeFilter.value;
-            const typeValue = typeFilter.value;
-            let filteredTransactions = [...transactions];
-
-            if (timeValue === '30days') {
-                const thirtyDaysAgo = new Date();
-                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-                filteredTransactions = filteredTransactions.filter(tx => {
-                    const txDate = new Date(tx.date);
-                    return txDate >= thirtyDaysAgo;
-                });
-            }
-
-            if (typeValue !== 'all') {
-                filteredTransactions = filteredTransactions.filter(tx => tx.type === typeValue);
-            }
-
-            const csv = [
-                'Date,Plan,Amount,Type,Status,Transaction ID,Payment Method',
-                ...filteredTransactions.map(tx => 
-                    `${tx.date},${tx.plan},₹${tx.amount},${tx.type},${tx.status},${tx.txId},${tx.payment}`
-                )
-            ].join('\n');
-
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${activeUser.name.replace(/\s/g, '_')}_transactions.csv`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        // Modal population
-        transactionTable.addEventListener('click', (e) => {
-            if (e.target.classList.contains('details-btn')) {
-                document.getElementById('modalDate').textContent = e.target.dataset.date;
-                document.getElementById('modalPlan').textContent = e.target.dataset.plan;
-                document.getElementById('modalAmount').textContent = `₹${e.target.dataset.amount}`;
-                document.getElementById('modalType').textContent = 
-                    e.target.dataset.type.charAt(0).toUpperCase() + e.target.dataset.type.slice(1);
-                document.getElementById('modalStatus').textContent = e.target.dataset.status;
-                document.getElementById('modalTxId').textContent = e.target.dataset.txid;
-                document.getElementById('modalPayment').textContent = e.target.dataset.payment;
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/sim/history?mobileNumber=${activeUser.mobileNumber}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
             }
         });
 
-        // Debounced render
-        const debouncedRender = debounce(renderTransactions, 300);
-        timeFilter.addEventListener('change', debouncedRender);
-        typeFilter.addEventListener('change', debouncedRender);
-        sortFilter.addEventListener('change', debouncedRender);
-        exportBtn.addEventListener('click', exportToCSV);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-        // Initial render
-        renderTransactions();
+        const transactions = await response.json();
+        return transactions.map(mapTransaction);
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+        transactionTable.innerHTML = '<tr><td colspan="6" class="text-center">Failed to load transactions. Please try again later.</td></tr>';
+        return [];
+    }
+}
 
-        // Logout functionality
-        document.getElementById('logoutLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('activeUser');
-            window.location.href = 'login.html';
+// Render transactions
+async function renderTransactions() {
+    const transactions = await fetchTransactions();
+    const timeValue = timeFilter.value;
+    const typeValue = typeFilter.value;
+    const sortValue = sortFilter.value;
+
+    // Filter transactions
+    let filteredTransactions = [...transactions];
+
+    if (timeValue === '30days') {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        filteredTransactions = filteredTransactions.filter(tx => {
+            const txDate = new Date(tx.date);
+            return txDate >= thirtyDaysAgo;
         });
+    }
+
+    if (typeValue !== 'all') {
+        filteredTransactions = filteredTransactions.filter(tx => tx.type === typeValue);
+    }
+
+    // Sort transactions
+    filteredTransactions.sort((a, b) => {
+        if (sortValue === 'date-desc') return new Date(b.date) - new Date(a.date);
+        if (sortValue === 'date-asc') return new Date(a.date) - new Date(b.date);
+        if (sortValue === 'amount-desc') return b.amount - a.amount;
+        if (sortValue === 'amount-asc') return a.amount - b.amount;
+        return 0;
+    });
+
+    // Render table
+    transactionTable.innerHTML = '';
+    filteredTransactions.forEach(tx => {
+        const row = document.createElement('tr');
+        if (tx.type === 'refund') row.classList.add('refunded');
+        row.innerHTML = `
+            <td>${tx.date}</td>
+            <td>${tx.plan}</td>
+            <td>₹${tx.amount.toFixed(2)}</td>
+            <td>${tx.type.charAt(0).toUpperCase() + tx.type.slice(1)}</td>
+            <td><span class="badge-success">${tx.status}</span></td>
+            <td>
+                <button class="btn btn-primary btn-sm details-btn" 
+                        data-date="${tx.date}" 
+                        data-plan="${tx.plan}" 
+                        data-amount="${tx.amount.toFixed(2)}" 
+                        data-type="${tx.type}" 
+                        data-status="${tx.status}" 
+                        data-txid="${tx.txId}" 
+                        data-payment="${tx.payment}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#transactionModal"
+                        aria-label="View transaction details">
+                    Details
+                </button>
+            </td>
+        `;
+        transactionTable.appendChild(row);
+    });
+
+    if (filteredTransactions.length === 0) {
+        transactionTable.innerHTML = '<tr><td colspan="6" class="text-center">No transactions found.</td></tr>';
+    }
+}
+
+// Export to CSV
+async function exportToCSV() {
+    const transactions = await fetchTransactions();
+    const timeValue = timeFilter.value;
+    const typeValue = typeFilter.value;
+
+    let filteredTransactions = [...transactions];
+
+    if (timeValue === '30days') {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        filteredTransactions = filteredTransactions.filter(tx => {
+            const txDate = new Date(tx.date);
+            return txDate >= thirtyDaysAgo;
+        });
+    }
+
+    if (typeValue !== 'all') {
+        filteredTransactions = filteredTransactions.filter(tx => tx.type === typeValue);
+    }
+
+    const csv = [
+        'Date,Plan,Amount,Type,Status,Transaction ID,Payment Method',
+        ...filteredTransactions.map(tx => 
+            `${tx.date},${tx.plan},₹${tx.amount.toFixed(2)},${tx.type},${tx.status},${tx.txId},${tx.payment}`
+        )
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${activeUser.name.replace(/\s/g, '_')}_transactions.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Modal population
+transactionTable.addEventListener('click', (e) => {
+    if (e.target.classList.contains('details-btn')) {
+        document.getElementById('modalDate').textContent = e.target.dataset.date;
+        document.getElementById('modalPlan').textContent = e.target.dataset.plan;
+        document.getElementById('modalAmount').textContent = `₹${e.target.dataset.amount}`;
+        document.getElementById('modalType').textContent = 
+            e.target.dataset.type.charAt(0).toUpperCase() + e.target.dataset.type.slice(1);
+        document.getElementById('modalStatus').textContent = e.target.dataset.status;
+        document.getElementById('modalTxId').textContent = e.target.dataset.txid;
+        document.getElementById('modalPayment').textContent = e.target.dataset.payment;
+    }
+});
+
+// Debounced render
+const debouncedRender = debounce(renderTransactions, 300);
+timeFilter.addEventListener('change', debouncedRender);
+typeFilter.addEventListener('change', debouncedRender);
+sortFilter.addEventListener('change', debouncedRender);
+exportBtn.addEventListener('click', exportToCSV);
+
+// Logout functionality
+document.getElementById('logoutLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('activeUser');
+    window.location.href = 'login.html';
+});
+
+// Theme toggle functionality
+const themeToggle = document.querySelector('.theme-toggle');
+themeToggle.addEventListener('click', () => {
+    const currentTheme = document.body.getAttribute('data-theme');
+    if (currentTheme === 'dark') {
+        document.body.removeAttribute('data-theme');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        localStorage.setItem('theme', 'light');
+    } else {
+        document.body.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        localStorage.setItem('theme', 'dark');
+    }
+});
+
+// Load saved theme
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+}
+
+// Initial render
+renderTransactions();
     </script>
 </body>
 </html>

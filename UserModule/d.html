@@ -85,7 +85,7 @@
                 radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.1) 0%, transparent 25%),
                 radial-gradient(circle at 90% 80%, rgba(0, 245, 212, 0.1) 0%, transparent 25%);
             z-index: -1;
-            animation: pulseBackground 15s infinite804 infinite alternate;
+            animation: pulseBackground 15s infinite alternate;
         }
 
         @keyframes pulseBackground {
@@ -581,7 +581,7 @@
             display: none;
         }
 
-        .faq-question.active+.faq-answer {
+        .faq-question.active + .faq-answer {
             display: block;
         }
 
@@ -824,18 +824,16 @@
                         <a class="nav-link" href="support.html">Support</a>
                     </li>
                 </ul>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i> My Account
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                            <li><a class="dropdown-item" href="settings.html">Settings</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
-                        </ul>
-                    </div>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i> My Account
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                        <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -1352,12 +1350,12 @@
                                     <i class="fas fa-mobile-alt"></i>
                                     <div class="payment-details">
                                         <h6>Mobi-Comm Wallet</h6>
-                                        <p>Balance: ₹<span id="walletBalance">0</span></p>
+                                        <p>Balance: ₹<span id="walletBalance">500</span></p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Saved Cards Section (shown when card payment selected) -->
+                            <!-- Saved Cards Section -->
                             <div id="savedCardsSection" style="display: none; margin-top: 15px;">
                                 <h6>Saved Cards</h6>
                                 <div class="saved-card">
@@ -1387,7 +1385,7 @@
                                 </button>
                             </div>
 
-                            <!-- UPI ID Input (shown when UPI payment selected) -->
+                            <!-- UPI ID Input -->
                             <div id="upiSection" style="display: none; margin-top: 15px;">
                                 <div class="mb-3">
                                     <label for="upiId" class="form-label">Enter UPI ID</label>
@@ -1399,7 +1397,7 @@
                                 </div>
                             </div>
 
-                            <!-- Wallet Payment Confirmation (shown when wallet payment selected) -->
+                            <!-- Wallet Payment Confirmation -->
                             <div id="walletSection" style="display: none; margin-top: 15px;">
                                 <div class="alert alert-info">
                                     <i class="fas fa-info-circle"></i> You will pay using your Mobi-Comm Wallet balance. Any remaining amount will be charged to your default payment method.
@@ -1413,7 +1411,7 @@
                     </div>
                     <div class="modal-footer" style="border-top: 1px solid rgba(155, 93, 229, 0.2);">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-recharge" onclick="processPayment()">
+                        <button type="button" class="btn btn-recharge" id="confirmPaymentButton">
                             <i class="fas fa-check-circle me-2"></i> Confirm Payment
                         </button>
                     </div>
@@ -1528,651 +1526,580 @@
             </div>
         </footer>
     </div>
+
     <!-- Scripts -->
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script>
-        // Theme Toggle Functionality
-        const themeToggle = document.querySelector('.theme-toggle');
-        const body = document.body;
-        const currentTheme = localStorage.getItem('theme') || 'light';
-    
-        if (currentTheme === 'dark') {
-            body.setAttribute('data-theme', 'dark');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-    
-        themeToggle.addEventListener('click', () => {
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'light');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            }
-        });
-    
-        // Plan Type Tabs Functionality
-        document.querySelectorAll('.plan-type-tab').forEach(tab => {
-            tab.addEventListener('click', function () {
-                document.querySelectorAll('.plan-type-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                filterPlansByType(this.getAttribute('data-type'));
-            });
-        });
-    
-        function filterPlansByType(type) {
-            document.querySelectorAll('.plan-card').forEach(card => {
-                const cardType = card.querySelector('.plan-category-badge')?.textContent.toLowerCase() || '';
-                const cardCategory = card.getAttribute('data-category');
-                if (type === 'all' || (type === 'data' && (cardCategory?.includes('data') || cardCategory?.includes('unlimited'))) || cardType.includes(type)) {
-                    card.style.display = 'block';
-                    if (!card.classList.contains('visible')) {
-                        setTimeout(() => card.classList.add('visible'), 100);
+
+               <script>
+                // Theme Toggle Functionality
+                const themeToggle = document.querySelector('.theme-toggle');
+                const body = document.body;
+                const currentTheme = localStorage.getItem('theme') || 'light';
+
+                if (currentTheme === 'dark') {
+                    body.setAttribute('data-theme', 'dark');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+
+                themeToggle.addEventListener('click', () => {
+                    if (body.getAttribute('data-theme') === 'dark') {
+                        body.removeAttribute('data-theme');
+                        localStorage.setItem('theme', 'light');
+                        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    } else {
+                        body.setAttribute('data-theme', 'dark');
+                        localStorage.setItem('theme', 'dark');
+                        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
                     }
-                } else {
-                    card.style.display = 'none';
-                    card.classList.remove('visible');
-                }
-            });
-        }
-    
-        document.addEventListener('DOMContentLoaded', () => {
-            filterPlansByType('prepaid');
-            fetchRechargePlans();
-            initModals();
-            initScrollToTop();
-            initPlanNavigation();
-            initFilters();
-            document.getElementById('year').textContent = new Date().getFullYear();
-        });
-    
-        // Plan Filter Functionality
-        function filterPlans() {
-            const activeTab = document.querySelector('.plan-type-tab.active')?.getAttribute('data-type') || 'prepaid';
-            const dataRange = document.getElementById('dataRange')?.value || '';
-            const validity = document.getElementById('validity')?.value || '';
-            const priceRange = document.getElementById('priceRange')?.value || '';
-            const planCategory = document.getElementById('planCategory')?.value || '';
-            const searchQuery = document.getElementById('planSearch')?.value.toLowerCase() || '';
-    
-            document.querySelectorAll('.plan-card').forEach(card => {
-                const cardType = card.querySelector('.plan-category-badge')?.textContent.toLowerCase() || '';
-                const cardData = parseFloat(card.getAttribute('data-data')) || 0;
-                const cardDays = parseInt(card.getAttribute('data-days')) || 0;
-                const cardPrice = parseFloat(card.getAttribute('data-price')) || 0;
-                const cardCategory = card.getAttribute('data-category') || '';
-                const cardName = card.getAttribute('data-name')?.toLowerCase() || '';
-    
-                const typeMatch =
-                    activeTab === 'all' ||
-                    (activeTab === 'prepaid' && cardType.includes('prepaid')) ||
-                    (activeTab === 'postpaid' && cardType.includes('postpaid')) ||
-                    (activeTab === 'data' && (cardCategory.includes('data') || cardCategory.includes('unlimited')));
-    
-                let dataMatch = true;
-                if (dataRange) {
-                    if (dataRange === '0-2') dataMatch = cardData >= 0 && cardData <= 2;
-                    else if (dataRange === '2-3') dataMatch = cardData > 2 && cardData <= 3;
-                    else if (dataRange === '3+') dataMatch = cardData > 3;
-                }
-    
-                let validityMatch = true;
-                if (validity) {
-                    if (validity === '0-30') validityMatch = cardDays >= 0 && cardDays <= 30;
-                    else if (validity === '30-90') validityMatch = cardDays > 30 && cardDays <= 90;
-                    else if (validity === '90+') validityMatch = cardDays > 90;
-                }
-    
-                let priceMatch = true;
-                if (priceRange) {
-                    if (priceRange === '0-300') priceMatch = cardPrice >= 0 && cardPrice <= 300;
-                    else if (priceRange === '300-700') priceMatch = cardPrice > 300 && cardPrice <= 700;
-                    else if (priceRange === '700+') priceMatch = cardPrice > 700;
-                }
-    
-                const categoryMatch = !planCategory || cardCategory === planCategory;
-                const searchMatch = !searchQuery || cardName.includes(searchQuery);
-    
-                if (typeMatch && dataMatch && validityMatch && priceMatch && categoryMatch && searchMatch) {
-                    card.style.display = 'block';
-                    if (!card.classList.contains('visible')) {
-                        setTimeout(() => card.classList.add('visible'), 100);
-                    }
-                } else {
-                    card.style.display = 'none';
-                    card.classList.remove('visible');
-                }
-            });
-        }
-    
-        document.getElementById('applyFilterModal')?.addEventListener('click', () => {
-            filterPlans();
-            $('#filterModal').modal('hide');
-        });
-    
-        document.getElementById('clearFilterModal')?.addEventListener('click', () => {
-            document.getElementById('dataRange').value = '';
-            document.getElementById('validity').value = '';
-            document.getElementById('priceRange').value = '';
-            document.getElementById('planCategory').value = '';
-            filterPlans();
-        });
-    
-        document.getElementById('planSearch')?.addEventListener('input', filterPlans);
-        document.getElementById('searchButton')?.addEventListener('click', filterPlans);
-    
-        // FAQ Functionality
-        document.querySelectorAll('.faq-question').forEach(item => {
-            item.addEventListener('click', () => item.classList.toggle('active'));
-        });
-    
-        // Toast Notification Function
-        function showToast(message, type = 'success') {
-            const toastContainer = document.getElementById('toastContainer');
-            if (!toastContainer) {
-                console.error('Toast container not found');
-                return;
-            }
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
-            toastContainer.appendChild(toast);
-    
-            setTimeout(() => toast.classList.add('show'), 100);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-    
-        // Modal Functions
-        function initModals() {
-            window.showProfile = function() {
-                document.getElementById('modalBackdrop')?.style.display = 'block';
-                document.getElementById('profileModal')?.style.display = 'block';
-            };
-    
-            window.showPolicy = function() {
-                document.getElementById('modalBackdrop')?.style.display = 'block';
-                document.getElementById('policyModal')?.style.display = 'block';
-            };
-    
-            window.showTerms = function() {
-                document.getElementById('modalBackdrop')?.style.display = 'block';
-                document.getElementById('termsModal')?.style.display = 'block';
-            };
-    
-            window.closeModal = function() {
-                document.getElementById('modalBackdrop')?.style.display = 'none';
-                document.getElementById('profileModal')?.style.display = 'none';
-                document.getElementById('policyModal')?.style.display = 'none';
-                document.getElementById('termsModal')?.style.display = 'none';
-            };
-    
-            document.getElementById('dob')?.addEventListener('change', function() {
-                const dob = new Date(this.value);
-                const ageDifMs = Date.now() - dob.getTime();
-                const ageDate = new Date(ageDifMs);
-                document.getElementById('age')?.value = Math.abs(ageDate.getUTCFullYear() - 1970);
-            });
-        }
-    
-        // Scroll to Top Functionality
-        function initScrollToTop() {
-            window.onscroll = function() {
-                const goTopBtn = document.getElementById("goTopBtn");
-                if (goTopBtn && (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20)) {
-                    goTopBtn.style.display = "flex";
-                } else if (goTopBtn) {
-                    goTopBtn.style.display = "none";
-                }
-            };
-    
-            window.scrollToTop = function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
                 });
-            };
-        }
-    
-        // Plan Navigation Functionality
-        function initPlanNavigation() {
-            document.querySelectorAll('.plan-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
+
+                // Plan Type Tabs Functionality
+                document.querySelectorAll('.plan-type-tab').forEach(tab => {
+                    tab.addEventListener('click', function () {
+                        document.querySelectorAll('.plan-type-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        filterPlansByType(this.getAttribute('data-type'));
+                    });
+                });
+
+                function filterPlansByType(type) {
+                    document.querySelectorAll('.plan-card').forEach(card => {
+                        const cardType = card.querySelector('.plan-category-badge')?.textContent.toLowerCase() || '';
+                        const cardCategory = card.getAttribute('data-category');
+                        if (type === 'all' || (type === 'data' && (cardCategory?.includes('data') || cardCategory?.includes('unlimited'))) || cardType.includes(type)) {
+                            card.style.display = 'block';
+                            if (!card.classList.contains('visible')) {
+                                setTimeout(() => card.classList.add('visible'), 100);
+                            }
+                        } else {
+                            card.style.display = 'none';
+                            card.classList.remove('visible');
+                        }
+                    });
+                }
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    filterPlansByType('prepaid');
+                    initModals();
+                    initScrollToTop();
+                    initPlanNavigation();
+                    initFilters();
+                    attachRechargeListeners(); // Ensure recharge listeners are attached on load
+                });
+
+                // Plan Filter Functionality
+                function filterPlans() {
+                    const activeTab = document.querySelector('.plan-type-tab.active')?.getAttribute('data-type') || 'prepaid';
+                    const dataRange = document.getElementById('dataRange')?.value || '';
+                    const validity = document.getElementById('validity')?.value || '';
+                    const priceRange = document.getElementById('priceRange')?.value || '';
+                    const planCategory = document.getElementById('planCategory')?.value || '';
+                    const searchQuery = document.getElementById('planSearch')?.value.toLowerCase() || '';
+
+                    document.querySelectorAll('.plan-card').forEach(card => {
+                        const cardType = card.querySelector('.plan-category-badge')?.textContent.toLowerCase() || '';
+                        const cardData = parseFloat(card.getAttribute('data-data')) || 0;
+                        const cardDays = parseInt(card.getAttribute('data-days')) || 0;
+                        const cardPrice = parseFloat(card.getAttribute('data-price')) || 0;
+                        const cardCategory = card.getAttribute('data-category') || '';
+                        const cardName = card.getAttribute('data-name')?.toLowerCase() || '';
+
+                        const typeMatch =
+                            activeTab === 'all' ||
+                            (activeTab === 'prepaid' && cardType.includes('prepaid')) ||
+                            (activeTab === 'postpaid' && cardType.includes('postpaid')) ||
+                            (activeTab === 'data' && (cardCategory.includes('data') || cardCategory.includes('unlimited')));
+
+                        let dataMatch = true;
+                        if (dataRange) {
+                            if (dataRange === '0-2') dataMatch = cardData >= 0 && cardData <= 2;
+                            else if (dataRange === '2-3') dataMatch = cardData > 2 && cardData <= 3;
+                            else if (dataRange === '3+') dataMatch = cardData > 3;
+                        }
+
+                        let validityMatch = true;
+                        if (validity) {
+                            if (validity === '0-30') validityMatch = cardDays >= 0 && cardDays <= 30;
+                            else if (validity === '30-90') validityMatch = cardDays > 30 && cardDays <= 90;
+                            else if (validity === '90+') validityMatch = cardDays > 90;
+                        }
+
+                        let priceMatch = true;
+                        if (priceRange) {
+                            if (priceRange === '0-300') priceMatch = cardPrice >= 0 && cardPrice <= 300;
+                            else if (priceRange === '300-700') priceMatch = cardPrice > 300 && cardPrice <= 700;
+                            else if (priceRange === '700+') priceMatch = cardPrice > 700;
+                        }
+
+                        const categoryMatch = !planCategory || cardCategory === planCategory;
+                        const searchMatch = !searchQuery || cardName.includes(searchQuery);
+
+                        if (typeMatch && dataMatch && validityMatch && priceMatch && categoryMatch && searchMatch) {
+                            card.style.display = 'block';
+                            if (!card.classList.contains('visible')) {
+                                setTimeout(() => card.classList.add('visible'), 100);
+                            }
+                        } else {
+                            card.style.display = 'none';
+                            card.classList.remove('visible');
+                        }
+                    });
+                }
+
+                document.getElementById('applyFilterModal')?.addEventListener('click', () => {
+                    filterPlans();
+                    $('#filterModal').modal('hide');
+                });
+
+                document.getElementById('clearFilterModal')?.addEventListener('click', () => {
+                    document.getElementById('dataRange').value = '';
+                    document.getElementById('validity').value = '';
+                    document.getElementById('priceRange').value = '';
+                    document.getElementById('planCategory').value = '';
+                    filterPlans();
+                });
+
+                document.getElementById('planSearch')?.addEventListener('input', filterPlans);
+                document.getElementById('searchButton')?.addEventListener('click', filterPlans);
+
+                // FAQ Functionality
+                document.querySelectorAll('.faq-question').forEach(item => {
+                    item.addEventListener('click', () => item.classList.toggle('active'));
+                });
+
+                // Toast Notification Function
+                function showToast(message, type = 'success') {
+                    const toastContainer = document.getElementById('toastContainer');
+                    if (!toastContainer) {
+                        console.error('Toast container not found');
+                        return;
+                    }
+                    const toast = document.createElement('div');
+                    toast.className = `toast ${type}`;
+                    toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+                    toastContainer.appendChild(toast);
+
+                    setTimeout(() => toast.classList.add('show'), 100);
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }, 3000);
+                }
+
+                // Modal Functions
+                function initModals() {
+                    window.showProfile = function() {
+                        document.getElementById('modalBackdrop')?.style.display = 'block';
+                        document.getElementById('profileModal')?.style.display = 'block';
+                    };
+
+                    window.showPolicy = function() {
+                        document.getElementById('modalBackdrop')?.style.display = 'block';
+                        document.getElementById('policyModal')?.style.display = 'block';
+                    };
+
+                    window.showTerms = function() {
+                        document.getElementById('modalBackdrop')?.style.display = 'block';
+                        document.getElementById('termsModal')?.style.display = 'block';
+                    };
+
+                    window.closeModal = function() {
+                        document.getElementById('modalBackdrop')?.style.display = 'none';
+                        document.getElementById('profileModal')?.style.display = 'none';
+                        document.getElementById('policyModal')?.style.display = 'none';
+                        document.getElementById('termsModal')?.style.display = 'none';
+                    };
+
+                    document.getElementById('dob')?.addEventListener('change', function() {
+                        const dob = new Date(this.value);
+                        const ageDifMs = Date.now() - dob.getTime();
+                        const ageDate = new Date(ageDifMs);
+                        document.getElementById('age')?.value = Math.abs(ageDate.getUTCFullYear() - 1970);
+                    });
+                }
+
+                // Scroll to Top Functionality
+                function initScrollToTop() {
+                    window.onscroll = function() {
+                        const goTopBtn = document.getElementById("goTopBtn");
+                        if (goTopBtn && (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20)) {
+                            goTopBtn.style.display = "flex";
+                        } else if (goTopBtn) {
+                            goTopBtn.style.display = "none";
+                        }
+                    };
+
+                    window.scrollToTop = function() {
+                        window.scrollTo({
+                            top: 0,
                             behavior: 'smooth'
                         });
-                    }
-                });
-            });
-        }
-    
-        // Filter Functionality
-        function initFilters() {
-            const filterButton = document.getElementById('filter-button');
-            const clearButton = document.getElementById('clear-button');
-            
-            if (filterButton) {
-                filterButton.addEventListener('click', applyFilters);
-            }
-            
-            if (clearButton) {
-                clearButton.addEventListener('click', clearFilters);
-            }
-        }
-    
-        function applyFilters() {
-            const priceFilter = document.querySelector('input[name="price"]:checked')?.value;
-            const dataFilter = document.querySelector('input[name="gb"]:checked')?.value;
-            const daysFilter = document.querySelector('input[name="days"]:checked')?.value;
-            
-            const pricingCards = document.querySelectorAll('.pricing-card');
-            
-            pricingCards.forEach(card => {
-                const price = parseInt(card.getAttribute('data-price')) || 0;
-                const data = parseFloat(card.getAttribute('data-data')) || 0;
-                const days = parseInt(card.getAttribute('data-days')) || 0;
-                
-                let priceMatch = true;
-                let dataMatch = true;
-                let daysMatch = true;
-                
-                if (priceFilter) {
-                    const [minPrice, maxPrice] = priceFilter.split('-').map(Number);
-                    priceMatch = price >= minPrice && price <= maxPrice;
-                }
-                
-                if (dataFilter) {
-                    const [minData, maxData] = dataFilter.split('-').map(Number);
-                    dataMatch = data >= minData && data <= maxData;
-                }
-                
-                if (daysFilter) {
-                    const [minDays, maxDays] = daysFilter.split('-').map(Number);
-                    daysMatch = days >= minDays && days <= maxDays;
-                }
-                
-                if (priceMatch && dataMatch && daysMatch) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-    
-        function clearFilters() {
-            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.checked = false;
-            });
-            
-            document.querySelectorAll('.pricing-card').forEach(card => {
-                card.style.display = 'block';
-            });
-        }
-    
-        // Recharge Plans Functionality
-        async function fetchRechargePlans() {
-            try {
-                const token = localStorage.getItem("jwtToken");
-                if (!token) {
-                    throw new Error("No token found. Please log in first.");
-                }
-        
-                const response = await fetch("http://localhost:8081/api/recharge-plans", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-        
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-        
-                const plans = await response.json();
-                displayRechargePlans(plans);
-            } catch (error) {
-                console.error("Error fetching recharge plans:", error);
-                const container = document.getElementById("recharge-plans") || document.querySelector('.plan-container');
-                if (container) {
-                    container.innerHTML = `<p style="color: red;">Failed to load recharge plans: ${error.message}. Please try again later.</p>`;
-                } else {
-                    console.error('Recharge plans container not found');
-                }
-            }
-        }
-        
-        function displayRechargePlans(plans) {
-            const container = document.getElementById("recharge-plans") || document.querySelector('.plan-container');
-            if (!container) {
-                console.error('Plan container not found');
-                return;
-            }
-            container.innerHTML = "";
-        
-            plans.forEach(plan => {
-                const planCard = document.createElement("div");
-                planCard.classList.add("plan-card");
-                planCard.setAttribute("data-plan-type", plan.category || "basic");
-                planCard.setAttribute("data-price", plan.price || 0);
-                planCard.setAttribute("data-data", plan.data || "N/A");
-                planCard.setAttribute("data-days", plan.validity || "N/A");
-                planCard.setAttribute("data-name", plan.name || "");
-    
-                planCard.innerHTML = `
-                    <div class="plan-header">${plan.name || 'Unnamed Plan'}</div>
-                    <div class="price-circle">₹${plan.price || 0}</div>
-                    <ul>
-                        <li><i class="fas fa-calendar-alt"></i> Validity: ${plan.validity || "N/A"}</li>
-                        <li><i class="fas fa-wifi"></i> ${plan.data || "N/A"} Data</li>
-                        ${plan.features ? `<li><i class="fas fa-gift"></i> ${plan.features}</li>` : ""}
-                    </ul>
-                    <button class="btn-recharge btn-custom"><i class="fas fa-bolt"></i> Recharge Now</button>
-                `;
-                container.appendChild(planCard);
-            });
-        
-            attachRechargeListeners();
-        }
-        
-        function attachRechargeListeners() {
-            document.querySelectorAll('.btn-recharge').forEach(button => {
-                button.addEventListener('click', function() {
-                    const planCard = this.closest('.plan-card');
-                    selectedPlan = {
-                        name: planCard.querySelector('.plan-header').textContent,
-                        price: parseFloat(planCard.getAttribute('data-price')) || 0,
-                        type: planCard.getAttribute('data-plan-type') || 'basic',
-                        days: parseInt(planCard.getAttribute('data-days')) || null
                     };
-                    console.log('Selected Plan:', selectedPlan);
-    
-                    if (!rechargeNumber) {
-                        rechargeNumber = prompt('Please enter your mobile number for recharge:', '9876543210');
-                        if (!rechargeNumber || !/^\d{10}$/.test(rechargeNumber)) {
-                            showToast('Invalid mobile number. Please try again.', 'error');
-                            selectedPlan = null;
-                            return;
+                }
+
+                // Plan Navigation Functionality
+                function initPlanNavigation() {
+                    document.querySelectorAll('.plan-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const targetId = this.getAttribute('data-target');
+                            const targetElement = document.getElementById(targetId);
+                            if (targetElement) {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth'
+                                });
+                            }
+                        });
+                    });
+                }
+
+                // Filter Functionality
+                function initFilters() {
+                    const filterButton = document.getElementById('filter-button');
+                    const clearButton = document.getElementById('clear-button');
+                    
+                    if (filterButton) {
+                        filterButton.addEventListener('click', applyFilters);
+                    }
+                    
+                    if (clearButton) {
+                        clearButton.addEventListener('click', clearFilters);
+                    }
+                }
+
+                function applyFilters() {
+                    const priceFilter = document.querySelector('input[name="price"]:checked')?.value;
+                    const dataFilter = document.querySelector('input[name="gb"]:checked')?.value;
+                    const daysFilter = document.querySelector('input[name="days"]:checked')?.value;
+                    
+                    const pricingCards = document.querySelectorAll('.pricing-card');
+                    
+                    pricingCards.forEach(card => {
+                        const price = parseInt(card.getAttribute('data-price')) || 0;
+                        const data = parseFloat(card.getAttribute('data-data')) || 0;
+                        const days = parseInt(card.getAttribute('data-days')) || 0;
+                        
+                        let priceMatch = true;
+                        let dataMatch = true;
+                        let daysMatch = true;
+                        
+                        if (priceFilter) {
+                            const [minPrice, maxPrice] = priceFilter.split('-').map(Number);
+                            priceMatch = price >= minPrice && price <= maxPrice;
+                        }
+                        
+                        if (dataFilter) {
+                            const [minData, maxData] = dataFilter.split('-').map(Number);
+                            dataMatch = data >= minData && data <= maxData;
+                        }
+                        
+                        if (daysFilter) {
+                            const [minDays, maxDays] = daysFilter.split('-').map(Number);
+                            daysMatch = days >= minDays && days <= maxDays;
+                        }
+                        
+                        if (priceMatch && dataMatch && daysMatch) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+
+                function clearFilters() {
+                    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                        radio.checked = false;
+                    });
+                    
+                    document.querySelectorAll('.pricing-card').forEach(card => {
+                        card.style.display = 'block';
+                    });
+                }
+
+                // Recharge Plans Functionality
+                async function fetchRechargePlans() {
+                    try {
+                        const token = localStorage.getItem("jwtToken");
+                        if (!token) {
+                            throw new Error("No token found. Please log in first.");
+                        }
+
+                        const response = await fetch("http://localhost:8081/api/recharge-plans", {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${token}`
+                            }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+
+                        const plans = await response.json();
+                        displayRechargePlans(plans);
+                    } catch (error) {
+                        console.error("Error fetching recharge plans:", error);
+                        const container = document.getElementById("recharge-plans") || document.querySelector('.plan-container');
+                        if (container) {
+                            container.innerHTML = `<p style="color: red;">Failed to load recharge plans: ${error.message}. Please try again later.</p>`;
+                        } else {
+                            console.error('Recharge plans container not found');
                         }
                     }
-    
-                    document.getElementById('selectedPlanName').textContent = `${selectedPlan.name} - ₹${selectedPlan.price}`;
-                    document.getElementById('selectedRechargeNumber').textContent = rechargeNumber;
-                    document.getElementById('selectedPlanType').textContent = selectedPlan.type;
-    
-                    if (selectedPlan.days) {
-                        const today = new Date();
-                        const expiryDate = new Date(today.setDate(today.getDate() + selectedPlan.days));
-                        document.getElementById('planExpiry').textContent = expiryDate.toLocaleDateString();
-                    } else {
-                        document.getElementById('planExpiry').textContent = 'Monthly Billing';
-                    }
-    
-                    $('#paymentModal').modal('show');
-                });
-            });
-        }
-    
-        async function sendEmailNotification(email, planName, price, data, days, paymentId) {
-            try {
-                console.log("📩 Sending email to:", email);
-        
-                const response = await fetch("http://localhost:8081/api/email/send", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        to: email,
-                        subject: "Recharge Successful!",
-                        message: `Dear Customer,\n\nYour recharge for ${planName} (${data}GB/Day, ${days} Days) has been successfully processed.\n\nPayment ID: ${paymentId}\nAmount: ₹${price}\n\nThank you for choosing Mobi Comm!`
-                    })
-                });
-        
-                const responseData = await response.json();
-                console.log("✅ Email API Response:", responseData);
-        
-                if (!response.ok) {
-                    throw new Error(`❌ HTTP error! Status: ${response.status}`);
                 }
-        
-                console.log("📨 Email notification sent successfully.");
-                popupMessage("✅ Recharge details have been sent to your email!");
-            } catch (error) {
-                console.error("❌ Failed to send email notification:", error);
-                popupMessage("❌ Error: Unable to send email.");
-            }
-        }
-        
-        function popupMessage(message) {
-            const popup = document.createElement("div");
-            popup.textContent = message;
-            popup.style.position = "fixed";
-            popup.style.top = "50%";
-            popup.style.left = "50%";
-            popup.style.transform = "translate(-50%, -50%)";
-            popup.style.background = message.includes("❌") ? "#f44336" : "#4CAF50";
-            popup.style.color = "#fff";
-            popup.style.padding = "15px 20px";
-            popup.style.borderRadius = "5px";
-            popup.style.boxShadow = "0px 4px 6px rgba(0,0,0,0.1)";
-            popup.style.zIndex = "1000";
-            popup.style.fontSize = "18px";
-            popup.style.textAlign = "center";
-            
-            document.body.appendChild(popup);
-        
-            setTimeout(() => {
-                popup.remove();
-            }, 3000);
-        }
-    
-        // Plan Selection and Payment Setup
-        let selectedPlan = null;
-        let selectedPaymentMethod = null;
-        let rechargeNumber = null;
-    
-        function selectPaymentMethod(element, method) {
-            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedPaymentMethod = method;
-            console.log('Selected Payment Method:', method);
-    
-            document.getElementById('savedCardsSection').style.display = method === 'card' ? 'block' : 'none';
-            document.getElementById('upiSection').style.display = method === 'upi' ? 'block' : 'none';
-            document.getElementById('walletSection').style.display = method === 'wallet' ? 'block' : 'none';
-        }
-    
-        function useSavedCard(cardEnding) {
-            showToast(`Using card ending in ${cardEnding} for payment`, 'success');
-            processPaymentWithRazorpay(cardEnding);
-        }
-    
-        function removeSavedCard(cardEnding) {
-            showToast(`Card ending in ${cardEnding} removed`, 'success');
-        }
-    
-        function showAddCardForm() {
-            showToast('Add new card functionality not implemented in demo', 'error');
-        }
-    
-        // Razorpay Payment Processing
-        async function processPaymentWithRazorpay(cardEnding = null) {
-            if (!selectedPlan) {
-                showToast('Please select a plan first', 'error');
-                console.error('No selected plan');
-                return;
-            }
-    
-            if (!selectedPaymentMethod) {
-                showToast('Please select a payment method', 'error');
-                console.error('No selected payment method');
-                return;
-            }
-    
-            if (!rechargeNumber || !/^\d{10}$/.test(rechargeNumber)) {
-                showToast('Invalid mobile number. Please try again.', 'error');
-                console.error('Invalid recharge number');
-                return;
-            }
-    
-            document.getElementById('loadingSpinner').style.display = 'flex';
-            console.log('Initiating Razorpay payment...', { selectedPlan, selectedPaymentMethod, rechargeNumber });
-    
-            if (!window.Razorpay) {
-                document.getElementById('loadingSpinner').style.display = 'none';
-                showToast('Payment gateway not loaded. Please try again later.', 'error');
-                console.error('Razorpay script not loaded');
-                return;
-            }
-    
-            const options = {
-                key: 'rzp_test_DD9GRYAdLgtztF', // Verify this key in your Razorpay dashboard
-                amount: selectedPlan.price * 100, // Amount in paise
-                currency: 'INR',
-                name: 'Mobi Comm',
-                description: `${selectedPlan.name} - ${rechargeNumber}`,
-                image: '/images/Logo.png', // Ensure this path is correct
-                handler: function(response) {
-                    document.getElementById('loadingSpinner').style.display = 'none';
-                    console.log('Payment success response:', response);
-                    const razorpayPaymentId = response.razorpay_payment_id;
-    
-                    const paymentDetails = {
-                        paymentId: razorpayPaymentId,
-                        planName: selectedPlan.name,
-                        price: selectedPlan.price,
-                        data: selectedPlan.data || 'N/A',
-                        validity: selectedPlan.days || 'N/A',
-                        planType: selectedPlan.type,
-                        timestamp: new Date().toISOString()
-                    };
-    
-                    let transactionHistory = JSON.parse(localStorage.getItem("transactionHistory")) || [];
-                    transactionHistory.push(paymentDetails);
-                    localStorage.setItem("transactionHistory", JSON.stringify(transactionHistory));
-    
-                    sendEmailNotification('customer@example.com', selectedPlan.name, selectedPlan.price, selectedPlan.data || 'N/A', selectedPlan.days || 'N/A', razorpayPaymentId);
-    
-                    window.location.href = "payment_success.html";
-                },
-                prefill: {
-                    name: 'Customer',
-                    email: 'customer@example.com',
-                    contact: rechargeNumber
-                },
-                notes: {
-                    plan_type: selectedPlan.type,
-                    plan_name: selectedPlan.name,
-                    data: selectedPlan.data || 'N/A',
-                    validity: selectedPlan.days || 'N/A'
-                },
-                theme: {
-                    color: '#a91919'
-                },
-                modal: {
-                    ondismiss: function() {
+
+                function displayRechargePlans(plans) {
+                    const container = document.getElementById("recharge-plans") || document.querySelector('.plan-container');
+                    if (!container) {
+                        console.error('Plan container not found');
+                        return;
+                    }
+                    container.innerHTML = "";
+
+                    plans.forEach(plan => {
+                        const planCard = document.createElement("div");
+                        planCard.classList.add("plan-card");
+                        planCard.setAttribute("data-plan-type", plan.category || "basic");
+                        planCard.setAttribute("data-price", plan.price || 0);
+                        planCard.setAttribute("data-data", plan.data || "N/A");
+                        planCard.setAttribute("data-days", plan.validity || "N/A");
+                        planCard.setAttribute("data-name", plan.name || "");
+
+                        planCard.innerHTML = `
+                            <div class="plan-header">${plan.name || 'Unnamed Plan'}</div>
+                            <div class="price-circle">₹${plan.price || 0}</div>
+                            <ul>
+                                <li><i class="fas fa-calendar-alt"></i> Validity: ${plan.validity || "N/A"}</li>
+                                <li><i class="fas fa-wifi"></i> ${plan.data || "N/A"} Data</li>
+                                ${plan.features ? `<li><i class="fas fa-gift"></i> ${plan.features}</li>` : ""}
+                            </ul>
+                            <button class="btn-recharge btn-custom"><i class="fas fa-bolt"></i> Recharge Now</button>
+                        `;
+                        container.appendChild(planCard);
+                    });
+
+                    attachRechargeListeners();
+                }
+
+                function attachRechargeListeners() {
+                    document.querySelectorAll('.btn-recharge').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const planCard = this.closest('.plan-card');
+                            selectedPlan = {
+                                name: planCard.querySelector('.plan-header').textContent,
+                                price: parseFloat(planCard.getAttribute('data-price')) || 0,
+                                data: planCard.getAttribute('data-data') || 'N/A',
+                                validity: parseInt(planCard.getAttribute('data-days')) || null,
+                                type: planCard.getAttribute('data-plan-type') || 'basic'
+                            };
+                            console.log('Selected Plan:', selectedPlan);
+
+                            if (!rechargeNumber) {
+                                rechargeNumber = prompt('Please enter your mobile number for recharge:', '9876543210');
+                                if (!rechargeNumber || !/^\d{10}$/.test(rechargeNumber)) {
+                                    showToast('Invalid mobile number. Please try again.', 'error');
+                                    selectedPlan = null;
+                                    return;
+                                }
+                            }
+
+                            document.getElementById('selectedPlanName').textContent = `${selectedPlan.name} - ₹${selectedPlan.price}`;
+                            document.getElementById('selectedRechargeNumber').textContent = rechargeNumber;
+                            document.getElementById('selectedPlanType').textContent = selectedPlan.type;
+
+                            if (selectedPlan.validity) {
+                                const today = new Date();
+                                const expiryDate = new Date(today.setDate(today.getDate() + selectedPlan.validity));
+                                document.getElementById('planExpiry').textContent = expiryDate.toLocaleDateString();
+                            } else {
+                                document.getElementById('planExpiry').textContent = 'Monthly Billing';
+                            }
+
+                            $('#paymentModal').modal('show');
+                        });
+                    });
+                }
+
+                async function sendEmailNotification(email, planName, price, data, days, paymentId) {
+                    try {
+                        console.log("📩 Sending email to:", email);
+
+                        const response = await fetch("http://localhost:9045/api/email/send", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                to: email,
+                                subject: "Recharge Successful!",
+                                message: `Dear Customer,\n\nYour recharge for ${planName} (${data}GB/Day, ${days} Days) has been successfully processed.\n\nPayment ID: ${paymentId}\nAmount: ₹${price}\n\nThank you for choosing Mobi Comm!`
+                            })
+                        });
+
+                        const responseData = await response.json();
+                        console.log("✅ Email API Response:", responseData);
+
+                        if (!response.ok) {
+                            throw new Error(`❌ HTTP error! Status: ${response.status}`);
+                        }
+
+                        console.log("📨 Email notification sent successfully.");
+                        popupMessage("✅ Recharge details have been sent to your email!");
+                    } catch (error) {
+                        console.error("❌ Failed to send email notification:", error);
+                        popupMessage("❌ Error: Unable to send email.");
+                    }
+                }
+
+                function popupMessage(message) {
+                    const popup = document.createElement("div");
+                    popup.textContent = message;
+                    popup.style.position = "fixed";
+                    popup.style.top = "50%";
+                    popup.style.left = "50%";
+                    popup.style.transform = "translate(-50%, -50%)";
+                    popup.style.background = message.includes("❌") ? "#f44336" : "#4CAF50";
+                    popup.style.color = "#fff";
+                    popup.style.padding = "15px 20px";
+                    popup.style.borderRadius = "5px";
+                    popup.style.boxShadow = "0px 4px 6px rgba(0,0,0,0.1)";
+                    popup.style.zIndex = "1000";
+                    popup.style.fontSize = "18px";
+                    popup.style.textAlign = "center";
+                    
+                    document.body.appendChild(popup);
+
+                    setTimeout(() => {
+                        popup.remove();
+                    }, 3000);
+                }
+
+                // Plan Selection and Payment Setup
+                let selectedPlan = null;
+                let selectedPaymentMethod = null;
+                let rechargeNumber = null;
+
+                function selectPaymentMethod(element, method) {
+                    document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+                    element.classList.add('selected');
+                    selectedPaymentMethod = method;
+                    console.log('Selected Payment Method:', method);
+
+                    document.getElementById('savedCardsSection').style.display = method === 'card' ? 'block' : 'none';
+                    document.getElementById('upiSection').style.display = method === 'upi' ? 'block' : 'none';
+                    document.getElementById('walletSection').style.display = method === 'wallet' ? 'block' : 'none';
+                }
+
+                function useSavedCard(cardEnding) {
+                    showToast(`Using card ending in ${cardEnding} for payment`, 'success');
+                    processPaymentWithRazorpay(cardEnding);
+                }
+
+                function removeSavedCard(cardEnding) {
+                    showToast(`Card ending in ${cardEnding} removed`, 'success');
+                }
+
+                function showAddCardForm() {
+                    showToast('Add new card functionality not implemented in demo', 'error');
+                }
+
+                // Razorpay Payment Processing
+                async function processPaymentWithRazorpay(cardEnding = null) {
+                    if (!selectedPlan) {
+                        showToast('Please select a plan first', 'error');
+                        console.error('No selected plan');
                         document.getElementById('loadingSpinner').style.display = 'none';
-                        showToast('Payment cancelled', 'error');
-                        console.log('Payment modal closed');
+                        return;
+                    }
+
+                    if (!selectedPaymentMethod) {
+                        showToast('Please select a payment method', 'error');
+                        console.error('No selected payment method');
+                        document.getElementById('loadingSpinner').style.display = 'none';
+                        return;
+                    }
+
+                    if (!rechargeNumber || !/^\d{10}$/.test(rechargeNumber)) {
+                        showToast('Invalid mobile number. Please try again.', 'error');
+                        console.error('Invalid recharge number');
+                        document.getElementById('loadingSpinner').style.display = 'none';
+                        return;
+                    }
+
+                    document.getElementById('loadingSpinner').style.display = 'flex';
+                    console.log('Initiating Razorpay payment...', { selectedPlan, selectedPaymentMethod, rechargeNumber });
+
+                    const options = {
+                        key: 'rzp_test_DD9GRYAdLgtztF', // Replace with your live key in production
+                        amount: selectedPlan.price * 100, // Amount in paise
+                        currency: 'INR',
+                        name: 'Mobi-Comm',
+                        description: `Recharge for ${selectedPlan.name}`,
+                        image: 'https://example.com/logo.png', // Replace with your logo URL
+                        order_id: '', // Will be generated by your backend
+                        handler: function (response) {
+                            document.getElementById('loadingSpinner').style.display = 'none';
+                            showToast('Payment Successful!', 'success');
+                            document.getElementById('paymentNotification').style.display = 'block';
+                            sendEmailNotification('[email protected]', selectedPlan.name, selectedPlan.price, selectedPlan.data, selectedPlan.validity || 'N/A', response.razorpay_payment_id);
+                            $('#paymentModal').modal('hide');
+                        },
+                        prefill: {
+                            name: 'Customer Name',
+                            email: '[email protected]',
+                            contact: rechargeNumber
+                        },
+                        notes: {
+                            recharge_number: rechargeNumber,
+                            plan_name: selectedPlan.name
+                        },
+                        theme: {
+                            color: '#d06ab2'
+                        }
+                    };
+
+                    try {
+                        const orderResponse = await fetch('http://localhost:8081/api/create-order', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ amount: selectedPlan.price * 100, currency: 'INR' })
+                        });
+
+                        if (!orderResponse.ok) {
+                            throw new Error(`Failed to create order: ${orderResponse.status}`);
+                        }
+
+                        const orderData = await orderResponse.json();
+                        options.order_id = orderData.id;
+
+                        const rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function (response) {
+                            document.getElementById('loadingSpinner').style.display = 'none';
+                            showToast(`Payment Failed: ${response.error.description}`, 'error');
+                            console.error('Payment failed:', response.error);
+                        });
+
+                        rzp1.open();
+                    } catch (error) {
+                        document.getElementById('loadingSpinner').style.display = 'none';
+                        showToast(`Error processing payment: ${error.message}`, 'error');
+                        console.error('Payment error:', error);
                     }
                 }
-            };
-    
-            if (cardEnding) {
-                options.prefill.card = {
-                    number: `****-****-****-${cardEnding}`
-                };
-            }
-    
-            try {
-                const rzp = new Razorpay(options);
-                rzp.on('payment.failed', function(response) {
-                    document.getElementById('loadingSpinner').style.display = 'none';
-                    showToast(`Payment failed! Error: ${response.error.description}`, 'error');
-                    console.error('Payment Failed:', response.error);
+
+                // Attach payment confirmation event
+                document.getElementById('confirmPaymentButton').addEventListener('click', () => {
+                    if (selectedPaymentMethod === 'card' && !document.querySelector('.saved-card-actions button i.fa-check')) {
+                        showToast('Please select a saved card or add a new one.', 'error');
+                        return;
+                    }
+                    if (selectedPaymentMethod === 'upi' && !document.getElementById('upiId').value) {
+                        showToast('Please enter a UPI ID.', 'error');
+                        return;
+                    }
+                    processPaymentWithRazorpay();
                 });
-                rzp.open();
-                console.log('Razorpay checkout opened');
-            } catch (error) {
-                document.getElementById('loadingSpinner').style.display = 'none';
-                showToast(`Error initializing payment: ${error.message || 'Unknown error'}`, 'error');
-                console.error('Razorpay initialization error:', error);
-            }
-        }
-    
-        // Trigger payment based on selected method
-        function processPayment() {
-            console.log('Processing payment...', { selectedPlan, selectedPaymentMethod, rechargeNumber });
-            if (selectedPaymentMethod === 'card' && document.querySelector('.payment-method.selected')) {
-                const cardEnding = document.querySelector('.saved-card-details h6')?.textContent.split('ending in ')[1] || null;
-                processPaymentWithRazorpay(cardEnding);
-            } else if (selectedPaymentMethod === 'upi') {
-                const upiId = document.getElementById('upiId')?.value;
-                if (!upiId || !upiId.includes('@')) {
-                    showToast('Please enter a valid UPI ID (e.g., yourname@upi)', 'error');
-                    return;
-                }
-                processPaymentWithRazorpay();
-            } else if (selectedPaymentMethod === 'wallet') {
-                const walletBalance = parseFloat(document.getElementById('walletBalance')?.textContent || 0);
-                if (walletBalance >= selectedPlan.price) {
-                    processPaymentWithRazorpay('WALLET');
-                } else {
-                    showToast('Insufficient wallet balance. Please use another method.', 'error');
-                    return;
-                }
-            } else {
-                showToast('Please select a valid payment method.', 'error');
-            }
-        }
-    
-        // Add event listener for Confirm Payment button
-        document.getElementById('confirmPaymentButton')?.addEventListener('click', processPayment);
-    
-        document.getElementById('walletBalance')?.textContent = '500';
-    
-        // Animate Plan Cards
-        function animatePlanCards() {
-            const cards = document.querySelectorAll('.plan-card');
-            cards.forEach((card, index) => {
-                const cardTop = card.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                if (cardTop < windowHeight - 100) {
-                    setTimeout(() => card.classList.add('visible'), index * 100);
-                }
-            });
-        }
-    
-        window.addEventListener('scroll', animatePlanCards);
-        window.addEventListener('load', animatePlanCards);
-    
-        document.getElementById('planSearch')?.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') filterPlans();
-        });
-    
-        document.querySelectorAll('#special-offers-category .plan-card').forEach((card, index) => {
-            if (index < 3) card.classList.add('visible');
-        });
-    
-        // Modal Cleanup
-        $('#paymentModal').on('hidden.bs.modal', function () {
-            selectedPaymentMethod = null;
-            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
-            document.getElementById('savedCardsSection').style.display = 'none';
-            document.getElementById('upiSection').style.display = 'none';
-            document.getElementById('walletSection').style.display = 'none';
-            document.getElementById('paymentNotification').style.display = 'none';
-        });
-    </script>
-    
-</body>
-</html>
+            </script>
+        </body>
+    </html>
